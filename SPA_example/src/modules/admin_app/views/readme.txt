@@ -1,0 +1,1 @@
+Add view-modules for the admin-app in this folder.
