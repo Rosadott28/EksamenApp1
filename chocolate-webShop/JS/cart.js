@@ -1,0 +1,1 @@
+// 	Inneholder logikken for handlekurven.

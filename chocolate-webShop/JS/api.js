@@ -1,0 +1,1 @@
+// Inneholder funksjoner for å hente og sende data til API-et.

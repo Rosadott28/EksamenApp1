@@ -1,0 +1,42 @@
+
+/* Farger og variabler */
+:root {
+  --espresso: #160D09;  /* brødtekst, footer og mørke flater */
+  --truffle: #4B2F24;   /* Mørk bakgrunn & detaljer */
+  --cocoa: #7F5B3B;     /* tekst som overskrifter */
+  --powder: #8EA7C1;  /* aksent farge, CTA, knapp, higlights */
+  --pearl: #EFEADC;     /* titteler, tekst på mørk/blå bakgrunn */
+  --ivory: #FAF8F2;   /* sekundærbakgrunn, innholdkort og luft */
+
+  --spacing: 16px;
+  --radius: 8px;
+}
+
+/* Grunnleggende stil */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--espresso);
+  background-color: var(--pearl);
+}
+
+h1, h2, h3 {
+  color: var(--truffle);
+}
+
+/* Felles klasser */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none;
+}

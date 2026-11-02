@@ -1,0 +1,1 @@
+// Inneholder funksjoner for å vise produkter på nettsiden.
