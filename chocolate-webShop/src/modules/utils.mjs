@@ -1,3 +1,4 @@
+// Felles hjelpefunksjoner
 
 //fetch wrapper function ----------------------------------
 export async function sendRequest(url, cfg) {

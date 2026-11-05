@@ -1,3 +1,5 @@
+// Strukturerer data fra serveren til et mer praktisk format for bruk i appen
+
 //============================================
 export class ProductModel {
     

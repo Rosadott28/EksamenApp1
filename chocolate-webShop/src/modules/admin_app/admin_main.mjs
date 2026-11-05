@@ -1,3 +1,5 @@
+// Controller for admin app
+
 import { getCategories, getAllProducts, addProduct, getProductsByCategory } from "../api_service.mjs";
 import { CategoryView, ProductForm, ProductView } from "./views/admin_product_views.mjs";
 import { showMessage } from "../msg_handler.mjs";
