@@ -3,12 +3,12 @@ import { errorHandler } from "./error_handler.mjs";
 import { CategoryArrayModel, ProductArrayModel } from "./models.mjs";
 import { sendRequest } from "./utils.mjs";
 
-const groupkey = "ABCDEF00"; // your groupkey here
+const groupkey = "NHKOZC85"; // Ebba og Benedicte sin groupkey
 
 //--------------------------------------------------------
 export async function getCategories() {
 
-    const url = `https://sukkergris.onrender.com/webshop/testdummy/categories?key=${groupkey}`;
+    const url = `https://sukkergris.onrender.com/webshop/categories?key=${groupkey}`;
     
     try {
 
@@ -45,7 +45,7 @@ export async function getAllProducts() {
 
 //--------------------------------------------------------
 export async function getProductsByCategory(catId) {
-    const url = `https://sukkergris.onrender.com/webshop/testdummy/products?category_id=${catId}&key=${groupkey}`;
+    const url = `https://sukkergris.onrender.com/webshop/chocolates?catID=${catId}&key=${groupkey}`;
     
     try {
 
@@ -104,7 +104,22 @@ export async function addProduct(product) {
 
 //add more functions below when needed
 
+export async function getProductsBySearch(searchWord) {
+    const url = `https://sukkergris.onrender.com/webshop/chocolates?search=${encodeURIComponent(searchWord)}&key=${groupkey}`;
 
+    try {
+
+        const dataFromServer = await sendRequest(url);        
+
+        // convert from server-data to app model-data
+        const model = new ProductArrayModel(dataFromServer);
+        return model.data;
+        
+    } catch (error) {             
+        errorHandler(error);
+        return [];
+    }
+}
 
 
 
