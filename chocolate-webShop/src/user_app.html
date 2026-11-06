@@ -1,17 +1,23 @@
-
 <!--Hovedfilen som starter applikasjonen og styrer navigasjonen-->
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sukkergris</title>
-</head>
-<body>
+  </head>
+  <body>
+
+    <header class="site-header">
+      <h1>Sukkergris</h1>
+      <button id="cartButton" type="button" aria-label="Shopping cart">
+        <img src="./assets/cart.svg" alt="" />
+      </button>
+    </header>
 
     <script type="module" src="./modules/user_app/user_main.mjs"></script>
- 
-</body>
+    
+  </body>
 </html>

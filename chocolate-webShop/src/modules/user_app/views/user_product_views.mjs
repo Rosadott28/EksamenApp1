@@ -1,6 +1,7 @@
 export class HomeView extends HTMLElement {
   //-----------------------------
-  constructor() { // Oppretter Shadow DOM
+  constructor() {
+    // Oppretter Shadow DOM
     super();
     this.shadow = this.attachShadow({ mode: "open" });
   }
@@ -13,11 +14,13 @@ export class HomeView extends HTMLElement {
 
     this.shadow.replaceChildren(); //Tryggere enn innerHTML
 
+    const styleLink = document.createElement("link");
+    styleLink.rel = "stylesheet";
+    styleLink.href = "./style.css";
+    this.shadow.appendChild(styleLink); //legger CSS-koblingen inn i Shadow DOM.
+
     const searchField = this.createSearchField();
     this.shadow.appendChild(searchField);
-
-    const cartButton = this.createCartButton();
-    this.shadow.appendChild(cartButton);
 
     data.forEach((value) => {
       const div = this.createCategory(value);
@@ -32,6 +35,7 @@ export class HomeView extends HTMLElement {
   createCategory(category) {
     // Oppretter HTML for én kategori
     const div = document.createElement("div");
+    div.classList.add("category-card"); // CSS-klasse for kategorikort
 
     const heading = document.createElement("h2");
     heading.textContent = category.catName;
@@ -56,17 +60,20 @@ export class HomeView extends HTMLElement {
   createSearchField() {
     // Oppretter søkefeltet med input og knapp
     const searchContainer = document.createElement("div");
+    searchContainer.classList.add("search-container"); // CSS-klasse for søkeområdet
 
     const searchInput = document.createElement("input");
+    searchInput.classList.add("search-input"); // CSS-klasse for søkefeltet
     searchInput.type = "text";
     searchInput.placeholder = "Search for chocolate...";
     searchInput.setAttribute("aria-label", "Search for products"); //gir søkefeltet et navn som blant annet skjermlesere kan lese opp for personer med synsnedsettelser
 
     const searchButton = document.createElement("button");
+    searchButton.classList.add("search-button"); // CSS-klasse for søkeknappen
     searchButton.textContent = "Search";
 
     searchButton.addEventListener("click", () => {
-      this.handleSearch(searchInput.value); //this.handleSearch(...)Sender søkeordet til en egen metode.
+      this.handleSearch(searchInput.value); //Sender søkeordet til en egen metode.
     });
 
     searchContainer.appendChild(searchInput);
@@ -84,24 +91,6 @@ export class HomeView extends HTMLElement {
     this.shadow.dispatchEvent(searchEvt);
   }
 
-  createCartButton() {
-    // Oppretter handlekurvknappen
-    const cartButton = document.createElement("button");
-    cartButton.textContent = "Go to shopping cart";
-
-    cartButton.addEventListener("click", () => {
-      this.handleCartClick();
-    });
-    return cartButton;
-  }
-
-  handleCartClick() {
-    const cartEvt = new CustomEvent("cartClick", {
-      composed: true,
-      bubbles: true,
-    });
-    this.shadow.dispatchEvent(cartEvt);
-  }
 }
 
 customElements.define("home-view", HomeView); // Registrerer en Web Component i nettleseren

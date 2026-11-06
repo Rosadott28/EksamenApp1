@@ -21,6 +21,8 @@ homeView.addEventListener("productSearch", async (event) => {
     console.log(products);
 });
 
-homeView.addEventListener("cartClick", () => {
-    console.log("Shopping cart button clicked"); 
+const cartButton = document.getElementById("cartButton"); //finner knappen i headeren i user_app.html
+
+cartButton.addEventListener("click", () => {
+    console.log("Shopping cart button clicked");
 });

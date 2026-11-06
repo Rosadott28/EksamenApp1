@@ -1,12 +1,11 @@
-
 /* Farger og variabler */
 :root {
-  --espresso: #160D09;  /* brødtekst, footer og mørke flater */
-  --truffle: #4B2F24;   /* Mørk bakgrunn & detaljer */
-  --cocoa: #7F5B3B;     /* tekst som overskrifter */
-  --powder: #8EA7C1;  /* aksent farge, CTA, knapp, higlights */
-  --pearl: #EFEADC;     /* titteler, tekst på mørk/blå bakgrunn */
-  --ivory: #FAF8F2;   /* sekundærbakgrunn, innholdkort og luft */
+  --espresso: #160d09; /* brødtekst, footer og mørke flater */
+  --truffle: #4b2f24; /* Mørk bakgrunn & detaljer */
+  --cocoa: #7f5b3b; /* tekst som overskrifter */
+  --powder: #8ea7c1; /* aksent farge, CTA, knapp, higlights */
+  --pearl: #efeadc; /* titteler, tekst på mørk/blå bakgrunn */
+  --ivory: #faf8f2; /* sekundærbakgrunn, innholdkort og luft */
 
   --spacing: 16px;
   --radius: 8px;
@@ -26,7 +25,9 @@ body {
   background-color: var(--pearl);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--truffle);
 }
 
@@ -39,4 +40,86 @@ h1, h2, h3 {
 
 .hidden {
   display: none;
+}
+
+.site-header {
+  background-color: var(--truffle);
+  color: var(--pearl);
+  padding: 16px;
+  text-align: center;
+  position: relative; /* Plasserer knappen i forhold til headeren */
+}
+
+.site-header h1 {
+  color: var(--pearl);
+  margin: 0;
+}
+
+.category-card {
+  background-color: var(--ivory);
+  color: var(--espresso);
+  border: 1px solid var(--truffle);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.category-card h2 {
+  margin: 0;
+  color: var(--cocoa);
+}
+
+.category-card p {
+  margin: 8px 0 0;
+}
+
+.search-container {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+}
+
+.search-input {
+  flex: 1; /* Fyller ledig plass */
+  min-width: 0; /* Tillater krymping på mobil */
+  padding: 10px;
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
+  background-color: var(--ivory);
+  color: var(--espresso);
+}
+
+.search-button {
+  padding: 10px 16px;
+  background-color: var(--powder);
+  color: var(--espresso);
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+#cartButton {
+  background-color: var(--pearl);
+  border: 1px solid var(--pearl);
+  border-radius: var(--radius);
+  padding: 10px;
+  cursor: pointer;
+  position: absolute; /* settes i header */
+  right: 16px; 
+  top: 50%; 
+  transform: translateY(-50%); /* Sentrerer vertikalt */
+  padding: 5px;
+}
+
+#cartButton img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+#cartButton::after {
+    content: "";
+    position: absolute;
+    inset: -8px; /* Utvider klikkflaten */
 }
