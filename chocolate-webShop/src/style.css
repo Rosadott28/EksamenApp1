@@ -1,4 +1,4 @@
-/* Farger og variabler */
+/* ------------------------ Farger og variabler ------------------------ */
 :root {
   --espresso: #160d09; /* brødtekst, footer og mørke flater */
   --truffle: #4b2f24; /* Mørk bakgrunn & detaljer */
@@ -11,7 +11,7 @@
   --radius: 8px;
 }
 
-/* Grunnleggende stil */
+/* ------------------------ Grunnleggende stil ------------------------ */
 * {
   box-sizing: border-box;
 }
@@ -31,7 +31,7 @@ h3 {
   color: var(--truffle);
 }
 
-/* Felles klasser */
+/* ------------------------ Felles klasser --------------- */
 .container {
   width: 90%;
   max-width: 1200px;
@@ -42,10 +42,12 @@ h3 {
   display: none;
 }
 
+/* ------------------------ Header --------------- */
+
 .site-header {
   background-color: var(--truffle);
   color: var(--pearl);
-  padding: 16px;
+  padding: var(--spacing);
   text-align: center;
   position: relative; /* Plasserer knappen i forhold til headeren */
 }
@@ -55,29 +57,40 @@ h3 {
   margin: 0;
 }
 
-.category-card {
-  background-color: var(--ivory);
-  color: var(--espresso);
-  border: 1px solid var(--truffle);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
+#cartButton {
+  background-color: var(--pearl);
+  border: 1px solid var(--pearl);
+  border-radius: var(--radius);
   cursor: pointer;
+  position: absolute; /* settes i header */
+  right: 16px; 
+  top: 50%; 
+  transform: translateY(-50%); /* Sentrerer vertikalt */
+  padding: 5px;
 }
 
-.category-card h2 {
-  margin: 0;
-  color: var(--cocoa);
+#cartButton img {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
-.category-card p {
-  margin: 8px 0 0;
+#cartButton::after {
+    content: "";
+    position: absolute;
+    inset: -8px; /* Utvider klikkflaten */
 }
 
+#cartButton:focus-visible { /* Tastaturbrukere kan se når den har fokus */
+    outline: 2px solid var(--powder);
+    outline-offset: 3px;
+}
+
+/* ------------------------ Søkefelt ------------------------ */
 .search-container {
   display: flex;
   gap: 8px;
-  padding: 12px;
+  padding: 12px 16px;
 }
 
 .search-input {
@@ -99,27 +112,26 @@ h3 {
   cursor: pointer;
 }
 
-#cartButton {
-  background-color: var(--pearl);
-  border: 1px solid var(--pearl);
+/* ------------------------ Kategorikort ------------------------ */
+
+.category-card {
+  background-color: var(--ivory);
+  color: var(--espresso);
+  border: 1px solid var(--truffle);
   border-radius: var(--radius);
-  padding: 10px;
+  padding: var(--spacing);
+  margin: 0 16px 12px; /* Luft på sidene og under */
   cursor: pointer;
-  position: absolute; /* settes i header */
-  right: 16px; 
-  top: 50%; 
-  transform: translateY(-50%); /* Sentrerer vertikalt */
-  padding: 5px;
 }
 
-#cartButton img {
-  width: 18px;
-  height: 18px;
-  display: block;
+.category-card h2 {
+  margin: 0;
+  color: var(--cocoa);
 }
 
-#cartButton::after {
-    content: "";
-    position: absolute;
-    inset: -8px; /* Utvider klikkflaten */
+.category-card p {
+  margin: 8px 0 0;
 }
+
+
+
