@@ -20,28 +20,28 @@ const btnHome = document.getElementById('btnHome');
 const btnLogin = document.getElementById("btnLogin");
 const adminNav = document.getElementById("adminNav");
 const adminLoginForm = document.getElementById("adminLoginForm");
+const btnProducts = document.getElementById("btnProducts");
 
 
 //show categories at startup
-const categories = await getCategories();
-catView.refresh(categories);
-navigateTo("catview");
+// const categories = await getCategories();
+// catView.refresh(categories);
 
 //------------------------------------------------
 function navigateTo(viewName) {
-    viewContainer.innerHTML = "";
+    viewContainer.replaceChildren();
     viewContainer.appendChild(viewMap[viewName]);
 }
 
 //------------------------------------------------
-btnHome.addEventListener('click', function (evt) {
-    navigateTo("catview");
-});
+// btnHome.addEventListener('click', function (evt) {
+//     navigateTo("catview");
+// });
 
 //------------------------------------------------
-btnAddProd.addEventListener('click', function (evt) {
-    navigateTo("prodform");
-});
+// btnAddProd.addEventListener('click', function (evt) {
+//     navigateTo("prodform");
+// });
 
 //------------------------------------------------
 catView.addEventListener('categoryselect', async function (evt) {
@@ -66,10 +66,12 @@ btnLogin.addEventListener('click', async function (evt) {
     const password = document.getElementById("psw").value;
     const loginData = await adminLogin(username, password);
 
-    if (loginData && loginData.token) {
-        sessionStorage.setItem("adminToken", loginData.token);
+    if (loginData && loginData.logindata.token) {
+        sessionStorage.setItem("adminToken", loginData.logindata.token);
         adminNav.hidden = false;
         adminLoginForm.hidden = true;
+        // navigateTo("catview");
+        btnProducts.classList.add("active");
     }
 });
 

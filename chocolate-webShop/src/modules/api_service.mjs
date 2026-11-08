@@ -134,7 +134,7 @@ export async function adminLogin(username, password) {
     const adminLoginUrl = `https://sukkergris.onrender.com/users/adminlogin?key=${groupkey}`;
     const cfg = {
         method: "POST",
-        Headers: {
+        headers: {
             "Authorization": createBasicAuthString(username, password)
         }
     }

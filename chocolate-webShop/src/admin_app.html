@@ -4,44 +4,47 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="admin.css">">
+    <link rel="stylesheet" href="admin.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 
 <body>
-<script type="module" src="modules/admin_app/admin_main.mjs"></script>
+    <script type="module" src="modules/admin_app/admin_main.mjs"></script>
 
     <header>
         <h1>Sukkergris</h1>
     </header>
 
-    ----------Admin Navigasjon---------------
-      <nav id="adminNav" hidden>
-        <button id="btnProducts" type="button"></button>
-        <button id="btnOrders"type="button"></button>
-        <button id="btnUsers"type="button"></button>
-        <button id="btnReviews"type="button"></button>
+    <!-- ----------Admin Navigasjon--------------- -->
+    <nav id="adminNav" hidden>
+        <button id="btnProducts" type="button">Products</button>
+        <button id="btnOrders" type="button">Orders</button>
+        <button id="btnUsers" type="button">Users</button>
+        <button id="btnReviews" type="button">Reviews</button>
     </nav>
 
-    ----------LogIn---------------
+    <div id="viewContainer"></div>
+
+    <!-- ----------LogIn--------------- -->
     <form id="adminLoginForm">
 
         <div class="container" id="logIn">
             <header>Admin Login</header>
             <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="uname" required>
+            <input id="uname" placeholder="Enter Username" name="uname" required>
 
             <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
+            <input id="psw" type="password" placeholder="Enter Password" name="psw" required>
 
             <button id="btnLogin" type="button">Login</button>
 
         </div>
     </form>
 
-    
+
 </body>
 
 </html>
+<!-- laffytaffy augustus.gloop@sukkergris.no -->
