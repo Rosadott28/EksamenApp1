@@ -1,9 +1,10 @@
+//----------------------------- HOME VIEW -----------------------------
+
 export class HomeView extends HTMLElement {
   //-----------------------------
   constructor() {
-    // Oppretter Shadow DOM
     super();
-    this.shadow = this.attachShadow({ mode: "open" });
+    this.shadow = this.attachShadow({ mode: "open" }); // Oppretter Shadow DOM
   }
   //-----------------------------
   refresh(data) {
@@ -44,6 +45,7 @@ export class HomeView extends HTMLElement {
     const description = document.createElement("p");
     description.textContent = category.catDescr;
     div.appendChild(description);
+
     return div;
   }
 
@@ -78,6 +80,7 @@ export class HomeView extends HTMLElement {
 
     searchContainer.appendChild(searchInput);
     searchContainer.appendChild(searchButton);
+
     return searchContainer;
   }
 
@@ -90,7 +93,122 @@ export class HomeView extends HTMLElement {
     searchEvt.searchWord = searchWord;
     this.shadow.dispatchEvent(searchEvt);
   }
-
 }
 
+//----------------------------- END OF HOME VIEW -----------------------------
+
+//----------------------------- PRODUCT LIST VIEW ----------------------------
+
+export class ProductListView extends HTMLElement {
+  //-----------------------------
+  constructor() {
+    super();
+    this.shadow = this.attachShadow({ mode: "open" });
+  }
+  //-----------------------------
+  refresh(data) {
+    // Viser produktlisten
+    if (!data) {
+      return;
+    }
+
+    this.shadow.replaceChildren();
+
+    const styleLink = document.createElement("link");
+    styleLink.rel = "stylesheet";
+    styleLink.href = "./style.css";
+    this.shadow.appendChild(styleLink);
+
+    const backButton = this.createBackButton();
+    this.shadow.appendChild(backButton);
+
+    if (data.length === 0) {
+      //undersøker om det er null produkter.
+      const message = document.createElement("p");
+      message.textContent = "No products found.";
+      this.shadow.appendChild(message);
+      return;
+    }
+
+    data.forEach((product) => {
+      const productCard = this.createProduct(product);
+      this.shadow.appendChild(productCard);
+    });
+  }
+
+  createProduct(product) {
+    const productCard = document.createElement("div");
+    productCard.classList.add("product-card");
+
+    const productImage = this.createProductImage(product);
+    productCard.appendChild(productImage);
+
+    const productInfo = this.createProductInfo(product);
+    productCard.appendChild(productInfo);
+
+    productCard.addEventListener("click", () => {
+      this.handleProductClick(product);
+    });
+
+    return productCard;
+  }
+
+  createProductImage(product) {
+    const productImage = document.createElement("img");
+    productImage.alt = product.name;
+
+    return productImage;
+  }
+
+  createProductInfo(product) {
+    const productInfo = document.createElement("div");
+
+    const heading = document.createElement("h2");
+    // TODO Task 2: Verify product fields and image URLs after shared model/API updates.
+    heading.textContent = product.name;
+    productInfo.appendChild(heading);
+
+    const price = document.createElement("p");
+    price.textContent = `${product.price} kr`;
+    productInfo.appendChild(price);
+
+    return productInfo;
+  }
+
+  handleProductClick(product) {
+    const productEvt = new CustomEvent("productSelect", {
+      composed: true,
+      bubbles: true,
+    });
+
+    productEvt.productData = product;
+    this.shadow.dispatchEvent(productEvt);
+  }
+
+  createBackButton() {
+    const backButton = document.createElement("button");
+    backButton.textContent = "← Back";
+    backButton.classList.add("back-button");
+
+    backButton.addEventListener("click", () => {
+      this.handleBackClick();
+    });
+
+    return backButton;
+  }
+
+  handleBackClick() {
+    const backEvt = new CustomEvent("backClick", {
+      composed: true,
+      bubbles: true,
+    });
+
+    this.shadow.dispatchEvent(backEvt);
+  }
+}
+
+//------------------------ END OF PRODUCT LIST VIEW --------------------------
+
 customElements.define("home-view", HomeView); // Registrerer en Web Component i nettleseren
+
+customElements.define("product-list-view", ProductListView);
