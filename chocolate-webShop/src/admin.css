@@ -1,0 +1,109 @@
+/* Farger og variabler */
+:root {
+    --espresso: #160D09;
+    /* brødtekst, footer og mørke flater */
+    --truffle: #4B2F24;
+    /* Mørk bakgrunn & detaljer */
+    --cocoa: #7F5B3B;
+    /* tekst som overskrifter */
+    --powder: #8EA7C1;
+    /* aksent farge, CTA, knapp, higlights */
+    --pearl: #EFEADC;
+    /* titteler, tekst på mørk/blå bakgrunn */
+    --ivory: #FAF8F2;
+    /* sekundærbakgrunn, innholdkort og luft */
+
+    --spacing: 16px;
+    --radius: 8px;
+}
+
+/* Grunnleggende stil */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--espresso);
+    background-color: var(--pearl);
+}
+
+h1,
+h2,
+h3 {
+    color: var(--truffle);
+}
+
+
+.hidden {
+    display: none;
+}
+
+/* Add padding to containers */
+.container {
+    padding: 16px;
+}
+
+/* Change styles for span and on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #8EA7C1;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+    opacity: 0.8;
+}
+
+#adminLoginForm {
+    width: 80%;
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 16px;
+}
+
+#logIn {
+    padding: 50px;
+    background-color: var(--ivory);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#logIn input {
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: var(--truffle);
+}
+
+#logIn header {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--espresso);
+}
+
+#logIn label {
+    font-size: 16px;
+    color: var(--espresso);
+}

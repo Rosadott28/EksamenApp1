@@ -2,21 +2,21 @@
 
 //============================================
 export class ProductModel {
-    
+
     //---------------------------------------
     constructor(dataFromServer) {
-        this.data = this.convertObj(dataFromServer);        
+        this.data = this.convertObj(dataFromServer);
     }
 
     //---------------------------------------    
-    convertObj(dataObj) { 
+    convertObj(dataObj) {
 
         return {
-            id:         dataObj.id,
-            catId:      dataObj.category_id,
-            name:       dataObj.name,
-            descr:      dataObj.description,            
-            price:      dataObj.price
+            id: dataObj.id,
+            catId: dataObj.category_id,
+            name: dataObj.name,
+            descr: dataObj.description,
+            price: dataObj.price
 
             // add more properties if needed          
         }
@@ -25,27 +25,29 @@ export class ProductModel {
 
 //============================================
 export class ProductArrayModel {
-    
+
     //---------------------------------------
     constructor(dataFromServer) {
 
-        this.data = [];        
+        this.data = [];
 
-        for (let dataObj of dataFromServer) {            
-            const obj = this.convertObj(dataObj);            
+        for (let dataObj of dataFromServer) {
+            const obj = this.convertObj(dataObj.chocoName);
             this.data.push(obj);
         }
     }
 
     //---------------------------------------    
-    convertObj(dataObj) {         
+    convertObj(dataObj) {
 
         return {
-            id:         dataObj.id,
-            catId:      dataObj.category_id,
-            name:       dataObj.name,
-            descr:      dataObj.description,            
-            price:      dataObj.price
+            id: dataObj.id,
+            catId: dataObj.category_id,
+            name: dataObj.chocoName,
+            descr: dataObj.shortDescr,
+            price: dataObj.price,
+            thumb: dataObj.thumb,
+            static: dataObj.static
 
             // add more properties if needed             
         }
@@ -56,8 +58,8 @@ export class ProductArrayModel {
 export class CategoryArrayModel {
 
     //---------------------------------------
-    constructor(dataFromServer) {        
-        
+    constructor(dataFromServer) {
+
         this.data = [];
 
         for (let dataObj of dataFromServer) {
@@ -67,16 +69,16 @@ export class CategoryArrayModel {
     }
 
     //---------------------------------------    
-    convertObj(dataObj) { 
+    convertObj(dataObj) {
 
         return {
-            id:         dataObj.id,
-            catName:    dataObj.category_name,
-            catDescr:   dataObj.description 
+            id: dataObj.id,
+            catName: dataObj.category_name,
+            catDescr: dataObj.description
 
             // add more properties if needed             
         }
-    }    
+    }
 }
 
 //======================================
