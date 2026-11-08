@@ -1,6 +1,6 @@
 // Controller for admin app
 
-import { getCategories, getAllProducts, addProduct, getProductsByCategory } from "../api_service.mjs";
+import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin } from "../api_service.mjs";
 import { CategoryView, ProductForm, ProductView } from "./views/admin_product_views.mjs";
 import { showMessage } from "../msg_handler.mjs";
 
@@ -57,7 +57,15 @@ prodForm.addEventListener('addproduct', async function (evt) {
 
 //------------------------------------------------
 const btnLogin = document.getElementById("btnLogin");
-btnLogin.addEventListener('click', function (evt) {
+btnLogin.addEventListener('click', async function (evt) {
     const username = document.getElementById("uname").value;
     const password = document.getElementById("psw").value;
+    const loginData = await adminLogin(username, password);
+
+    if (loginData && loginData.token) {
+        sessionStorage.setItem("adminToken", loginData.token);
+        adminNav.hidden = false;
+    }
 });
+
+const adminNav = document.getElementById("adminNav");

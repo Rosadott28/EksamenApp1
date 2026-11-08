@@ -11,11 +11,21 @@
 </head>
 
 <body>
+<script type="module" src="modules/admin_app/admin_main.mjs"></script>
 
     <header>
         <h1>Sukkergris</h1>
     </header>
 
+    ----------Admin Navigasjon---------------
+      <nav id="adminNav" hidden>
+        <button id="btnProducts" type="button"></button>
+        <button id="btnOrders"type="button"></button>
+        <button id="btnUsers"type="button"></button>
+        <button id="btnReviews"type="button"></button>
+    </nav>
+
+    ----------LogIn---------------
     <form id="adminLoginForm">
 
         <div class="container" id="logIn">
@@ -31,7 +41,7 @@
         </div>
     </form>
 
-    <script type="module" src="modules/admin_app/admin_main.mjs"></script>
+    
 </body>
 
 </html>
