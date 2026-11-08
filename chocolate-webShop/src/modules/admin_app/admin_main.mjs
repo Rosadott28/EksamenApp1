@@ -30,17 +30,17 @@ function navigateTo(viewName) {
 }
 
 //------------------------------------------------
-btnHome.addEventListener('click', function(evt) {
-   navigateTo("catview"); 
+btnHome.addEventListener('click', function (evt) {
+    navigateTo("catview");
 });
 
 //------------------------------------------------
-btnAddProd.addEventListener('click', function(evt) {
+btnAddProd.addEventListener('click', function (evt) {
     navigateTo("prodform");
 });
 
 //------------------------------------------------
-catView.addEventListener('categoryselect', async function(evt) {
+catView.addEventListener('categoryselect', async function (evt) {
     const categoryId = evt.categoryData.id;
     const products = await getProductsByCategory(categoryId);
     prodView.refresh(products);
@@ -48,15 +48,16 @@ catView.addEventListener('categoryselect', async function(evt) {
 });
 
 //------------------------------------------------
-prodForm.addEventListener('addproduct', async function(evt) {
+prodForm.addEventListener('addproduct', async function (evt) {
     const result = await addProduct(evt.productForm);
     if (result) {
         showMessage("Insert OK!")
     };
 });
 
-
-
-
-
-
+//------------------------------------------------
+const btnLogin = document.getElementById("btnLogin");
+btnLogin.addEventListener('click', function (evt) {
+    const username = document.getElementById("uname").value;
+    const password = document.getElementById("psw").value;
+});
