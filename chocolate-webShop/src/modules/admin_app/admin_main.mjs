@@ -17,6 +17,10 @@ const viewMap = {
 const viewContainer = document.getElementById("viewContainer");
 const btnAddProd = document.getElementById('btnAddProd');
 const btnHome = document.getElementById('btnHome');
+const btnLogin = document.getElementById("btnLogin");
+const adminNav = document.getElementById("adminNav");
+const adminLoginForm = document.getElementById("adminLoginForm");
+
 
 //show categories at startup
 const categories = await getCategories();
@@ -55,8 +59,8 @@ prodForm.addEventListener('addproduct', async function (evt) {
     };
 });
 
-//------------------------------------------------
-const btnLogin = document.getElementById("btnLogin");
+//-------------------Admin logIn-----------------------------
+
 btnLogin.addEventListener('click', async function (evt) {
     const username = document.getElementById("uname").value;
     const password = document.getElementById("psw").value;
@@ -65,7 +69,9 @@ btnLogin.addEventListener('click', async function (evt) {
     if (loginData && loginData.token) {
         sessionStorage.setItem("adminToken", loginData.token);
         adminNav.hidden = false;
+        adminLoginForm.hidden = true;
     }
 });
 
-const adminNav = document.getElementById("adminNav");
+
+
