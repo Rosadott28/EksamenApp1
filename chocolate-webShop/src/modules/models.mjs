@@ -14,9 +14,12 @@ export class ProductModel {
         return {
             id: dataObj.id,
             catId: dataObj.category_id,
-            name: dataObj.name,
-            descr: dataObj.description,
-            price: dataObj.price
+            name: dataObj.chocoName,
+            descr: dataObj.descr,
+            price: dataObj.price,
+            thumb: dataObj.thumb,
+            image: dataObj.image,
+            static: dataObj.static
 
             // add more properties if needed          
         }
@@ -32,7 +35,7 @@ export class ProductArrayModel {
         this.data = [];
 
         for (let dataObj of dataFromServer) {
-            const obj = this.convertObj(dataObj.chocoName);
+            const obj = this.convertObj(dataObj);
             this.data.push(obj);
         }
     }

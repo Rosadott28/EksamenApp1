@@ -27,7 +27,7 @@ export async function getCategories() {
 //--------------------------------------------------------
 export async function getAllProducts() {
 
-    const url = `https://sukkergris.onrender.com/webshop/webshop/chocolates?key=${groupkey}`;
+    const url = `https://sukkergris.onrender.com/webshop/chocolates?key=${groupkey}`;
 
     try {
 
@@ -63,7 +63,7 @@ export async function getProductsByCategory(catId) {
 
 //--------------------------------------------------------
 export async function getProductById(id) {
-    const url = `https://sukkergris.onrender.com/webshop/webshop/chocolates?id=${id}&key=${groupkey}`;
+    const url = `https://sukkergris.onrender.com/webshop/chocolates?id=${id}&key=${groupkey}`;
 
     try {
 
@@ -82,7 +82,7 @@ export async function getProductById(id) {
 //--------------------------------------------------------
 export async function addProduct(product) {
 
-    const url = `https://sukkergris.onrender.com/webshop/webshop/chocolates?key=${groupkey}`;
+    const url = `https://sukkergris.onrender.com/webshop/chocolates?key=${groupkey}`;
 
     const cfg = {
         method: "POST",
@@ -121,7 +121,7 @@ export async function getProductsBySearch(searchWord) {
     }
 }
 
-export async function getProductThunbUrl(product) {
+export function getProductThumbUrl(product) { // Not async because it only builds a URL, without fetching data.
     let imageKey = groupkey;
     if (product.static === true) {
         imageKey = "GFTPOE21";
