@@ -121,7 +121,7 @@ export async function getProductsBySearch(searchWord) {
     }
 }
 
-export async function getProductThumbUrl(product) {
+export function getProductThumbUrl(product) { // Not async because it only builds a URL, without fetching data.
     let imageKey = groupkey;
     if (product.static === true) {
         imageKey = "GFTPOE21";
