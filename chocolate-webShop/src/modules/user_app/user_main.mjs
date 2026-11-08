@@ -1,6 +1,10 @@
 // Controller for kundeappen / Hovedmodulen som styrer navigasjon, visninger og kommunikasjon mellom komponentene.
 
-import { getCategories, getProductsBySearch } from "../api_service.mjs";
+import {
+  getCategories,
+  getProductsBySearch,
+  getProductsByCategory,
+} from "../api_service.mjs";
 import { HomeView, ProductListView } from "./views/user_product_views.mjs";
 
 //------------------------------homeView-----------------------------
@@ -11,15 +15,21 @@ const categories = await getCategories(); // Henter kategorier fra API og venter
 homeView.refresh(categories);
 document.body.appendChild(homeView);
 
-homeView.addEventListener("categorySelect", (event) => {
-  console.log(event.categoryData); // Håndterer klikk på en kategori og sender event med valgt kategori
+homeView.addEventListener("categorySelect", async (event) => {
+  const products = await getProductsByCategory(event.categoryData.id);
+
+  productListView.refresh(products);
+  homeView.remove();
+  document.body.appendChild(productListView);
 });
 
 homeView.addEventListener("productSearch", async (event) => {
   console.log(event.searchWord); // Håndterer søk og sender event med søkeordet
   const products = await getProductsBySearch(event.searchWord); //forespør API
-  // TODO Task 2: Fix ProductArrayModel (name: chocoName)
   console.log(products);
+  productListView.refresh(products); //oppdaterer produktlisten med søkeresultatet
+  homeView.remove();
+  document.body.appendChild(productListView);
 });
 
 //-----------------------------header-----------------------------
@@ -33,9 +43,10 @@ cartButton.addEventListener("click", () => {
 const productListView = new ProductListView();
 
 productListView.addEventListener("backClick", () => {
-  console.log("Back button clicked");
+  productListView.remove();
+  document.body.appendChild(homeView);
 });
 
 productListView.addEventListener("productSelect", (event) => {
-    console.log(event.productData);
+  console.log(event.productData);
 });

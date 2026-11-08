@@ -1,3 +1,5 @@
+import { getProductThumbUrl } from "../../api_service.mjs";
+
 //----------------------------- HOME VIEW -----------------------------
 
 export class HomeView extends HTMLElement {
@@ -155,7 +157,7 @@ export class ProductListView extends HTMLElement {
 
   createProductImage(product) {
     const productImage = document.createElement("img");
-    productImage.alt = product.name;
+    productImage.src = getProductThumbUrl(product);
 
     return productImage;
   }
