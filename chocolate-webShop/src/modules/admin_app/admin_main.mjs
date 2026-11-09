@@ -19,9 +19,9 @@ const viewMap = {
     "catview": catView,
     "prodview": prodView,
     "prodform": prodForm,
-    "orderView": orderView,
-    "userView": userView,
-    "reviewView": reviewView
+    "orderview": orderView,
+    "userview": userView,
+    "reviewview": reviewView
 }
 const viewContainer = document.getElementById("viewContainer");
 const btnAddProd = document.getElementById('btnAddProd');
@@ -90,22 +90,22 @@ btnLogin.addEventListener('click', async function (evt) {
 //-------------------navigation-----------------------------
 
 btnProducts.addEventListener('click', function (evt) {
-    navigateTo("prodView");
+    navigateTo("prodview");
     setActiveTab(btnProducts);
 });
 
 btnOrders.addEventListener('click', function (evt) {
-    navigateTo("orderView");
+    navigateTo("orderview");
     setActiveTab(btnOrders);
 });
 
 btnUsers.addEventListener('click', function (evt) {
-    navigateTo("userView");
+    navigateTo("userview");
     setActiveTab(btnUsers);
 });
 
 btnReviews.addEventListener('click', function (evt) {
-    navigateTo("reviewView");
+    navigateTo("reviewview");
     setActiveTab(btnReviews);
 });
 
