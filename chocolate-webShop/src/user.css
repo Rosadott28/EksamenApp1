@@ -138,6 +138,16 @@ h3 {
   margin: 8px 0 0;
 }
 
+.category-container {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) { /* Viser tre kolonner på skjermer fra 768px */
+    .category-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 
 /* ------------------------ Produktkort ------------------------ */
 

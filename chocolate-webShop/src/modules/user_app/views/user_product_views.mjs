@@ -29,15 +29,21 @@ export class HomeView extends HTMLElement {
     heading.classList.add("view-heading");
     heading.textContent = "Categories";
     this.shadow.appendChild(heading);
+    
+    // Samler kategorikortene for responsivt grid
+    const categoryContainer = document.createElement("div"); 
+    categoryContainer.classList.add("category-container"); 
 
     data.forEach((value) => {
       const div = this.createCategory(value);
-      this.shadow.appendChild(div);
+
+      categoryContainer.appendChild(div);
 
       div.addEventListener("click", () => {
         this.handleCategoryClick(value);
       });
     });
+    this.shadow.appendChild(categoryContainer);
   }
 
   createCategory(category) {
