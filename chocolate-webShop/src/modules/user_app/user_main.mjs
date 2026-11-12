@@ -4,8 +4,13 @@ import {
   getCategories,
   getProductsBySearch,
   getProductsByCategory,
+  getProductById,
 } from "../api_service.mjs";
-import { HomeView, ProductListView } from "./views/user_product_views.mjs";
+import {
+  HomeView,
+  ProductListView,
+  ProductDetailView,
+} from "./views/user_product_views.mjs";
 
 //------------------------------homeView-----------------------------
 const homeView = new HomeView(); // Oppretter en instans av HomeView
@@ -45,6 +50,23 @@ productListView.addEventListener("backClick", () => {
   document.body.appendChild(homeView);
 });
 
-productListView.addEventListener("productSelect", (event) => {
-  console.log(event.productData);
+productListView.addEventListener("productSelect", async (event) => {
+  // Henter valgt produkt fra API og viser detaljvisningen
+  const product = await getProductById(event.productData.id);
+
+  if (!product) {
+    return;
+  }
+
+  productDetailView.refresh(product);
+  productListView.remove();
+  document.body.appendChild(productDetailView);
+});
+
+//-----------------------------productDetailView-----------------------------
+const productDetailView = new ProductDetailView();
+
+productDetailView.addEventListener("backClick", () => {
+  productDetailView.remove();
+  document.body.appendChild(productListView);
 });

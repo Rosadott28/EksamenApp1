@@ -1,4 +1,4 @@
-import { getProductThumbUrl } from "../../api_service.mjs";
+import { getProductThumbUrl, getProductImageUrl } from "../../api_service.mjs";
 
 //----------------------------- HOME VIEW -----------------------------
 
@@ -15,7 +15,7 @@ export class HomeView extends HTMLElement {
       return;
     } //if an error is catched in api_service
 
-    this.shadow.replaceChildren(); //Tryggere enn innerHTML
+    this.shadow.replaceChildren(); //Tryggere enn innerHTML. Fjerner tidligere innhold
 
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
@@ -29,10 +29,10 @@ export class HomeView extends HTMLElement {
     heading.classList.add("view-heading");
     heading.textContent = "Categories";
     this.shadow.appendChild(heading);
-    
+
     // Samler kategorikortene for responsivt grid
-    const categoryContainer = document.createElement("div"); 
-    categoryContainer.classList.add("category-container"); 
+    const categoryContainer = document.createElement("div");
+    categoryContainer.classList.add("category-container");
 
     data.forEach((value) => {
       const div = this.createCategory(value);
@@ -192,7 +192,7 @@ export class ProductListView extends HTMLElement {
     productInfo.appendChild(heading);
 
     const price = document.createElement("p");
-    price.textContent = `${product.price} kr`;
+    price.textContent = product.price + " kr";
     productInfo.appendChild(price);
 
     return productInfo;
@@ -232,6 +232,90 @@ export class ProductListView extends HTMLElement {
 
 //------------------------ END OF PRODUCT LIST VIEW --------------------------
 
+//------------------------------PRODUCT DETAIL VIEW-----------------------------
+
+export class ProductDetailView extends HTMLElement {
+  constructor() {
+    super();
+    this.shadow = this.attachShadow({ mode: "open" });
+  }
+  //-----------------------------
+  refresh(data) {
+    // Viser produktdetaljer
+    if (!data) {
+      return;
+    }
+
+    this.shadow.replaceChildren();
+
+    const styleLink = document.createElement("link");
+    styleLink.rel = "stylesheet";
+    styleLink.href = "./user.css";
+    this.shadow.appendChild(styleLink);
+
+    const backButton = this.createBackButton();
+    this.shadow.appendChild(backButton);
+
+    const productImage = this.createProductImage(data);
+    this.shadow.appendChild(productImage);
+
+    const productInfo = this.createProductInfo(data);
+    this.shadow.appendChild(productInfo);
+  }
+
+  createProductImage(data) {
+    const productImage = document.createElement("img");
+    productImage.src = getProductImageUrl(data);
+    productImage.alt = data.name;
+
+    return productImage;
+  }
+
+  createProductInfo(data) {
+    const productInfo = document.createElement("div");
+
+    const heading = document.createElement("h2");
+    heading.classList.add("view-heading");
+    heading.textContent = data.name;
+    productInfo.appendChild(heading);
+
+    const description = document.createElement("p");
+    description.textContent = data.descr;
+    productInfo.appendChild(description);
+
+    const price = document.createElement("p");
+    price.textContent = data.price + " kr";
+    productInfo.appendChild(price);
+
+    return productInfo;
+  }
+
+  createBackButton() {
+    const backButton = document.createElement("button");
+    backButton.textContent = "← Back";
+    backButton.classList.add("back-button");
+
+    backButton.addEventListener("click", () => {
+      this.handleBackClick();
+    });
+
+    return backButton;
+  }
+
+  handleBackClick() {
+    const backEvt = new CustomEvent("backClick", {
+      composed: true,
+      bubbles: true,
+    });
+
+    this.shadow.dispatchEvent(backEvt);
+  }
+}
+
+//------------------------ END OF PRODUCT DETAIL VIEW --------------------------
+
 customElements.define("home-view", HomeView); // Registrerer en Web Component i nettleseren
 
 customElements.define("product-list-view", ProductListView);
+
+customElements.define("product-detail-view", ProductDetailView);
