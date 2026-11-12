@@ -18,16 +18,14 @@ document.body.appendChild(homeView);
 homeView.addEventListener("categorySelect", async (event) => {
   const products = await getProductsByCategory(event.categoryData.id);
 
-  productListView.refresh(products);
+  productListView.refresh(products, event.categoryData.catName);
   homeView.remove();
   document.body.appendChild(productListView);
 });
 
 homeView.addEventListener("productSearch", async (event) => {
-  console.log(event.searchWord); // Håndterer søk og sender event med søkeordet
   const products = await getProductsBySearch(event.searchWord); //forespør API
-  console.log(products);
-  productListView.refresh(products); //oppdaterer produktlisten med søkeresultatet
+  productListView.refresh(products, "Search results");
   homeView.remove();
   document.body.appendChild(productListView);
 });

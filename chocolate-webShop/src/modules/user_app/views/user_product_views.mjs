@@ -19,11 +19,16 @@ export class HomeView extends HTMLElement {
 
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
-    styleLink.href = "./style.css";
+    styleLink.href = "./user.css";
     this.shadow.appendChild(styleLink); //legger CSS-koblingen inn i Shadow DOM.
 
     const searchField = this.createSearchField();
     this.shadow.appendChild(searchField);
+
+    const heading = document.createElement("h2");
+    heading.classList.add("view-heading");
+    heading.textContent = "Categories";
+    this.shadow.appendChild(heading);
 
     data.forEach((value) => {
       const div = this.createCategory(value);
@@ -108,7 +113,7 @@ export class ProductListView extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
   }
   //-----------------------------
-  refresh(data) {
+  refresh(data, title) {
     // Viser produktlisten
     if (!data) {
       return;
@@ -118,16 +123,26 @@ export class ProductListView extends HTMLElement {
 
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
-    styleLink.href = "./style.css";
+    styleLink.href = "./user.css";
     this.shadow.appendChild(styleLink);
 
+    const headerRow = document.createElement("div"); // Oppretter en rad for overskrift og tilbakeknapp, i en beholder
+    headerRow.classList.add("list-header");
+
     const backButton = this.createBackButton();
-    this.shadow.appendChild(backButton);
+    headerRow.appendChild(backButton);
+
+    const heading = document.createElement("h2");
+    heading.classList.add("view-heading");
+    heading.textContent = title;
+    headerRow.appendChild(heading);
+
+    this.shadow.appendChild(headerRow);
 
     if (data.length === 0) {
       //undersøker om det er null produkter.
       const message = document.createElement("p");
-      message.textContent = "No products found.";
+      message.textContent = "Your search did not match any products";
       this.shadow.appendChild(message);
       return;
     }
@@ -158,6 +173,7 @@ export class ProductListView extends HTMLElement {
   createProductImage(product) {
     const productImage = document.createElement("img");
     productImage.src = getProductThumbUrl(product);
+    productImage.alt = product.name; // Setter alt-tekst for tilgjengelighet
 
     return productImage;
   }
@@ -166,7 +182,6 @@ export class ProductListView extends HTMLElement {
     const productInfo = document.createElement("div");
 
     const heading = document.createElement("h2");
-    // TODO Task 2: Verify product fields and image URLs after shared model/API updates.
     heading.textContent = product.name;
     productInfo.appendChild(heading);
 
