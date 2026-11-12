@@ -107,3 +107,24 @@ button:hover {
     font-size: 16px;
     color: var(--espresso);
 }
+
+#adminNav[hidden] {
+    display: none;
+}
+
+#adminNav {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#adminNav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--espresso);
+    font-size: 18px;
+}
+
+#adminNav button.active {
+    border-bottom: 2px solid var(--cocoa);
+}

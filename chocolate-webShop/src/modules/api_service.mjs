@@ -1,7 +1,7 @@
 
 import { errorHandler } from "./error_handler.mjs";
 import { CategoryArrayModel, ProductArrayModel, ProductModel } from "./models.mjs";
-import { sendRequest } from "./utils.mjs";
+import { sendRequest, createBasicAuthString } from "./utils.mjs";
 
 const groupkey = "NHKOZC85"; // Ebba og Benedicte sin groupkey
 
@@ -130,5 +130,19 @@ export function getProductThumbUrl(product) { // Not async because it only build
     return imageUrl;
 }
 
-
-
+export async function adminLogin(username, password) {
+    const adminLoginUrl = `https://sukkergris.onrender.com/users/adminlogin?key=${groupkey}`;
+    const cfg = {
+        method: "POST",
+        headers: {
+            "Authorization": createBasicAuthString(username, password)
+        }
+    }
+    try {
+        const loginData = await sendRequest(adminLoginUrl, cfg);
+        return loginData;
+    } catch (error) {
+        errorHandler(error);
+        return [];
+    }
+}

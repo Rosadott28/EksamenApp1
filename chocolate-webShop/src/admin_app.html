@@ -11,26 +11,40 @@
 </head>
 
 <body>
+    <script type="module" src="modules/admin_app/admin_main.mjs"></script>
 
     <header>
         <h1>Sukkergris</h1>
     </header>
 
+    <!-- ----------Admin Navigasjon--------------- -->
+    <nav id="adminNav" hidden>
+        <button id="btnProducts" type="button">Products</button>
+        <button id="btnOrders" type="button">Orders</button>
+        <button id="btnUsers" type="button">Users</button>
+        <button id="btnReviews" type="button">Reviews</button>
+    </nav>
+
+    <div id="viewContainer"></div>
+
+    <!-- ----------LogIn--------------- -->
     <form id="adminLoginForm">
 
-    <div class="container" id="logIn">
-        <header>Admin Login</header>
-        <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
+        <div class="container" id="logIn">
+            <header>Admin Login</header>
+            <label for="uname"><b>Username</b></label>
+            <input id="uname" placeholder="Enter Username" name="uname" required>
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
+            <label for="psw"><b>Password</b></label>
+            <input id="psw" type="password" placeholder="Enter Password" name="psw" required>
 
-        <button type="button">Login</button>
+            <button id="btnLogin" type="button">Login</button>
 
-    </div>
+        </div>
     </form>
+
 
 </body>
 
 </html>
+<!-- laffytaffy augustus.gloop@sukkergris.no -->

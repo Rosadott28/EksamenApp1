@@ -45,16 +45,24 @@ export class ProductView extends HTMLElement {
 
         if (!data) {return} //if an error is catched in api_service         
 
-        this.shadow.innerHTML = "";
-        for (let value of data) {            
+        this.replaceChildren();
+        data.forEach((product) => {            
             const div = document.createElement("div");
-            div.innerHTML = `
-                <h2>${value.name}</h2>
-                <p>${value.descr}</p><hr>
-                <p>kr ${value.price},-</p>
-            `;
+            const productName = document.createElement("h2");
+            const productDescription = document.createElement("p");
+            const productPrice = document.createElement("p");
+
+            productName.textContent = product.name;
+            div.appendChild(productName);
+    
+            productDescription.textContent = product.descr;
+            div.appendChild(productDescription);
+
+            productPrice.textContent = "kr " + product.price + ",-";
+            div.appendChild(productPrice);
+
             this.shadow.appendChild(div);
-        }
+        })
     }
 }
 
