@@ -83,15 +83,18 @@ btnLogin.addEventListener('click', async function (evt) {
         adminNav.hidden = false;
         adminLoginForm.hidden = true;
         // navigateTo("catview");
-        setActiveTab(btnProducts);
+        btnProducts.click(); // Navigate to products view after successful login
     }
 });
 
 //-------------------navigation-----------------------------
 
-btnProducts.addEventListener('click', function (evt) {
+btnProducts.addEventListener('click', async function (evt) {
+    const products = await getAllProducts();
+    prodView.refresh(products);
     navigateTo("prodview");
     setActiveTab(btnProducts);
+    
 });
 
 btnOrders.addEventListener('click', function (evt) {
