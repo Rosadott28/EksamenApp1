@@ -279,6 +279,10 @@ export class ProductDetailView extends HTMLElement {
     heading.textContent = data.name;
     productInfo.appendChild(heading);
 
+    const category = document.createElement("p");
+    category.textContent = data.categoryName;
+    productInfo.appendChild(category);
+
     const description = document.createElement("p");
     description.textContent = data.descr;
     productInfo.appendChild(description);
@@ -287,7 +291,55 @@ export class ProductDetailView extends HTMLElement {
     price.textContent = data.price + " kr";
     productInfo.appendChild(price);
 
+    if (data.discount > 0) {
+      const discount = document.createElement("p");
+      discount.textContent = data.discount + "% discount";
+      productInfo.appendChild(discount);
+    }
+
+    const rating = this.createProductRating(data);
+    if (rating) {
+      productInfo.appendChild(rating);
+    }
+
+    const stockInfo = this.createStockInfo(data);
+    productInfo.appendChild(stockInfo);
+
     return productInfo;
+  }
+
+  createProductRating(data) {
+    if (data.rating === null) {
+      return null;
+    }
+    const rating = document.createElement("p");
+    rating.textContent = "Rating: " + data.rating + " / 5";
+
+    return rating;
+  }
+
+  createStockInfo(data) {
+    const stockInfo = document.createElement("div");
+
+    const stock = document.createElement("p");
+
+    if (data.stock === 0) {
+      stock.textContent = "Out of stock";
+      stockInfo.appendChild(stock);
+
+      if (data.expectedShipped) {
+        const delivery = document.createElement("p");
+        const date = new Date(data.expectedShipped);
+        delivery.textContent =
+          "Expected shipping: " + date.toLocaleDateString("en-GB");
+        stockInfo.appendChild(delivery);
+      }
+    } else {
+      stock.textContent = "In stock: " + data.stock;
+      stockInfo.appendChild(stock);
+    }
+
+    return stockInfo;
   }
 
   createBackButton() {
