@@ -312,8 +312,22 @@ export class ProductDetailView extends HTMLElement {
     if (data.rating === null) {
       return null;
     }
+
     const rating = document.createElement("p");
-    rating.textContent = "Rating: " + data.rating + " / 5";
+    const fullStars = Math.floor(data.rating);
+    const halfStar = data.rating - fullStars >= 0.5; //Blir true hvis minst 0,5 stjerner igjen
+
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    rating.textContent =
+      "★".repeat(fullStars) +
+      (halfStar ? "⯪" : "") +
+      "☆".repeat(emptyStars) + //fyller opp resten til totalt fem stjerner
+      " (" +
+      data.rating +
+      "/5, " +
+      data.numberOfRatings +
+      " reviews)";
 
     return rating;
   }

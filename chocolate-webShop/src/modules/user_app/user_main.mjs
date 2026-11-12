@@ -22,7 +22,7 @@ document.body.appendChild(homeView);
 
 homeView.addEventListener("categorySelect", async (event) => {
   const products = await getProductsByCategory(event.categoryData.id);
-
+ 
   productListView.refresh(products, event.categoryData.catName);
   homeView.remove();
   document.body.appendChild(productListView);
@@ -57,6 +57,7 @@ productListView.addEventListener("productSelect", async (event) => {
   if (!product) {
     return;
   }
+  
 
   productDetailView.refresh(product);
   productListView.remove();
