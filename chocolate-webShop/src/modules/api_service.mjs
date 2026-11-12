@@ -130,6 +130,15 @@ export function getProductThumbUrl(product) { // Not async because it only build
     return imageUrl;
 }
 
+export function getProductImageUrl(product) { // Not async because it only builds a URL, without fetching data.
+    let imageKey = groupkey;
+    if (product.static === true) {
+        imageKey = "GFTPOE21";
+    }
+    const imageUrl = `https://sukkergris.onrender.com/images/${imageKey}/large/${product.image}`;
+    return imageUrl;
+}
+
 export async function adminLogin(username, password) {
     const adminLoginUrl = `https://sukkergris.onrender.com/users/adminlogin?key=${groupkey}`;
     const cfg = {
