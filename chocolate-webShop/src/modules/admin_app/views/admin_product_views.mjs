@@ -48,6 +48,8 @@ export class ProductView extends HTMLElement {
     } //if an error is catched in api_service
 
     this.shadow.replaceChildren();
+
+    const productTableStyle = document.createElement("style");
     const productTable = document.createElement("table");
     const productTableBody = document.createElement("tbody");
     const tableHeaderSection = document.createElement("thead");
@@ -59,6 +61,13 @@ export class ProductView extends HTMLElement {
     productNameHeader.textContent = "Product name";
     priceNameHeader.textContent = "Price";
     actionNameHeader.textContent = "Action";
+    productTableStyle.textContent = `(
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 3px 8px #00000020; 
+    ) `;
 
     headerRow.appendChild(productNameHeader);
     headerRow.appendChild(priceNameHeader);
@@ -68,28 +77,30 @@ export class ProductView extends HTMLElement {
     productTable.appendChild(productTableBody);
 
     this.shadow.appendChild(productTable);
+    this.shadow.appendChild(productTableStyle);
 
     data.forEach((product) => {
-        const productRow = document.createElement("tr");
-        const productNameCell = document.createElement("td");
-        const productPriceCell = document.createElement("td");
-        const productActionCell = document.createElement("td");
-        const editButton = document.createElement("button");
-        const deleteButton = document.createElement("button");
+      const productRow = document.createElement("tr");
+      const productNameCell = document.createElement("td");
+      const productPriceCell = document.createElement("td");
+      const productActionCell = document.createElement("td");
+      const editButton = document.createElement("button");
+      const deleteButton = document.createElement("button");
 
-        productNameCell.textContent = product.name;
-        productPriceCell.textContent = "kr " + product.price + ",-";
-        editButton.textContent = "Edit";
-        deleteButton.textContent = "Delete";
+      editButton.classList.add("edit-button");
+      deleteButton.classList.add("delete-button");
 
-        productTableBody.appendChild(productRow);
-        productRow.appendChild(productNameCell);
-        productRow.appendChild(productPriceCell);
-        productRow.appendChild(productActionCell);
-        productActionCell.appendChild(editButton);
-        productActionCell.appendChild(deleteButton);
+      productNameCell.textContent = product.name;
+      productPriceCell.textContent = "kr " + product.price + ",-";
+      editButton.textContent = "Edit";
+      deleteButton.textContent = "Delete";
 
-
+      productTableBody.appendChild(productRow);
+      productRow.appendChild(productNameCell);
+      productRow.appendChild(productPriceCell);
+      productRow.appendChild(productActionCell);
+      productActionCell.appendChild(editButton);
+      productActionCell.appendChild(deleteButton);
     });
 
     // data.forEach((product) => {
