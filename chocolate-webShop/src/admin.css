@@ -29,6 +29,8 @@ body {
     line-height: 1.5;
     color: var(--espresso);
     background-color: var(--pearl);
+    padding: 0 24px;
+    box-sizing: border-box;
 }
 
 h1,

@@ -86,7 +86,10 @@ export async function addProduct(product) {
 
     const cfg = {
         method: "POST",
-        body: product  //NB! product as formdata
+        body: product,  //NB! product as formdata
+        headers: {
+            "Authorization": sessionStorage.getItem("adminToken")
+        }
     }
 
     try {

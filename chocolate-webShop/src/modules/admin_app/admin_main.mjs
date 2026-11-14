@@ -71,6 +71,10 @@ prodForm.addEventListener('addproduct', async function (evt) {
     };
 });
 
+prodForm.addEventListener('canceladdproduct', function (evt) {
+    btnProducts.click(); 
+});
+
 //-------------------Admin logIn-----------------------------
 
 btnLogin.addEventListener('click', async function (evt) {
@@ -118,3 +122,7 @@ function setActiveTab(selectedButton) {
     });
     selectedButton.classList.add("active");
 };
+
+prodView.addEventListener("showaddproduct", function (evt) {
+    navigateTo("prodform");
+});
