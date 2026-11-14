@@ -11,6 +11,7 @@
   --radius: 8px;
 }
 
+
 /* ------------------------ Grunnleggende stil ------------------------ */
 * {
   box-sizing: border-box;
@@ -31,6 +32,7 @@ h3 {
   color: var(--truffle);
 }
 
+
 /* ------------------------ Felles klasser --------------- */
 .container {
   width: 90%;
@@ -41,6 +43,7 @@ h3 {
 .hidden {
   display: none;
 }
+
 
 /* ------------------------ Header --------------- */
 
@@ -86,6 +89,7 @@ h3 {
     outline-offset: 3px;
 }
 
+
 /* ------------------------ Søkefelt ------------------------ */
 .search-container {
   display: flex;
@@ -112,6 +116,7 @@ h3 {
   cursor: pointer;
 }
 
+
 /* ------------------------ Kategorikort ------------------------ */
 
 .category-card {
@@ -133,5 +138,83 @@ h3 {
   margin: 8px 0 0;
 }
 
+.category-container {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) { /* Viser tre kolonner på skjermer fra 768px */
+    .category-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ------------------------ Produktkort ------------------------ */
+
+.product-card {
+    background-color: var(--ivory);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    padding: 8px;
+    margin: 0 12px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.product-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.product-card h2 {
+    font-size: 18px;
+    margin: 0 0 4px;
+}
+
+.product-card p {
+    font-size: 16px;
+    margin: 0;
+}
 
 
+/* ------------------------ Tilbakeknapp ------------------------ */
+
+.back-button {
+    background-color: var(--pearl);
+    color: var(--espresso);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    margin: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* ------------------------ Visningsoverskrifter ------------------------ */
+
+.view-heading {
+    color: var(--truffle);
+    font-size: 22px;
+    margin: 12px 16px;
+}
+
+/* ------------------------ Produktliste header ------------------------ */
+
+.list-header {
+    display: flex; /* Overskrift og knapp på siden av hverandre */
+    align-items: center;
+    gap: 12px;
+    margin: 12px 16px;
+}
+
+.list-header .back-button {
+    margin: 0;
+}
+
+.list-header .view-heading {
+    margin: 0;
+}
