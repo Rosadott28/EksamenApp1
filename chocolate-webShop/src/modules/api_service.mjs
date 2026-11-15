@@ -102,10 +102,30 @@ export async function addProduct(product) {
         return null;
     }
 }
-
 //---------------------------------------------------------
-
 //add more functions below when needed
+
+export async function updateProduct(product){
+   const url = `https://sukkergris.onrender.com/webshop/chocolates?key=${groupkey}`;
+
+    const cfg = {
+        method: "PUT",
+        body: product,  //NB! product as formdata,
+        headers: {
+            "Authorization": sessionStorage.getItem("adminToken")
+        }
+    }
+
+    try {
+
+        const data = await sendRequest(url, cfg);
+        return data;
+
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
 
 export async function getProductsBySearch(searchWord) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?search=${encodeURIComponent(searchWord)}&key=${groupkey}`;

@@ -1,6 +1,6 @@
 // Controller for admin app
 
-import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin } from "../api_service.mjs";
+import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin, updateProduct } from "../api_service.mjs";
 import { CategoryView, ProductForm, ProductView } from "./views/admin_product_views.mjs";
 import { OrderView } from "./views/admin_order_views.mjs";
 import { UserView } from "./views/admin_user_views.mjs";
@@ -69,6 +69,14 @@ prodForm.addEventListener('addproduct', async function (evt) {
     if (result) {
         prodForm.showAddSuccess();
     };
+});
+
+prodForm.addEventListener("updateproduct", async function (evt) {
+    const result = await updateProduct(evt.productForm);
+     if (result) {
+        showMessage("Product updated successfully!");
+        btnProducts.click();
+    }
 });
 
 prodForm.addEventListener('canceladdproduct', function (evt) {

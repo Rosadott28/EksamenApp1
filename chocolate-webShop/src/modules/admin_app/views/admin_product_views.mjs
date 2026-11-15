@@ -211,12 +211,23 @@ export class ProductForm extends HTMLElement {
 
         theForm.addEventListener("submit", (evt) => {
             evt.preventDefault();
-            const addProdEvent = new CustomEvent("addproduct", {
+
+            const formData = new FormData(theForm);
+
+              if (this.formMode === "edit") {
+                formData.append("id", this.selectedProduct.id);
+                const updateProduct = new CustomEvent("updateproduct");
+                updateProduct.productForm = formData;
+                this.dispatchEvent(updateProduct);
+            } else {
+                const addProdEvent = new CustomEvent("addproduct", {
                 composed: true,
                 bubbles: true,
             });
-            addProdEvent.productForm = new FormData(theForm);
-            this.shadow.dispatchEvent(addProdEvent);
+              addProdEvent.productForm = formData;
+            this.dispatchEvent(addProdEvent);
+            }
+          
         });
     }
     prepareEdit(product){
@@ -227,6 +238,9 @@ export class ProductForm extends HTMLElement {
         this.shadow.querySelector("#productName").value = product.name;
         this.shadow.querySelector("#productPrice").value = product.price;
         this.shadow.querySelector("#categoryId").value = product.catId;
+        this.shadow.querySelector("#productHeading").value = product.descr;
+        this.shadow.querySelector("#productDescription").value = product.description;
+        this.shadow.querySelector("#stock").value = product.stock;
         this.shadow.querySelector('input[type="submit"]').value = "Save changes";
     }
      prepareAdd(){
