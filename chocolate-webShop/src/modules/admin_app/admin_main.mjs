@@ -1,6 +1,6 @@
 // Controller for admin app
 
-import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin, updateProduct } from "../api_service.mjs";
+import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin, updateProduct, deleteProduct } from "../api_service.mjs";
 import { CategoryView, ProductForm, ProductView } from "./views/admin_product_views.mjs";
 import { OrderView } from "./views/admin_order_views.mjs";
 import { UserView } from "./views/admin_user_views.mjs";
@@ -67,21 +67,21 @@ catView.addEventListener('categoryselect', async function (evt) {
 prodForm.addEventListener('addproduct', async function (evt) {
     const result = await addProduct(evt.productForm);
     if (result) {
-       prodForm.resetForm()
-       showMessage("Product added successfully!");
+        prodForm.resetForm()
+        showMessage("Product added successfully!");
     };
 });
 
 prodForm.addEventListener("updateproduct", async function (evt) {
     const result = await updateProduct(evt.productForm);
-     if (result) {
+    if (result) {
         showMessage("Product updated successfully!");
         btnProducts.click();
     }
 });
 
 prodForm.addEventListener('canceladdproduct', function (evt) {
-    btnProducts.click(); 
+    btnProducts.click();
 });
 
 //-------------------Admin logIn-----------------------------
@@ -107,7 +107,7 @@ btnProducts.addEventListener('click', async function (evt) {
     prodView.refresh(products);
     navigateTo("prodview");
     setActiveTab(btnProducts);
-    
+
 });
 
 btnOrders.addEventListener('click', function (evt) {
@@ -139,4 +139,19 @@ prodView.addEventListener("showaddproduct", function (evt) {
 prodView.addEventListener("editproduct", function (evt) {
     prodForm.prepareEdit(evt.detail);
     navigateTo("prodform");
+});
+
+prodView.addEventListener("deleteproduct", async function (evt) {
+    const product = evt.detail;
+    const confirm = window.confirm(
+        "Are you sure you want to delete " + product.name + "?"
+    );
+    if (!confirm) {
+        return;
+    }
+    const result = await deleteProduct(product.id);
+    if (result) {
+        showMessage("Product deleted successfully!");
+        btnProducts.click();
+    }
 });

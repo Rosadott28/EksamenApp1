@@ -150,6 +150,13 @@ export class ProductView extends HTMLElement {
                 });
                 this.dispatchEvent(editProduct);
             });
+
+            deleteButton.addEventListener("click", (evt) => {
+            const deleteProduct = new CustomEvent("deleteproduct", {
+                detail: product
+                });
+                this.dispatchEvent(deleteProduct);
+            });
         });
         addProductButton.addEventListener("click", (evt) => {
             const addProdEvent = new CustomEvent("showaddproduct", {
