@@ -151,8 +151,13 @@ export class ProductView extends HTMLElement {
             });
             this.shadow.dispatchEvent(addProdEvent);
         });
-    }
-}
+        editButton.addEventListener("click", (evt) => {
+            const editProduct = new CustomEvent("editproduct", {
+                detail: product
+        });
+        this.shadow.dispatchEvent(editProduct);
+    });
+};
 
 //===============================================
 export class ProductForm extends HTMLElement {
