@@ -69,7 +69,9 @@ prodForm.addEventListener('addproduct', async function (evt) {
     if (result) {
         prodForm.resetForm()
         showMessage("Product added successfully!");
-    };
+    }else {
+    showMessage("Could not add product. Please try again.");
+}
 });
 
 prodForm.addEventListener("updateproduct", async function (evt) {
@@ -77,7 +79,9 @@ prodForm.addEventListener("updateproduct", async function (evt) {
     if (result) {
         showMessage("Product updated successfully!");
         btnProducts.click();
-    }
+    }else {
+    showMessage("Could not edit product. Please try again.");
+}
 });
 
 prodForm.addEventListener('canceladdproduct', function (evt) {
@@ -153,5 +157,7 @@ prodView.addEventListener("deleteproduct", async function (evt) {
     if (result) {
         showMessage("Product deleted successfully!");
         btnProducts.click();
-    }
+    }else {
+    showMessage("Could not delete product. Please try again.");
+}
 });
