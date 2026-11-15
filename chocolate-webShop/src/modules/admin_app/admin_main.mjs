@@ -67,7 +67,8 @@ catView.addEventListener('categoryselect', async function (evt) {
 prodForm.addEventListener('addproduct', async function (evt) {
     const result = await addProduct(evt.productForm);
     if (result) {
-        prodForm.showAddSuccess();
+       prodForm.resetForm()
+       showMessage("Product added successfully!");
     };
 });
 

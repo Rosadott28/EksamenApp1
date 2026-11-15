@@ -1,10 +1,27 @@
 
 //-----------------------------------------------------------
+
+let messageTimer = null;
+let activeMessage = null;
+
 export function showMessage(msg) {
 
-    // show messages here, e.g. show a dialog/view with an easy-to-understand message
+    clearTimeout(messageTimer)
+    if (activeMessage) {
+        activeMessage.remove();
+    }
+    const message = document.createElement("p");
+    message.classList.add("notification-message");
+    message.textContent = msg;
+    message.setAttribute("role", "status");
+    document.body.appendChild(message);
+    activeMessage = message;
 
-    console.log(msg); 
+
+    messageTimer = setTimeout(() => {
+        message.remove();
+        activeMessage = null;
+    }, 4000);
 
 }
 

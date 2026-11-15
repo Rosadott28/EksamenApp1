@@ -173,7 +173,6 @@ export class ProductForm extends HTMLElement {
         this.shadow = this.attachShadow({ mode: "open" });
         this.shadow.innerHTML = `
             <h2>Add product</h2>
-            <p id="addProductSuccess" role="status" hidden>Product Added Successfully!</p>
             <hr>
             <form id="theForm">
                 <label for="productName">Product name</label><br>
@@ -251,14 +250,9 @@ export class ProductForm extends HTMLElement {
         this.shadow.querySelector("#theForm").reset();
         this.shadow.querySelector('input[type="submit"]').value = "Add product";
     }
-    showAddSuccess() {
-        const addProductSuccess = this.shadow.getElementById("addProductSuccess");
-        clearTimeout(this.successTimer);
-        addProductSuccess.hidden = false;
+    resetForm() {
         this.shadow.querySelector("#theForm").reset();
-        this.successTimer = setTimeout(() => {
-            addProductSuccess.hidden = true;
-        }, 4000);
+        
     };
 };
 
