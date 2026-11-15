@@ -126,3 +126,7 @@ function setActiveTab(selectedButton) {
 prodView.addEventListener("showaddproduct", function (evt) {
     navigateTo("prodform");
 });
+prodView.addEventListener("editproduct", function (evt) {
+    prodForm.prepareEdit(evt.detail);
+    navigateTo("prodform");
+});

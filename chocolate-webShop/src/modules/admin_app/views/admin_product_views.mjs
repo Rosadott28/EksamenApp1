@@ -143,6 +143,13 @@ export class ProductView extends HTMLElement {
             productRow.appendChild(productActionCell);
             productActionCell.appendChild(editButton);
             productActionCell.appendChild(deleteButton);
+
+            editButton.addEventListener("click", (evt) => {
+            const editProduct = new CustomEvent("editproduct", {
+                detail: product
+                });
+                this.dispatchEvent(editProduct);
+            });
         });
         addProductButton.addEventListener("click", (evt) => {
             const addProdEvent = new CustomEvent("showaddproduct", {
@@ -151,13 +158,9 @@ export class ProductView extends HTMLElement {
             });
             this.shadow.dispatchEvent(addProdEvent);
         });
-        editButton.addEventListener("click", (evt) => {
-            const editProduct = new CustomEvent("editproduct", {
-                detail: product
-        });
-        this.shadow.dispatchEvent(editProduct);
-    });
+    };    
 };
+
 
 //===============================================
 export class ProductForm extends HTMLElement {
@@ -214,6 +217,11 @@ export class ProductForm extends HTMLElement {
             this.shadow.dispatchEvent(addProdEvent);
         });
     }
+    prepareEdit(product){
+        this.selectedProduct = product;
+        const editFormHeading = this.shadow.querySelector("h2");
+        editFormHeading.textContent = "Edit product - " + product.name;
+    }
     showAddSuccess() {
         const addProductSuccess = this.shadow.getElementById("addProductSuccess");
         clearTimeout(this.successTimer);
@@ -222,8 +230,9 @@ export class ProductForm extends HTMLElement {
         this.successTimer = setTimeout(() => {
             addProductSuccess.hidden = true;
         }, 4000);
-    }
-}
+    };
+};
+
 
 //===============================================
 customElements.define("category-view", CategoryView);
