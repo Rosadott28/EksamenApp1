@@ -124,6 +124,7 @@ function setActiveTab(selectedButton) {
 };
 
 prodView.addEventListener("showaddproduct", function (evt) {
+    prodForm.prepareAdd();
     navigateTo("prodform");
 });
 prodView.addEventListener("editproduct", function (evt) {

@@ -168,6 +168,8 @@ export class ProductForm extends HTMLElement {
     constructor() {
         super();
 
+        this.formMode = "add";
+
         this.shadow = this.attachShadow({ mode: "open" });
         this.shadow.innerHTML = `
             <h2>Add product</h2>
@@ -218,9 +220,22 @@ export class ProductForm extends HTMLElement {
         });
     }
     prepareEdit(product){
+        this.formMode = "edit";
         this.selectedProduct = product;
         const editFormHeading = this.shadow.querySelector("h2");
         editFormHeading.textContent = "Edit product - " + product.name;
+        this.shadow.querySelector("#productName").value = product.name;
+        this.shadow.querySelector("#productPrice").value = product.price;
+        this.shadow.querySelector("#categoryId").value = product.catId;
+        this.shadow.querySelector('input[type="submit"]').value = "Save changes";
+    }
+     prepareAdd(){
+        this.formMode = "add";
+        this.selectedProduct= null;
+        const editFormHeading = this.shadow.querySelector("h2");
+        editFormHeading.textContent = "Add Product";
+        this.shadow.querySelector("#theForm").reset();
+        this.shadow.querySelector('input[type="submit"]').value = "Add product";
     }
     showAddSuccess() {
         const addProductSuccess = this.shadow.getElementById("addProductSuccess");
