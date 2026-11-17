@@ -256,11 +256,16 @@ export class ProductDetailView extends HTMLElement {
     const backButton = this.createBackButton();
     this.shadow.appendChild(backButton);
 
+    const productCard = document.createElement("div");
+    productCard.classList.add("detail-card");
+
     const productImage = this.createProductImage(data);
-    this.shadow.appendChild(productImage);
+    productCard.appendChild(productImage);
 
     const productInfo = this.createProductInfo(data);
-    this.shadow.appendChild(productInfo);
+    productCard.appendChild(productInfo);
+
+    this.shadow.appendChild(productCard);
   }
 
   createProductImage(data) {
