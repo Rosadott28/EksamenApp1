@@ -268,7 +268,8 @@ export class ProductDetailView extends HTMLElement {
     this.shadow.appendChild(productCard);
   }
 
-  createImageContainer(data) { //bildet og rabattmerket
+  createImageContainer(data) {
+    //bildet og rabattmerket
     const imageContainer = document.createElement("div");
     imageContainer.classList.add("detail-image-container");
 
@@ -284,7 +285,8 @@ export class ProductDetailView extends HTMLElement {
     return imageContainer;
   }
 
-  createProductImage(data) { //lager bildet.
+  createProductImage(data) {
+    //lager bildet.
     const productImage = document.createElement("img");
     productImage.src = getProductImageUrl(data);
     productImage.alt = data.name;
@@ -311,6 +313,10 @@ export class ProductDetailView extends HTMLElement {
     heading.classList.add("view-heading");
     heading.textContent = data.name;
     productInfo.appendChild(heading);
+
+    const shortDescription = document.createElement("h3");
+    shortDescription.textContent = data.shortDescr;
+    productInfo.appendChild(shortDescription);
 
     const category = document.createElement("p");
     category.textContent = data.categoryName;

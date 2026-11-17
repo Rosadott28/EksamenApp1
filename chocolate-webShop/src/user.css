@@ -249,19 +249,28 @@ h3 {
   border-radius: var(--radius);
 }
 
+.detail-card .view-heading {
+  margin: 0;
+}
+
+.detail-card h3 {
+  font-size: 18px;
+  margin: 12px 0;
+}
+
 .detail-image-container {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    flex-shrink: 0;
-    margin: 0 auto;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  flex-shrink: 0;
+  margin: 0 auto;
 }
 
 .detail-image-container img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius);
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
 }
 
 .discount {
