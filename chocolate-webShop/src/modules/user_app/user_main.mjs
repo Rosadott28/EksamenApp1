@@ -6,11 +6,14 @@ import {
   getProductsByCategory,
   getProductById,
 } from "../api_service.mjs";
+
 import {
   HomeView,
   ProductListView,
   ProductDetailView,
 } from "./views/user_product_views.mjs";
+
+import { CartView } from "./views/user_cart_views.mjs";
 
 //------------------------------homeView-----------------------------
 const homeView = new HomeView(); // Oppretter en instans av HomeView
@@ -22,7 +25,7 @@ document.body.appendChild(homeView);
 
 homeView.addEventListener("categorySelect", async (event) => {
   const products = await getProductsByCategory(event.categoryData.id);
- 
+
   productListView.refresh(products, event.categoryData.catName);
   homeView.remove();
   document.body.appendChild(productListView);
@@ -40,9 +43,10 @@ homeView.addEventListener("productSearch", async (event) => {
 const homeButton = document.getElementById("homeButton");
 
 function showHome() {
-    productListView.remove();
-    productDetailView.remove();
-    document.body.appendChild(homeView);
+  productListView.remove();
+  productDetailView.remove();
+  cartView.remove();
+  document.body.appendChild(homeView);
 }
 
 homeButton.addEventListener("click", showHome);
@@ -52,16 +56,23 @@ const homeTitle = document.getElementById("homeTitle");
 homeTitle.addEventListener("click", showHome);
 
 homeTitle.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        showHome();
-    }
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    showHome();
+  }
 });
 
-const cartButton = document.getElementById("cartButton"); //finner knappen i headeren i user_app.html
+const cartButton = document.getElementById("cartButton");
+
+const cartView = new CartView();
 
 cartButton.addEventListener("click", () => {
-  console.log("Shopping cart button clicked");
+  homeView.remove();
+  productListView.remove();
+  productDetailView.remove();
+
+  cartView.refresh([]);
+  document.body.appendChild(cartView);
 });
 
 //-----------------------------productListView-----------------------------
@@ -79,7 +90,6 @@ productListView.addEventListener("productSelect", async (event) => {
   if (!product) {
     return;
   }
-  
 
   productDetailView.refresh(product);
   productListView.remove();
