@@ -259,8 +259,8 @@ export class ProductDetailView extends HTMLElement {
     const productCard = document.createElement("div");
     productCard.classList.add("detail-card");
 
-    const productImage = this.createProductImage(data);
-    productCard.appendChild(productImage);
+    const imageContainer = this.createImageContainer(data);
+    productCard.appendChild(imageContainer);
 
     const productInfo = this.createProductInfo(data);
     productCard.appendChild(productInfo);
@@ -268,12 +268,40 @@ export class ProductDetailView extends HTMLElement {
     this.shadow.appendChild(productCard);
   }
 
-  createProductImage(data) {
+  createImageContainer(data) { //bildet og rabattmerket
+    const imageContainer = document.createElement("div");
+    imageContainer.classList.add("detail-image-container");
+
+    const productImage = this.createProductImage(data);
+    imageContainer.appendChild(productImage);
+
+    const discount = this.createDiscountBadge(data);
+
+    if (discount) {
+      imageContainer.appendChild(discount);
+    }
+
+    return imageContainer;
+  }
+
+  createProductImage(data) { //lager bildet.
     const productImage = document.createElement("img");
     productImage.src = getProductImageUrl(data);
     productImage.alt = data.name;
 
     return productImage;
+  }
+
+  createDiscountBadge(data) {
+    if (data.discount === 0) {
+      return null;
+    }
+
+    const discount = document.createElement("p");
+    discount.classList.add("discount");
+    discount.textContent = data.discount + "% discount";
+
+    return discount;
   }
 
   createProductInfo(data) {
@@ -295,12 +323,6 @@ export class ProductDetailView extends HTMLElement {
     const price = document.createElement("p");
     price.textContent = data.price + " kr";
     productInfo.appendChild(price);
-
-    if (data.discount > 0) {
-      const discount = document.createElement("p");
-      discount.textContent = data.discount + "% discount";
-      productInfo.appendChild(discount);
-    }
 
     const rating = this.createProductRating(data);
     if (rating) {

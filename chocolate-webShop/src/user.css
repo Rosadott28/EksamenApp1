@@ -11,7 +11,6 @@
   --radius: 8px;
 }
 
-
 /* ------------------------ Grunnleggende stil ------------------------ */
 * {
   box-sizing: border-box;
@@ -32,7 +31,6 @@ h3 {
   color: var(--truffle);
 }
 
-
 /* ------------------------ Felles klasser --------------- */
 .container {
   width: 90%;
@@ -43,7 +41,6 @@ h3 {
 .hidden {
   display: none;
 }
-
 
 /* ------------------------ Header --------------- */
 
@@ -56,60 +53,59 @@ h3 {
 }
 
 .site-header h1 {
-    color: var(--pearl);
-    margin: 0 auto;
-    width: fit-content;
-    cursor: pointer;
+  color: var(--pearl);
+  margin: 0 auto;
+  width: fit-content;
+  cursor: pointer;
 }
 
 #cartButton,
 #homeButton {
-    background-color: var(--pearl);
-    border: 1px solid var(--pearl);
-    border-radius: var(--radius);
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 5px;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: var(--pearl);
+  border: 1px solid var(--pearl);
+  border-radius: var(--radius);
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #cartButton {
-    right: 16px;
+  right: 16px;
 }
 
 #homeButton {
-    left: 16px;
+  left: 16px;
 }
 
 #cartButton img {
-    width: 18px;
-    height: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 #homeButton img {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 #cartButton::after,
 #homeButton::after {
-    content: "";
-    position: absolute;
-    inset: -8px; /* Utvider klikkflaten */
+  content: "";
+  position: absolute;
+  inset: -8px; /* Utvider klikkflaten */
 }
 
 #cartButton:focus-visible,
 #homeButton:focus-visible {
-    outline: 2px solid var(--powder);
-    outline-offset: 3px;
+  outline: 2px solid var(--powder);
+  outline-offset: 3px;
 }
-
 
 /* ------------------------ Søkefelt ------------------------ */
 .search-container {
@@ -137,7 +133,6 @@ h3 {
   cursor: pointer;
 }
 
-
 /* ------------------------ Kategorikort ------------------------ */
 
 .category-card {
@@ -160,119 +155,135 @@ h3 {
 }
 
 .category-container {
-    display: grid;
-    grid-template-columns: 1fr;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) { /* Viser tre kolonner på skjermer fra 768px */
-    .category-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
+@media (min-width: 768px) {
+  /* Viser tre kolonner på skjermer fra 768px */
+  .category-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* ------------------------ Produktkort ------------------------ */
 
 .product-card {
-    background-color: var(--ivory);
-    border: 1px solid var(--truffle);
-    border-radius: var(--radius);
-    padding: 8px;
-    margin: 0 12px 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px
+  background-color: var(--ivory);
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
+  padding: 8px;
+  margin: 0 12px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .product-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    flex-shrink: 0;
-    border-radius: var(--radius);
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: var(--radius);
 }
 
 .product-card h2 {
-    font-size: 18px;
-    margin: 0 0 4px;
+  font-size: 18px;
+  margin: 0 0 4px;
 }
 
 .product-card p {
-    font-size: 16px;
-    margin: 0;
+  font-size: 16px;
+  margin: 0;
 }
-
 
 /* ------------------------ Tilbakeknapp ------------------------ */
 
 .back-button {
-    background-color: var(--pearl);
-    color: var(--espresso);
-    border: 1px solid var(--truffle);
-    border-radius: var(--radius);
-    padding: 6px 12px;
-    margin: 12px 16px;
-    font-size: 16px;
-    cursor: pointer;
+  background-color: var(--pearl);
+  color: var(--espresso);
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  margin: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 /* ------------------------ Visningsoverskrifter ------------------------ */
 
 .view-heading {
-    color: var(--truffle);
-    font-size: 22px;
-    margin: 12px 16px;
+  color: var(--truffle);
+  font-size: 22px;
+  margin: 12px 16px;
 }
 
 /* ------------------------ Produktliste header ------------------------ */
 
 .list-header {
-    display: flex; /* Overskrift og knapp på siden av hverandre */
-    align-items: center;
-    gap: 12px;
-    margin: 12px 16px;
+  display: flex; /* Overskrift og knapp på siden av hverandre */
+  align-items: center;
+  gap: 12px;
+  margin: 12px 16px;
 }
 
 .list-header .back-button {
-    margin: 0;
+  margin: 0;
 }
 
 .list-header .view-heading {
-    margin: 0;
+  margin: 0;
 }
 
 /* ------------------------ Produktdetaljer ------------------------ */
 
 .detail-card {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    margin: 16px;
-    background-color: var(--ivory);
-    border: 1px solid var(--truffle);
-    border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  margin: 16px;
+  background-color: var(--ivory);
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
 }
 
-.detail-card img {
+.detail-image-container {
+    position: relative;
     width: 100%;
     max-width: 400px;
+    flex-shrink: 0;
+    margin: 0 auto;
+}
+
+.detail-image-container img {
+    display: block;
+    width: 100%;
     height: auto;
-    object-fit: contain;
-    align-self: center;
     border-radius: var(--radius);
 }
 
-@media (min-width: 768px) { /* PC: Bilde og produktinformasjon side om side */
-    .detail-card {
-        flex-direction: row;
-        align-items: flex-start;
-        max-width: 1100px;
-        margin: 24px auto;
-        width: calc(100% - 32px);
-    }
+.discount {
+  background-color: var(--powder);
+  color: var(--espresso);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  width: fit-content;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0;
+}
 
-    .detail-card img {
-        width: 45%;
-    }
+@media (min-width: 768px) {
+  /* PC: Bilde og produktinformasjon side om side */
+  .detail-card {
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: 1100px;
+    margin: 24px auto;
+    width: calc(100% - 32px);
+  }
 }
