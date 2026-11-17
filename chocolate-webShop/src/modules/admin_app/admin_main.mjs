@@ -1,6 +1,6 @@
 // Controller for admin app
 
-import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin } from "../api_service.mjs";
+import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin, updateProduct, deleteProduct } from "../api_service.mjs";
 import { CategoryView, ProductForm, ProductView } from "./views/admin_product_views.mjs";
 import { OrderView } from "./views/admin_order_views.mjs";
 import { UserView } from "./views/admin_user_views.mjs";
@@ -67,8 +67,21 @@ catView.addEventListener('categoryselect', async function (evt) {
 prodForm.addEventListener('addproduct', async function (evt) {
     const result = await addProduct(evt.productForm);
     if (result) {
-        showMessage("Insert OK!")
+        prodForm.resetForm()
+        showMessage("Product added successfully!");
     };
+});
+
+prodForm.addEventListener("updateproduct", async function (evt) {
+    const result = await updateProduct(evt.productForm);
+    if (result) {
+        showMessage("Product updated successfully!");
+        btnProducts.click();
+    }
+});
+
+prodForm.addEventListener('canceladdproduct', function (evt) {
+    btnProducts.click();
 });
 
 //-------------------Admin logIn-----------------------------
@@ -83,15 +96,18 @@ btnLogin.addEventListener('click', async function (evt) {
         adminNav.hidden = false;
         adminLoginForm.hidden = true;
         // navigateTo("catview");
-        setActiveTab(btnProducts);
+        btnProducts.click(); // Navigate to products view after successful login
     }
 });
 
 //-------------------navigation-----------------------------
 
-btnProducts.addEventListener('click', function (evt) {
+btnProducts.addEventListener('click', async function (evt) {
+    const products = await getAllProducts();
+    prodView.refresh(products);
     navigateTo("prodview");
     setActiveTab(btnProducts);
+
 });
 
 btnOrders.addEventListener('click', function (evt) {
@@ -115,3 +131,27 @@ function setActiveTab(selectedButton) {
     });
     selectedButton.classList.add("active");
 };
+
+prodView.addEventListener("showaddproduct", function (evt) {
+    prodForm.prepareAdd();
+    navigateTo("prodform");
+});
+prodView.addEventListener("editproduct", function (evt) {
+    prodForm.prepareEdit(evt.detail);
+    navigateTo("prodform");
+});
+
+prodView.addEventListener("deleteproduct", async function (evt) {
+    const product = evt.detail;
+    const confirm = window.confirm(
+        "Are you sure you want to delete " + product.name + "?"
+    );
+    if (!confirm) {
+        return;
+    }
+    const result = await deleteProduct(product.id);
+    if (result) {
+        showMessage("Product deleted successfully!");
+        btnProducts.click();
+    }
+});

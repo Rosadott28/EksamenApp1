@@ -55,7 +55,9 @@ export class ProductArrayModel {
             catId: dataObj.category_id,
             name: dataObj.chocoName,
             descr: dataObj.shortDescr,
+            description: dataObj.descr,
             price: Number(dataObj.price),
+            stock: Number(dataObj.stock),
             thumb: dataObj.thumb,
             static: dataObj.static
 

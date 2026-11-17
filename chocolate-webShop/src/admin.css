@@ -29,6 +29,8 @@ body {
     line-height: 1.5;
     color: var(--espresso);
     background-color: var(--pearl);
+    padding: 0 24px;
+    box-sizing: border-box;
 }
 
 h1,
@@ -127,4 +129,15 @@ button:hover {
 
 #adminNav button.active {
     border-bottom: 2px solid var(--cocoa);
+}
+
+.notification-message {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+    background-color: var(--truffle);
+    color: var(--ivory);
+    padding: 12px 20px;
+    border-radius: 8px;
 }

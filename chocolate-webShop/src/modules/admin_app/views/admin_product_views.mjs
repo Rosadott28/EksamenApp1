@@ -1,20 +1,19 @@
-
 //===============================================
 export class CategoryView extends HTMLElement {
-
     //-----------------------------
     constructor() {
         super();
-        this.shadow = this.attachShadow({mode: "open"});
+        this.shadow = this.attachShadow({ mode: "open" });
     }
 
     //-----------------------------
-    refresh(data) {       
-
-        if (!data) {return} //if an error is catched in api_service               
+    refresh(data) {
+        if (!data) {
+            return;
+        } //if an error is catched in api_service
 
         this.shadow.innerHTML = "";
-        for (let value of data) {            
+        for (let value of data) {
             const div = document.createElement("div");
             div.innerHTML = `
                 <h2>${value.catName}</h2>
@@ -22,8 +21,11 @@ export class CategoryView extends HTMLElement {
             `;
             this.shadow.appendChild(div);
 
-            div.addEventListener('click', evt => {
-                const catEvt = new CustomEvent("categoryselect", {composed: true, bubbles:true});
+            div.addEventListener("click", (evt) => {
+                const catEvt = new CustomEvent("categoryselect", {
+                    composed: true,
+                    bubbles: true,
+                });
                 catEvt.categoryData = value;
                 this.shadow.dispatchEvent(catEvt);
             });
@@ -33,71 +35,234 @@ export class CategoryView extends HTMLElement {
 
 //===============================================
 export class ProductView extends HTMLElement {
-
     //-----------------------------
     constructor() {
         super();
-        this.shadow = this.attachShadow({mode: "open"});
+        this.shadow = this.attachShadow({ mode: "open" });
     }
 
     //-----------------------------
     refresh(data) {
+        if (!data) {
+            return;
+        } //if an error is catched in api_service
 
-        if (!data) {return} //if an error is catched in api_service         
+        this.shadow.replaceChildren();
 
-        this.replaceChildren();
-        data.forEach((product) => {            
-            const div = document.createElement("div");
-            const productName = document.createElement("h2");
-            const productDescription = document.createElement("p");
-            const productPrice = document.createElement("p");
+        const addProductButton = document.createElement("button");
+        const productTableStyle = document.createElement("style");
+        const productTable = document.createElement("table");
+        const productTableBody = document.createElement("tbody");
+        const tableHeaderSection = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        const productNameHeader = document.createElement("th");
+        const priceNameHeader = document.createElement("th");
+        const actionNameHeader = document.createElement("th");
 
-            productName.textContent = product.name;
-            div.appendChild(productName);
-    
-            productDescription.textContent = product.descr;
-            div.appendChild(productDescription);
+        addProductButton.textContent = "Add product";
+        productNameHeader.textContent = "Product name";
+        priceNameHeader.textContent = "Price";
+        actionNameHeader.textContent = "Action";
+        productTableStyle.textContent = `
+        .edit-button, .delete-button {
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px #00000020;
+            }
+            .edit-button {
+            background-color: var(--ivory);
+            border: 2px solid var(--powder);
+            color: var(--powder);
+        } 
+            .delete-button {
+            background-color: var(--ivory);
+            border: 2px solid #B42318;
+            color: #B42318 ;
+        }
+        :host {
+                display: block;
+                width: 100%;
+            }
 
-            productPrice.textContent = "kr " + product.price + ",-";
-            div.appendChild(productPrice);
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th {
+                text-align: left;
+                padding: 4px 8px;
+            }
+            td {
+                padding: 4px 8px;
+            }
+          thead {
+                background-color: var(--truffle);
+                color: var(--ivory);
+            }
 
-            this.shadow.appendChild(div);
-        })
-    }
-}
+            tbody tr:nth-child(odd) {
+                background-color: var(--ivory);
+            }
+
+            tbody tr:nth-child(even) {
+                background-color: var(--pearl);
+            }`;
+
+        headerRow.appendChild(productNameHeader);
+        headerRow.appendChild(priceNameHeader);
+        headerRow.appendChild(actionNameHeader);
+        tableHeaderSection.appendChild(headerRow);
+        productTable.appendChild(tableHeaderSection);
+        productTable.appendChild(productTableBody);
+
+        this.shadow.appendChild(addProductButton);
+        this.shadow.appendChild(productTable);
+        this.shadow.appendChild(productTableStyle);
+
+        data.forEach((product) => {
+            const productRow = document.createElement("tr");
+            const productNameCell = document.createElement("td");
+            const productPriceCell = document.createElement("td");
+            const productActionCell = document.createElement("td");
+            const editButton = document.createElement("button");
+            const deleteButton = document.createElement("button");
+
+            editButton.classList.add("edit-button");
+            deleteButton.classList.add("delete-button");
+
+            productNameCell.textContent = product.name;
+            productPriceCell.textContent = "kr " + product.price + ",-";
+            editButton.textContent = "Edit";
+            deleteButton.textContent = "Delete";
+
+            productTableBody.appendChild(productRow);
+            productRow.appendChild(productNameCell);
+            productRow.appendChild(productPriceCell);
+            productRow.appendChild(productActionCell);
+            productActionCell.appendChild(editButton);
+            productActionCell.appendChild(deleteButton);
+
+            editButton.addEventListener("click", (evt) => {
+            const editProduct = new CustomEvent("editproduct", {
+                detail: product
+                });
+                this.dispatchEvent(editProduct);
+            });
+
+            deleteButton.addEventListener("click", (evt) => {
+            const deleteProduct = new CustomEvent("deleteproduct", {
+                detail: product
+                });
+                this.dispatchEvent(deleteProduct);
+            });
+        });
+        addProductButton.addEventListener("click", (evt) => {
+            const addProdEvent = new CustomEvent("showaddproduct", {
+                composed: true,
+                bubbles: true,
+            });
+            this.shadow.dispatchEvent(addProdEvent);
+        });
+    };    
+};
+
 
 //===============================================
 export class ProductForm extends HTMLElement {
-
     //-----------------------------
     constructor() {
         super();
 
-        this.shadow = this.attachShadow({mode: "open"});
+        this.formMode = "add";
+
+        this.shadow = this.attachShadow({ mode: "open" });
         this.shadow.innerHTML = `
             <h2>Add product</h2>
             <hr>
             <form id="theForm">
-                <input name="name" placeholder="Product name"><br>
-                <input name="description" placeholder="description"><br>
-                <input name="category_id" placeholder="Category ID (1-7)"><br>
-                <input name="details" placeholder="Details"><br>
-                <input name="price" placeholder="Price"><br>
-                <input name="thumb" type="file"><br><hr>
+                <label for="productName">Product name</label><br>
+                <input name="name" id="productName" type="text" required><br>
+
+                <label for="productPrice">Price</label><br>
+                <input name="price" id="productPrice" type="number" min="0" step="0.01"><br>
+
+                <label for="categoryId">Category ID</label><br>
+                <input name="catID" id="categoryId" type="number" min="1" max="7"><br>
+
+                <label for="productHeading">Heading</label><br>
+                <input name="heading" id="productHeading" type="text"><br>
+
+                <label for="productDescription">Description</label><br>
+                <textarea name="description" id="productDescription" rows="3"></textarea><br>
+
+                <label for="stock">Stock</label><br>
+                <input name="stock" id="stock" type="number" min="0" step="1"><br>
+
+                <label for="productImage">Image</label><br>
+                <input name="img_file" id="productImage" type="file" accept=".png, .jpg, .jpeg"><br><hr>
                 
-                <input type="submit" value="Add dummy product">
+                <button type="button" id="cancelAddProduct">Cancel</button>
+                <input type="submit" value="Add product">
             </form>
         `;
         const theForm = this.shadow.querySelector("#theForm");
+
+        this.shadow.querySelector("#cancelAddProduct").addEventListener("click", (evt) => {
+            theForm.reset();
+            this.dispatchEvent(new CustomEvent("canceladdproduct"));
+        });
         
-        theForm.addEventListener('submit', evt => {
+
+        theForm.addEventListener("submit", (evt) => {
             evt.preventDefault();
-            const addProdEvent = new CustomEvent("addproduct", {composed: true, bubbles: true});
-            addProdEvent.productForm = new FormData(theForm);
-            this.shadow.dispatchEvent(addProdEvent);
+
+            const formData = new FormData(theForm);
+
+              if (this.formMode === "edit") {
+                formData.append("id", this.selectedProduct.id);
+                const updateProduct = new CustomEvent("updateproduct");
+                updateProduct.productForm = formData;
+                this.dispatchEvent(updateProduct);
+            } else {
+                const addProdEvent = new CustomEvent("addproduct", {
+                composed: true,
+                bubbles: true,
+            });
+              addProdEvent.productForm = formData;
+            this.dispatchEvent(addProdEvent);
+            }
+          
         });
     }
-}    
+    prepareEdit(product){
+        this.formMode = "edit";
+        this.selectedProduct = product;
+        const editFormHeading = this.shadow.querySelector("h2");
+        editFormHeading.textContent = "Edit product - " + product.name;
+        this.shadow.querySelector("#productName").value = product.name;
+        this.shadow.querySelector("#productPrice").value = product.price;
+        this.shadow.querySelector("#categoryId").value = product.catId;
+        this.shadow.querySelector("#productHeading").value = product.descr;
+        this.shadow.querySelector("#productDescription").value = product.description;
+        this.shadow.querySelector("#stock").value = product.stock;
+        this.shadow.querySelector('input[type="submit"]').value = "Save changes";
+    }
+     prepareAdd(){
+        this.formMode = "add";
+        this.selectedProduct= null;
+        const editFormHeading = this.shadow.querySelector("h2");
+        editFormHeading.textContent = "Add Product";
+        this.shadow.querySelector("#theForm").reset();
+        this.shadow.querySelector('input[type="submit"]').value = "Add product";
+    }
+    resetForm() {
+        this.shadow.querySelector("#theForm").reset();
+        
+    };
+};
+
 
 //===============================================
 customElements.define("category-view", CategoryView);
