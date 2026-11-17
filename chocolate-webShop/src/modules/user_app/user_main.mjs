@@ -36,6 +36,28 @@ homeView.addEventListener("productSearch", async (event) => {
 });
 
 //-----------------------------header-----------------------------
+
+const homeButton = document.getElementById("homeButton");
+
+function showHome() {
+    productListView.remove();
+    productDetailView.remove();
+    document.body.appendChild(homeView);
+}
+
+homeButton.addEventListener("click", showHome);
+
+const homeTitle = document.getElementById("homeTitle");
+
+homeTitle.addEventListener("click", showHome);
+
+homeTitle.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        showHome();
+    }
+});
+
 const cartButton = document.getElementById("cartButton"); //finner knappen i headeren i user_app.html
 
 cartButton.addEventListener("click", () => {

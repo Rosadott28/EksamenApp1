@@ -56,35 +56,56 @@ h3 {
 }
 
 .site-header h1 {
-  color: var(--pearl);
-  margin: 0;
+    color: var(--pearl);
+    margin: 0 auto;
+    width: fit-content;
+    cursor: pointer;
+}
+
+#cartButton,
+#homeButton {
+    background-color: var(--pearl);
+    border: 1px solid var(--pearl);
+    border-radius: var(--radius);
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #cartButton {
-  background-color: var(--pearl);
-  border: 1px solid var(--pearl);
-  border-radius: var(--radius);
-  cursor: pointer;
-  position: absolute; /* settes i header */
-  right: 16px; 
-  top: 50%; 
-  transform: translateY(-50%); /* Sentrerer vertikalt */
-  padding: 5px;
+    right: 16px;
+}
+
+#homeButton {
+    left: 16px;
 }
 
 #cartButton img {
-  width: 18px;
-  height: 18px;
-  display: block;
+    width: 18px;
+    height: 18px;
 }
 
-#cartButton::after {
+#homeButton img {
+    width: 20px;
+    height: 20px;
+}
+
+#cartButton::after,
+#homeButton::after {
     content: "";
     position: absolute;
     inset: -8px; /* Utvider klikkflaten */
 }
 
-#cartButton:focus-visible { /* Tastaturbrukere kan se når den har fokus */
+#cartButton:focus-visible,
+#homeButton:focus-visible {
     outline: 2px solid var(--powder);
     outline-offset: 3px;
 }
