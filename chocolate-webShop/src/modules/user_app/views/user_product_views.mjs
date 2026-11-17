@@ -91,6 +91,12 @@ export class HomeView extends HTMLElement {
       this.handleSearch(searchInput.value); //Sender søkeordet til en egen metode.
     });
 
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        this.handleSearch(searchInput.value);
+      }
+    });
+
     searchContainer.appendChild(searchInput);
     searchContainer.appendChild(searchButton);
 
