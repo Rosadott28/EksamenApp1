@@ -145,15 +145,15 @@ export class ProductView extends HTMLElement {
             productActionCell.appendChild(deleteButton);
 
             editButton.addEventListener("click", (evt) => {
-            const editProduct = new CustomEvent("editproduct", {
-                detail: product
+                const editProduct = new CustomEvent("editproduct", {
+                    detail: product
                 });
                 this.dispatchEvent(editProduct);
             });
 
             deleteButton.addEventListener("click", (evt) => {
-            const deleteProduct = new CustomEvent("deleteproduct", {
-                detail: product
+                const deleteProduct = new CustomEvent("deleteproduct", {
+                    detail: product
                 });
                 this.dispatchEvent(deleteProduct);
             });
@@ -165,7 +165,7 @@ export class ProductView extends HTMLElement {
             });
             this.shadow.dispatchEvent(addProdEvent);
         });
-    };    
+    };
 };
 
 
@@ -179,6 +179,57 @@ export class ProductForm extends HTMLElement {
 
         this.shadow = this.attachShadow({ mode: "open" });
         this.shadow.innerHTML = `
+        <style>
+        :host {
+            display: block;
+            max-width: 800px;
+            margin: 24px auto;
+            padding: 32px;
+            background-color: var(--ivory);
+            color: var(--espresso);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            h2 {
+                font-size: 24px;
+            }
+            input:not([type="submit"]):not([type="file"]),
+            textarea {
+                width: 100%;
+                padding: 10px 12px;
+                font-size: 16px;
+                box-sizing: border-box;
+            }
+                label {
+                display: inline-block;
+                margin-top: 12px;
+                margin-bottom: 5px;
+                font-weight: 600;
+            }
+            button[type="button"],
+            input[type="submit"] {
+                border-radius: 999px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-top: 12px;
+            }
+
+            button[type="button"] {
+                background-color: var(--ivory);
+                color: var(--espresso);
+                border: 2px solid var(--truffle);
+                margin-right: 8px;
+            }
+
+            input[type="submit"] {
+                background-color: var(--powder);
+                color: var(--espresso);
+                border: 2px solid var(--powder);
+                font-weight: 600;
+            }
+        }
+        </style>
             <h2>Add product</h2>
             <hr>
             <form id="theForm">
@@ -213,30 +264,30 @@ export class ProductForm extends HTMLElement {
             theForm.reset();
             this.dispatchEvent(new CustomEvent("canceladdproduct"));
         });
-        
+
 
         theForm.addEventListener("submit", (evt) => {
             evt.preventDefault();
 
             const formData = new FormData(theForm);
 
-              if (this.formMode === "edit") {
+            if (this.formMode === "edit") {
                 formData.append("id", this.selectedProduct.id);
                 const updateProduct = new CustomEvent("updateproduct");
                 updateProduct.productForm = formData;
                 this.dispatchEvent(updateProduct);
             } else {
                 const addProdEvent = new CustomEvent("addproduct", {
-                composed: true,
-                bubbles: true,
-            });
-              addProdEvent.productForm = formData;
-            this.dispatchEvent(addProdEvent);
+                    composed: true,
+                    bubbles: true,
+                });
+                addProdEvent.productForm = formData;
+                this.dispatchEvent(addProdEvent);
             }
-          
+
         });
     }
-    prepareEdit(product){
+    prepareEdit(product) {
         this.formMode = "edit";
         this.selectedProduct = product;
         const editFormHeading = this.shadow.querySelector("h2");
@@ -249,9 +300,9 @@ export class ProductForm extends HTMLElement {
         this.shadow.querySelector("#stock").value = product.stock;
         this.shadow.querySelector('input[type="submit"]').value = "Save changes";
     }
-     prepareAdd(){
+    prepareAdd() {
         this.formMode = "add";
-        this.selectedProduct= null;
+        this.selectedProduct = null;
         const editFormHeading = this.shadow.querySelector("h2");
         editFormHeading.textContent = "Add Product";
         this.shadow.querySelector("#theForm").reset();
@@ -259,7 +310,7 @@ export class ProductForm extends HTMLElement {
     }
     resetForm() {
         this.shadow.querySelector("#theForm").reset();
-        
+
     };
 };
 
