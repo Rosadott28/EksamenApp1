@@ -44,6 +44,28 @@ export async function getAllProducts() {
 }
 
 //--------------------------------------------------------
+export async function getAllOrders() {
+
+    const url = `https://sukkergris.onrender.com/webshop/orders?key=${groupkey}`;
+    const cfg = {
+        method: "GET",
+        headers: {
+            "Authorization": sessionStorage.getItem("adminToken")
+        }
+    }
+    try {
+
+        const dataFromServer = await sendRequest(url, cfg);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return [];
+    }
+    
+}
+
+//--------------------------------------------------------
 export async function getProductsByCategory(catId) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?catID=${catId}&key=${groupkey}`;
 
@@ -57,7 +79,7 @@ export async function getProductsByCategory(catId) {
 
     } catch (error) {
         errorHandler(error);
-        return [];
+        return null;
     }
 }
 
@@ -128,6 +150,25 @@ export async function updateProduct(product) {
 //---------------------------------------------------------
 export async function deleteProduct(productId) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?key=${groupkey}&id=${productId}`;
+
+    const cfg = {
+        method: "DELETE",
+        headers: {
+            "Authorization": sessionStorage.getItem("adminToken")
+        }
+    }
+    try {
+        const data = await sendRequest(url, cfg);
+        return data;
+        
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
+//---------------------------------------------------------
+export async function deleteOrder(orderId) {
+    const url = `https://sukkergris.onrender.com/webshop/orders?key=${groupkey}&id=${orderId}`;
 
     const cfg = {
         method: "DELETE",

@@ -1,6 +1,6 @@
 // Controller for admin app
 
-import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin, updateProduct, deleteProduct } from "../api_service.mjs";
+import { getCategories, getAllProducts, addProduct, getProductsByCategory, adminLogin, updateProduct, deleteProduct, getAllOrders, deleteOrder} from "../api_service.mjs";
 import { CategoryView, ProductForm, ProductView } from "./views/admin_product_views.mjs";
 import { OrderView } from "./views/admin_order_views.mjs";
 import { UserView } from "./views/admin_user_views.mjs";
@@ -114,7 +114,10 @@ btnProducts.addEventListener('click', async function (evt) {
 
 });
 
-btnOrders.addEventListener('click', function (evt) {
+btnOrders.addEventListener('click', async function (evt) {
+    const orders = await getAllOrders();
+    console.log(orders);
+    orderView.refresh(orders);
     navigateTo("orderview");
     setActiveTab(btnOrders);
 });
@@ -159,5 +162,22 @@ prodView.addEventListener("deleteproduct", async function (evt) {
         btnProducts.click();
     }else {
     showMessage("Could not delete product. Please try again.");
+}
+});
+
+orderView.addEventListener("deleteorder", async function (evt) {
+    const order = evt.detail;
+    const confirm = window.confirm(
+        "Are you sure you want to delete " + order.id + "?"
+    );
+    if (!confirm) {
+        return;
+    }
+    const result = await deleteOrder(order.id);
+    if (result) {
+        showMessage("Order deleted successfully!");
+        btnOrders.click();
+    }else {
+    showMessage("Could not delete order. Please try again.");
 }
 });
