@@ -14,6 +14,7 @@ export class CartView extends HTMLElement {
 
     const heading = document.createElement("h2");
     heading.classList.add("view-heading");
+    heading.classList.add("cart-heading");
     heading.textContent = "Shopping cart";
     this.shadow.appendChild(heading);
 
@@ -25,6 +26,9 @@ export class CartView extends HTMLElement {
 
     const emptyButton = this.createEmptyCartButton();
     this.shadow.appendChild(emptyButton);
+
+    const checkoutButton = this.createCheckoutButton();
+    this.shadow.appendChild(checkoutButton);
   }
 
   createProductContainer(data) {
@@ -37,37 +41,6 @@ export class CartView extends HTMLElement {
     });
 
     return container;
-  }
-
-  createProductTable(data) {
-    //lager tabellen
-    const productTable = document.createElement("table");
-    const headerRow = document.createElement("tr");
-
-    const columns = [
-      "Product ID",
-      "Name",
-      "Quantity",
-      "Price",
-      "Total",
-      "Expected shipping",
-      "Action",
-    ];
-
-    columns.forEach((column) => {
-      const th = document.createElement("th");
-      th.textContent = column;
-      headerRow.appendChild(th);
-    });
-
-    productTable.appendChild(headerRow);
-
-    data.forEach((product) => {
-      const productRow = this.createProductRow(product);
-      productTable.appendChild(productRow);
-    });
-
-    return productTable;
   }
 
   createProductRow(product) {
@@ -87,6 +60,8 @@ export class CartView extends HTMLElement {
 
       if (index === 0) {
         cell.classList.add("cart-product-name");
+      } else if (index === 3) {
+        cell.classList.add("cart-product-total");
       }
 
       row.appendChild(cell);
@@ -142,7 +117,7 @@ export class CartView extends HTMLElement {
 
     const deleteCell = document.createElement("div");
     deleteCell.classList.add("cart-delete-cell");
-    
+
     const deleteButton = this.createDeleteButton(product);
 
     deleteCell.appendChild(deleteButton);
@@ -178,6 +153,19 @@ export class CartView extends HTMLElement {
     });
 
     return emptyButton;
+  }
+
+  createCheckoutButton() {
+    const button = document.createElement("button");
+    button.textContent = "Proceed to checkout";
+    button.classList.add("checkout-button");
+
+    // Sender beskjed til hovedmodulen når brukeren vil gå til checkout
+    button.addEventListener("click", () => {
+      this.dispatchEvent(new CustomEvent("checkoutClick"));
+    });
+
+    return button;
   }
 
   createCartTotal(data) {

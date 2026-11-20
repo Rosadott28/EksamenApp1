@@ -15,8 +15,10 @@ import {
 
 import { CartView } from "./views/user_cart_views.mjs";
 
+import { CheckoutView } from "./views/user_checkout_views.mjs";
+
 //----------------------------shoppingCart----------------------------
-const cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];// Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
+const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
 
 function addToCart(product) {
   // Legger produktet i handlekurven, eller øker antallet hvis det finnes fra før
@@ -62,6 +64,7 @@ function showHome() {
   productListView.remove();
   productDetailView.remove();
   cartView.remove();
+  checkoutView.remove();
   document.body.appendChild(homeView);
 }
 
@@ -82,6 +85,15 @@ const cartButton = document.getElementById("cartButton");
 
 //--------------------------------cartView--------------------------------
 const cartView = new CartView();
+
+const checkoutView = new CheckoutView();
+
+// Åpner checkout-visningen når brukeren trykker på checkout-knappen
+cartView.addEventListener("checkoutClick", () => {
+  cartView.remove();
+  checkoutView.refresh();
+  document.body.appendChild(checkoutView);
+});
 
 // Oppdaterer antallet i handlekurven og beregner prisene på nytt
 cartView.addEventListener("quantityChange", (event) => {
@@ -108,7 +120,7 @@ cartView.addEventListener("deleteCartProduct", (event) => {
 // Tømmer hele handlekurven og oppdaterer visningen
 cartView.addEventListener("emptyCart", () => {
   cart.length = 0;
-  
+
   localStorage.setItem("shoppingCart", JSON.stringify(cart));
 
   cartView.refresh(cart);
@@ -118,6 +130,7 @@ cartButton.addEventListener("click", () => {
   homeView.remove();
   productListView.remove();
   productDetailView.remove();
+  checkoutView.remove();
 
   cartView.refresh(cart);
   document.body.appendChild(cartView);
