@@ -19,6 +19,9 @@ export class CartView extends HTMLElement {
 
     const productTable = this.createProductTable(data);
     this.shadow.appendChild(productTable);
+
+    const cartTotal = this.createCartTotal(data);
+    this.shadow.appendChild(cartTotal);
   }
 
   createProductTable(data) {
@@ -53,7 +56,7 @@ export class CartView extends HTMLElement {
       product.name,
       product.quantity,
       product.price + " kr",
-      product.price * product.quantity + " kr"
+      product.price * product.quantity + " kr",
     ];
 
     values.forEach((value) => {
@@ -63,6 +66,18 @@ export class CartView extends HTMLElement {
     });
 
     return row;
+  }
+
+  createCartTotal(data) {
+    const total = data.reduce((sum, product) => {
+      return sum + product.price * product.quantity;
+    }, 0);
+
+    const totalText = document.createElement("p");
+    totalText.classList.add("cart-total");
+    totalText.textContent = "Total shopping cart: " + total + " kr";
+
+    return totalText;
   }
 }
 
