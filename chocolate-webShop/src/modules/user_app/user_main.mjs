@@ -31,7 +31,7 @@ document.body.appendChild(homeView);
 
 homeView.addEventListener("categorySelect", async (event) => {
   const products = await getProductsByCategory(event.categoryData.id);
- 
+
   productListView.refresh(products, event.categoryData.catName);
   homeView.remove();
   document.body.appendChild(productListView);
@@ -49,9 +49,9 @@ homeView.addEventListener("productSearch", async (event) => {
 const homeButton = document.getElementById("homeButton");
 
 function showHome() {
-    productListView.remove();
-    productDetailView.remove();
-    document.body.appendChild(homeView);
+  productListView.remove();
+  productDetailView.remove();
+  document.body.appendChild(homeView);
 }
 
 homeButton.addEventListener("click", showHome);
@@ -61,10 +61,10 @@ const homeTitle = document.getElementById("homeTitle");
 homeTitle.addEventListener("click", showHome);
 
 homeTitle.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        showHome();
-    }
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    showHome();
+  }
 });
 
 const cartButton = document.getElementById("cartButton"); //finner knappen i headeren i user_app.html
@@ -72,6 +72,13 @@ const cartButton = document.getElementById("cartButton"); //finner knappen i hea
 cartButton.addEventListener("click", () => {
   console.log("Shopping cart button clicked");
 });
+
+const userMenuButton = document.getElementById("userMenuButton");
+const userMenu = document.getElementById("userMenu");
+userMenuButton.addEventListener("click", () => {
+  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
+});
+
 
 //-----------------------------productListView-----------------------------
 const productListView = new ProductListView();
@@ -88,7 +95,7 @@ productListView.addEventListener("productSelect", async (event) => {
   if (!product) {
     return;
   }
-  
+
 
   productDetailView.refresh(product);
   productListView.remove();
@@ -107,11 +114,11 @@ productDetailView.addEventListener("backClick", () => {
 const registrationView = new RegistrationView();
 
 registrationView.addEventListener('registeruser', async function (evt) {
-    const result = await registerUser(evt.userForm);
-    if (result) {
-        registrationView.resetForm()
-        showMessage("Account created successfully!");
-    }else {
+  const result = await registerUser(evt.userForm);
+  if (result) {
+    registrationView.resetForm()
+    showMessage("Account created successfully!");
+  } else {
     showMessage("Could not create account. Please try again.");
-}
+  }
 });
