@@ -80,6 +80,15 @@ const cartButton = document.getElementById("cartButton");
 
 const cartView = new CartView();
 
+cartView.addEventListener("quantityChange", (event) => { // Oppdaterer antallet i handlekurven og beregner prisene på nytt
+  const product = cart.find((item) => item.id === event.detail.id);
+
+  if (product) {
+    product.quantity = event.detail.quantity;
+    cartView.refresh(cart);
+  }
+});
+
 cartButton.addEventListener("click", () => {
   homeView.remove();
   productListView.remove();

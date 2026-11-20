@@ -54,7 +54,6 @@ export class CartView extends HTMLElement {
     const values = [
       product.id,
       product.name,
-      product.quantity,
       product.price + " kr",
       product.price * product.quantity + " kr",
     ];
@@ -64,6 +63,35 @@ export class CartView extends HTMLElement {
       cell.textContent = value;
       row.appendChild(cell);
     });
+
+    const quantityInput = document.createElement("input");
+    quantityInput.type = "number";
+    quantityInput.classList.add("quantity-input");
+    quantityInput.min = "1";
+    quantityInput.value = product.quantity;
+
+    quantityInput.addEventListener("change", () => { // Validerer nytt antall og sender endringen videre til hovedmodulen
+      const quantity = Number(quantityInput.value);
+
+      if (quantity < 1 || !Number.isInteger(quantity)) {
+        quantityInput.value = product.quantity;
+        return;
+      }
+
+      this.dispatchEvent(
+        new CustomEvent("quantityChange", {
+          detail: {
+            id: product.id,
+            quantity: quantity,
+          },
+        }),
+      );
+    });
+
+    const quantityCell = document.createElement("td");
+    quantityCell.appendChild(quantityInput);
+
+    row.insertBefore(quantityCell, row.children[2]);
 
     return row;
   }
