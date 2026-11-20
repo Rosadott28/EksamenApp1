@@ -124,8 +124,27 @@ export async function addProduct(product) {
         return null;
     }
 }
+//--------------------------------------------------------
+export async function registerUser(user) {
+
+    const url = `https://sukkergris.onrender.com/users?key=${groupkey}`;
+
+    const cfg = {
+        method: "POST",
+        body: user,  
+    }
+
+    try {
+
+        const data = await sendRequest(url, cfg);
+        return data;
+
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
 //---------------------------------------------------------
-//add more functions below when needed
 
 export async function updateProduct(product) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?key=${groupkey}`;
