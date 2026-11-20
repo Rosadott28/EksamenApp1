@@ -51,9 +51,9 @@ export class CartView extends HTMLElement {
     const values = [
       product.id,
       product.name,
-      1,
+      product.quantity,
       product.price + " kr",
-      product.price + " kr",
+      product.price * product.quantity + " kr"
     ];
 
     values.forEach((value) => {

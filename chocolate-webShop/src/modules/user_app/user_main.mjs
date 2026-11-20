@@ -15,6 +15,20 @@ import {
 
 import { CartView } from "./views/user_cart_views.mjs";
 
+//----------------------------shoppingCart----------------------------
+const cart = [];
+
+function addToCart(product) {
+  // Legger produktet i handlekurven, eller øker antallet hvis det finnes fra før
+  const existingProduct = cart.find((item) => item.id === product.id);
+
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+}
+
 //------------------------------homeView-----------------------------
 const homeView = new HomeView(); // Oppretter en instans av HomeView
 
@@ -71,7 +85,7 @@ cartButton.addEventListener("click", () => {
   productListView.remove();
   productDetailView.remove();
 
-  cartView.refresh([]);
+  cartView.refresh(cart);
   document.body.appendChild(cartView);
 });
 
@@ -98,6 +112,11 @@ productListView.addEventListener("productSelect", async (event) => {
 
 //-----------------------------productDetailView-----------------------------
 const productDetailView = new ProductDetailView();
+
+productDetailView.addEventListener("buyProduct", (event) => {
+  addToCart(event.detail);
+  console.log(cart);
+});
 
 productDetailView.addEventListener("backClick", () => {
   productDetailView.remove();
