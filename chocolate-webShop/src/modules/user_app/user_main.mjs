@@ -51,6 +51,7 @@ const homeButton = document.getElementById("homeButton");
 function showHome() {
   productListView.remove();
   productDetailView.remove();
+  registrationView.remove();
   document.body.appendChild(homeView);
 }
 
@@ -79,6 +80,15 @@ userMenuButton.addEventListener("click", () => {
   userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
 });
 
+//-----------------------------createUser-----------------------------
+const createUserButton = document.getElementById("createUserButton");
+createUserButton.addEventListener("click", () => {
+  homeView.remove();
+  productListView.remove();
+  productDetailView.remove();
+  document.body.appendChild(registrationView);
+  userMenu.hidden = true;
+});
 
 //-----------------------------productListView-----------------------------
 const productListView = new ProductListView();
