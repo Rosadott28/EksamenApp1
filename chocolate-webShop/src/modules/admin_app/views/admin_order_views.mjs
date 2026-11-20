@@ -1,31 +1,39 @@
 export class OrderView extends HTMLElement {
-  //-----------------------------
-  constructor() {
-    super();
-    this.shadow = this.attachShadow({ mode: "open" });
-  }
+    //-----------------------------
+    constructor() {
+        super();
+        this.shadow = this.attachShadow({ mode: "open" });
+    }
 
-  //-----------------------------
-  refresh(orders) {
-    if (!orders) {
-      return;
-    } //if an error is catched in api_service
+    //-----------------------------
+    refresh(orders) {
+        if (!orders) {
+            return;
+        } //if an error is catched in api_service
 
-    this.shadow.replaceChildren();
+        this.shadow.replaceChildren();
+        if (orders.length === 0) {
+            const noOrders = document.createElement("p");
+            noOrders.textContent = "No orders yet."
+            this.shadow.appendChild(noOrders);
+            return;
+        }
 
-    const orderTableStyle = document.createElement("style");
-    const orderTable = document.createElement("table");
-    const orderTableBody = document.createElement("tbody");
-    const tableHeaderSection = document.createElement("thead");
-    const headerRow = document.createElement("tr");
-    const orderNameHeader = document.createElement("th");
-    const priceNameHeader = document.createElement("th");
-    const actionNameHeader = document.createElement("th");
+        const orderTableStyle = document.createElement("style");
+        const orderTable = document.createElement("table");
+        const orderTableBody = document.createElement("tbody");
+        const tableHeaderSection = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        const orderIdHeader = document.createElement("th");
+        const customerNameHeader = document.createElement("th");
+        const orderDateHeader = document.createElement("th");
+        const actionHeader = document.createElement("th");
 
-    orderNameHeader.textContent = "order name";
-    priceNameHeader.textContent = "Price";
-    actionNameHeader.textContent = "Action";
-    orderTableStyle.textContent = `
+        orderIdHeader.textContent = "order id";
+        customerNameHeader.textContent = "customer name";
+        orderDateHeader.textContent = "order date";
+        actionHeader.textContent = "action";
+        orderTableStyle.textContent = `
         
             .delete-button {
             background-color: var(--ivory);
@@ -66,40 +74,48 @@ export class OrderView extends HTMLElement {
                 background-color: var(--pearl);
             }`;
 
-    headerRow.appendChild(orderNameHeader);
-    headerRow.appendChild(priceNameHeader);
-    headerRow.appendChild(actionNameHeader);
-    tableHeaderSection.appendChild(headerRow);
-    orderTable.appendChild(tableHeaderSection);
-    orderTable.appendChild(orderTableBody);
+        headerRow.appendChild(orderIdHeader);
+        headerRow.appendChild(customerNameHeader);
+        headerRow.appendChild(orderDateHeader);
+        headerRow.appendChild(actionHeader);
+        tableHeaderSection.appendChild(headerRow);
+        orderTable.appendChild(tableHeaderSection);
+        orderTable.appendChild(orderTableBody);
 
-    this.shadow.appendChild(orderTable);
-    this.shadow.appendChild(orderTableStyle);
+        this.shadow.appendChild(orderTable);
+        this.shadow.appendChild(orderTableStyle);
 
-    orders.forEach((order) => {
-      const orderRow = document.createElement("tr");
-      const orderIdCell = document.createElement("td");
-      const orderDateCell = document.createElement("td");
-      const orderActionCell = document.createElement("td");
-      const deleteButton = document.createElement("button");
+        orders.forEach((order) => {
+            const orderRow = document.createElement("tr");
+            const orderIdCell = document.createElement("td");
+            const orderCustomerCell = document.createElement("td");
+            const orderDateCell = document.createElement("td");
+            const orderActionCell = document.createElement("td");
+            const deleteButton = document.createElement("button");
 
-      deleteButton.classList.add("delete-button");
+            deleteButton.classList.add("delete-button");
 
-      deleteButton.textContent = "Delete";
+            // TODO: Verify property names against real API order data
+            orderIdCell.textContent = order.id;
+            orderCustomerCell.textContent = order.customer_name;
+            orderDateCell.textContent = order.date;
 
-      orderRow.appendChild(orderIdCell);
-      orderRow.appendChild(orderDateCell);
-      orderRow.appendChild(orderActionCell);
-      orderTableBody.appendChild(orderRow);
-      orderActionCell.appendChild(deleteButton);
+            deleteButton.textContent = "Delete";
 
-      deleteButton.addEventListener("click", (evt) => {
-        const deleteOrder = new CustomEvent("deleteorder", {
-          detail: order,
+            orderRow.appendChild(orderIdCell);
+            orderRow.appendChild(orderCustomerCell);
+            orderRow.appendChild(orderDateCell);
+            orderRow.appendChild(orderActionCell);
+            orderTableBody.appendChild(orderRow);
+            orderActionCell.appendChild(deleteButton);
+
+            deleteButton.addEventListener("click", (evt) => {
+                const deleteOrder = new CustomEvent("deleteorder", {
+                    detail: order,
+                });
+                this.dispatchEvent(deleteOrder);
+            });
         });
-        this.dispatchEvent(deleteOrder);
-      });
-    });
-  }
+    }
 }
 customElements.define("order-view", OrderView);
