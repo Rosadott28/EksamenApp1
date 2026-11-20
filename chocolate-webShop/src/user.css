@@ -344,3 +344,50 @@ th, td {
     color: var(--truffle);
     box-shadow: none;
 }
+
+.cart-product-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 16px;
+}
+
+.cart-product-card {
+    background-color: var(--ivory);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cart-delete-cell {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cart-product-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--truffle);
+}
+
+/* Samme bredde for hele handlekurven på PC */
+@media (min-width: 768px) {
+    .cart-product-container,
+    .cart-total,
+    .empty-cart-button {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .view-heading {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

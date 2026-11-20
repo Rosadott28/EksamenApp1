@@ -17,14 +17,26 @@ export class CartView extends HTMLElement {
     heading.textContent = "Shopping cart";
     this.shadow.appendChild(heading);
 
-    const productTable = this.createProductTable(data);
-    this.shadow.appendChild(productTable);
+    const productContainer = this.createProductContainer(data);
+    this.shadow.appendChild(productContainer);
 
     const cartTotal = this.createCartTotal(data);
     this.shadow.appendChild(cartTotal);
 
     const emptyButton = this.createEmptyCartButton();
     this.shadow.appendChild(emptyButton);
+  }
+
+  createProductContainer(data) {
+    const container = document.createElement("div");
+    container.classList.add("cart-product-container");
+
+    data.forEach((product) => {
+      const productCard = this.createProductRow(product);
+      container.appendChild(productCard);
+    });
+
+    return container;
   }
 
   createProductTable(data) {
@@ -38,6 +50,7 @@ export class CartView extends HTMLElement {
       "Quantity",
       "Price",
       "Total",
+      "Expected shipping",
       "Action",
     ];
 
@@ -58,19 +71,24 @@ export class CartView extends HTMLElement {
   }
 
   createProductRow(product) {
-    //lager radene i tabellen
-    const row = document.createElement("tr");
+    const row = document.createElement("div");
+    row.classList.add("cart-product-card");
 
     const values = [
-      product.id,
       product.name,
-      product.price + " kr",
-      product.price * product.quantity + " kr",
+      "Product ID: " + product.id,
+      "Unit price: " + product.price + " kr",
+      "Product total: " + product.price * product.quantity + " kr",
     ];
 
-    values.forEach((value) => {
-      const cell = document.createElement("td");
+    values.forEach((value, index) => {
+      const cell = document.createElement("div");
       cell.textContent = value;
+
+      if (index === 0) {
+        cell.classList.add("cart-product-name");
+      }
+
       row.appendChild(cell);
     });
 
@@ -99,12 +117,32 @@ export class CartView extends HTMLElement {
       );
     });
 
-    const quantityCell = document.createElement("td");
+    const quantityCell = document.createElement("div");
+
+    const quantityLabel = document.createElement("label");
+    quantityLabel.textContent = "Quantity: ";
+    // Kobler Quantity-etiketten til riktig antallsfelt for bedre tilgjengelighet
+    quantityInput.id = "quantity-" + product.id;
+    quantityLabel.htmlFor = quantityInput.id;
+
+    quantityCell.appendChild(quantityLabel);
+
     quantityCell.appendChild(quantityInput);
 
     row.insertBefore(quantityCell, row.children[2]);
 
-    const deleteCell = document.createElement("td");
+    const shippingCell = document.createElement("div");
+
+    if (product.stock === 0 && product.expectedShipped) {
+      const date = new Date(product.expectedShipped);
+      shippingCell.textContent = date.toLocaleDateString("en-GB");
+    }
+
+    row.appendChild(shippingCell);
+
+    const deleteCell = document.createElement("div");
+    deleteCell.classList.add("cart-delete-cell");
+    
     const deleteButton = this.createDeleteButton(product);
 
     deleteCell.appendChild(deleteButton);
