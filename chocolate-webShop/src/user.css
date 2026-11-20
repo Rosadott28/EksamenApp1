@@ -368,3 +368,109 @@ h3 {
     padding: 12px 20px;
     border-radius: 8px;
 }
+
+.buy-button {
+    background-color: var(--powder);
+    color: var(--espresso);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* ------------------------ Handlekurv ------------------------ */
+
+.cart-total {
+    text-align: right;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 16px;
+    border-top: 1px solid var(--truffle);
+}
+
+.quantity-input {
+    width: 70px;
+    padding: 6px;
+    font-size: 16px;
+}
+
+.delete-button {
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px #00000020;
+    background-color: var(--ivory);
+    border: 2px solid #B42318;
+    color: #B42318;
+}
+
+.empty-cart-button {
+    display: block;
+    margin: 8px 16px 8px auto;
+    background-color: transparent;
+    border: 1px solid var(--truffle);
+    color: var(--truffle);
+    box-shadow: none;
+}
+
+.checkout-button {
+    display: block;
+    margin: 8px 16px 8px auto;
+    padding: 10px 16px;
+    background-color: var(--powder);
+    color: var(--espresso);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cart-product-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 16px;
+}
+
+.cart-product-card {
+    background-color: var(--ivory);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cart-delete-cell {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cart-product-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--truffle);
+}
+
+.cart-product-total {
+    font-weight: bold;
+}
+
+/* Begrenser bredden på handlekurven på PC */
+@media (min-width: 768px) {
+    .cart-product-container,
+    .cart-total,
+    .cart-heading {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .empty-cart-button,
+    .checkout-button {
+        margin-right: max(16px, calc((100% - 800px) / 2));
+    }
+}

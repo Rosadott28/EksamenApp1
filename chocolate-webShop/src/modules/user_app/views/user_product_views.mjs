@@ -271,6 +271,9 @@ export class ProductDetailView extends HTMLElement {
     const productInfo = this.createProductInfo(data);
     productCard.appendChild(productInfo);
 
+    const buyButton = this.createBuyButton(data);
+    productInfo.appendChild(buyButton);
+
     this.shadow.appendChild(productCard);
   }
 
@@ -345,6 +348,22 @@ export class ProductDetailView extends HTMLElement {
     productInfo.appendChild(stockInfo);
 
     return productInfo;
+  }
+
+  createBuyButton(data) {
+    const buyButton = document.createElement("button");
+    buyButton.textContent = "Buy this item";
+    buyButton.classList.add("buy-button");
+
+    buyButton.addEventListener("click", () => {
+      const buyEvent = new CustomEvent("buyProduct", {
+        detail: data,
+      });
+
+      this.dispatchEvent(buyEvent);
+    });
+
+    return buyButton;
   }
 
   createProductRating(data) {

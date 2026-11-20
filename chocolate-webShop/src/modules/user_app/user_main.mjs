@@ -7,6 +7,7 @@ import {
   getProductById,
   registerUser,
 } from "../api_service.mjs";
+
 import {
   HomeView,
   ProductListView,
@@ -20,6 +21,26 @@ import {
 } from "../user_registration_views.mjs";
 
 
+
+import { CartView } from "./views/user_cart_views.mjs";
+
+import { CheckoutView } from "./views/user_checkout_views.mjs";
+
+//----------------------------shoppingCart----------------------------
+const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
+
+function addToCart(product) {
+  // Legger produktet i handlekurven, eller øker antallet hvis det finnes fra før
+  const existingProduct = cart.find((item) => item.id === product.id);
+
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  localStorage.setItem("shoppingCart", JSON.stringify(cart)); // Lagrer den oppdaterte handlekurven i nettleseren
+}
 
 //------------------------------homeView-----------------------------
 const homeView = new HomeView(); // Oppretter en instans av HomeView
@@ -49,10 +70,12 @@ homeView.addEventListener("productSearch", async (event) => {
 const homeButton = document.getElementById("homeButton");
 
 function showHome() {
-  productListView.remove();
-  productDetailView.remove();
-  registrationView.remove();
-  document.body.appendChild(homeView);
+    productListView.remove();
+    productDetailView.remove();
+    cartView.remove();
+    checkoutView.remove();
+    registrationView.remove();
+    document.body.appendChild(homeView);
 }
 
 homeButton.addEventListener("click", showHome);
@@ -68,10 +91,75 @@ homeTitle.addEventListener("keydown", (event) => {
   }
 });
 
-const cartButton = document.getElementById("cartButton"); //finner knappen i headeren i user_app.html
+const cartButton = document.getElementById("cartButton");
+
+//--------------------------------cartView--------------------------------
+const cartView = new CartView();
+
+const checkoutView = new CheckoutView();
+
+// Åpner checkout-visningen når brukeren trykker på checkout-knappen
+cartView.addEventListener("checkoutClick", () => {
+  cartView.remove();
+  checkoutView.refresh();
+  document.body.appendChild(checkoutView);
+});
+
+// Oppdaterer antallet i handlekurven og beregner prisene på nytt
+cartView.addEventListener("quantityChange", (event) => {
+  const product = cart.find((item) => item.id === event.detail.id);
+
+  if (product) {
+    product.quantity = event.detail.quantity;
+    localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    cartView.refresh(cart);
+  }
+});
+
+// Fjerner valgt produkt fra handlekurven og oppdaterer visningen
+cartView.addEventListener("deleteCartProduct", (event) => {
+  const index = cart.findIndex((item) => item.id === event.detail);
+
+  if (index !== -1) {
+    cart.splice(index, 1);
+    localStorage.setItem("shoppingCart", JSON.stringify(cart)); // Lagrer handlekurven etter at produktet er slettet
+    cartView.refresh(cart);
+  }
+});
+
+// Tømmer hele handlekurven og oppdaterer visningen
+cartView.addEventListener("emptyCart", () => {
+  cart.length = 0;
+
+  localStorage.setItem("shoppingCart", JSON.stringify(cart));
+
+  cartView.refresh(cart);
+});
 
 cartButton.addEventListener("click", () => {
-  console.log("Shopping cart button clicked");
+  homeView.remove();
+  productListView.remove();
+  productDetailView.remove();
+  checkoutView.remove();
+
+  cartView.refresh(cart);
+  document.body.appendChild(cartView);
+});
+
+const userMenuButton = document.getElementById("userMenuButton");
+const userMenu = document.getElementById("userMenu");
+userMenuButton.addEventListener("click", () => {
+  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
+});
+
+//-----------------------------createUser-----------------------------
+const createUserButton = document.getElementById("createUserButton");
+createUserButton.addEventListener("click", () => {
+  homeView.remove();
+  productListView.remove();
+  productDetailView.remove();
+  document.body.appendChild(registrationView);
+  userMenu.hidden = true;
 });
 
 const userMenuButton = document.getElementById("userMenuButton");
@@ -98,14 +186,14 @@ productListView.addEventListener("backClick", () => {
   document.body.appendChild(homeView);
 });
 
+// Henter valgt produkt fra API og viser detaljvisningen
 productListView.addEventListener("productSelect", async (event) => {
-  // Henter valgt produkt fra API og viser detaljvisningen
   const product = await getProductById(event.productData.id);
 
   if (!product) {
     return;
   }
-
+  
 
   productDetailView.refresh(product);
   productListView.remove();
@@ -114,6 +202,10 @@ productListView.addEventListener("productSelect", async (event) => {
 
 //-----------------------------productDetailView-----------------------------
 const productDetailView = new ProductDetailView();
+
+productDetailView.addEventListener("buyProduct", (event) => {
+  addToCart(event.detail);
+});
 
 productDetailView.addEventListener("backClick", () => {
   productDetailView.remove();
