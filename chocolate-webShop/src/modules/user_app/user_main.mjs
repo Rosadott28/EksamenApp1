@@ -17,7 +17,7 @@ import {
   showMessage
 } from "../msg_handler.mjs";
 import {
-  RegistrationView
+  registrationView
 } from "../user_registration_views.mjs";
 
 
@@ -70,12 +70,12 @@ homeView.addEventListener("productSearch", async (event) => {
 const homeButton = document.getElementById("homeButton");
 
 function showHome() {
-    productListView.remove();
-    productDetailView.remove();
-    cartView.remove();
-    checkoutView.remove();
-    registrationView.remove();
-    document.body.appendChild(homeView);
+  productListView.remove();
+  productDetailView.remove();
+  cartView.remove();
+  checkoutView.remove();
+  registrationView.remove();
+  document.body.appendChild(homeView);
 }
 
 homeButton.addEventListener("click", showHome);
@@ -146,38 +146,6 @@ cartButton.addEventListener("click", () => {
   document.body.appendChild(cartView);
 });
 
-const userMenuButton = document.getElementById("userMenuButton");
-const userMenu = document.getElementById("userMenu");
-userMenuButton.addEventListener("click", () => {
-  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
-});
-
-//-----------------------------createUser-----------------------------
-const createUserButton = document.getElementById("createUserButton");
-createUserButton.addEventListener("click", () => {
-  homeView.remove();
-  productListView.remove();
-  productDetailView.remove();
-  document.body.appendChild(registrationView);
-  userMenu.hidden = true;
-});
-
-const userMenuButton = document.getElementById("userMenuButton");
-const userMenu = document.getElementById("userMenu");
-userMenuButton.addEventListener("click", () => {
-  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
-});
-
-//-----------------------------createUser-----------------------------
-const createUserButton = document.getElementById("createUserButton");
-createUserButton.addEventListener("click", () => {
-  homeView.remove();
-  productListView.remove();
-  productDetailView.remove();
-  document.body.appendChild(registrationView);
-  userMenu.hidden = true;
-});
-
 //-----------------------------productListView-----------------------------
 const productListView = new ProductListView();
 
@@ -193,7 +161,7 @@ productListView.addEventListener("productSelect", async (event) => {
   if (!product) {
     return;
   }
-  
+
 
   productDetailView.refresh(product);
   productListView.remove();
@@ -211,20 +179,3 @@ productDetailView.addEventListener("backClick", () => {
   productDetailView.remove();
   document.body.appendChild(productListView);
 });
-
-//-----------------------------registrationView-----------------------------
-const registrationView = new RegistrationView();
-
-registrationView.addEventListener('registeruser', async function (evt) {
-  const result = await registerUser(evt.userForm);
-  if (result) {
-    registrationView.resetForm()
-    showMessage("Account created successfully!");
-  } else {
-    showMessage("Could not create account. Please try again.");
-  }
-});
-
-  registrationView.addEventListener('cancelRegistration', function (evt) {
-          showHome();
-  });
