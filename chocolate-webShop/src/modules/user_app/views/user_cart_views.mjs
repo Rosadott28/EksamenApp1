@@ -29,7 +29,14 @@ export class CartView extends HTMLElement {
     const productTable = document.createElement("table");
     const headerRow = document.createElement("tr");
 
-    const columns = ["Product ID", "Name", "Quantity", "Price", "Total"];
+    const columns = [
+      "Product ID",
+      "Name",
+      "Quantity",
+      "Price",
+      "Total",
+      "Action",
+    ];
 
     columns.forEach((column) => {
       const th = document.createElement("th");
@@ -70,7 +77,8 @@ export class CartView extends HTMLElement {
     quantityInput.min = "1";
     quantityInput.value = product.quantity;
 
-    quantityInput.addEventListener("change", () => { // Validerer nytt antall og sender endringen videre til hovedmodulen
+    quantityInput.addEventListener("change", () => {
+      // Validerer nytt antall og sender endringen videre til hovedmodulen
       const quantity = Number(quantityInput.value);
 
       if (quantity < 1 || !Number.isInteger(quantity)) {
@@ -93,7 +101,30 @@ export class CartView extends HTMLElement {
 
     row.insertBefore(quantityCell, row.children[2]);
 
+    const deleteCell = document.createElement("td");
+    const deleteButton = this.createDeleteButton(product);
+
+    deleteCell.appendChild(deleteButton);
+    row.appendChild(deleteCell);
+
     return row;
+  }
+
+  createDeleteButton(product) {
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.classList.add("delete-button");
+
+    // Sender produkt-ID til hovedmodulen når brukeren vil slette et produkt
+    deleteButton.addEventListener("click", () => { 
+      const deleteEvent = new CustomEvent("deleteCartProduct", {
+        detail: product.id,
+      });
+
+      this.dispatchEvent(deleteEvent);
+    });
+
+    return deleteButton;
   }
 
   createCartTotal(data) {

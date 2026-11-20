@@ -78,13 +78,25 @@ homeTitle.addEventListener("keydown", (event) => {
 
 const cartButton = document.getElementById("cartButton");
 
+//--------------------------------cartView--------------------------------
 const cartView = new CartView();
 
-cartView.addEventListener("quantityChange", (event) => { // Oppdaterer antallet i handlekurven og beregner prisene på nytt
+// Oppdaterer antallet i handlekurven og beregner prisene på nytt
+cartView.addEventListener("quantityChange", (event) => {
   const product = cart.find((item) => item.id === event.detail.id);
 
   if (product) {
     product.quantity = event.detail.quantity;
+    cartView.refresh(cart);
+  }
+});
+
+// Fjerner valgt produkt fra handlekurven og oppdaterer visningen
+cartView.addEventListener("deleteCartProduct", (event) => {
+  const index = cart.findIndex((item) => item.id === event.detail);
+
+  if (index !== -1) {
+    cart.splice(index, 1);
     cartView.refresh(cart);
   }
 });
@@ -106,8 +118,9 @@ productListView.addEventListener("backClick", () => {
   document.body.appendChild(homeView);
 });
 
+// Henter valgt produkt fra API og viser detaljvisningen
 productListView.addEventListener("productSelect", async (event) => {
-  // Henter valgt produkt fra API og viser detaljvisningen
+
   const product = await getProductById(event.productData.id);
 
   if (!product) {
@@ -124,7 +137,6 @@ const productDetailView = new ProductDetailView();
 
 productDetailView.addEventListener("buyProduct", (event) => {
   addToCart(event.detail);
-  console.log(cart);
 });
 
 productDetailView.addEventListener("backClick", () => {
