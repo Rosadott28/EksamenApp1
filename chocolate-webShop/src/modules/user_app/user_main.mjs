@@ -5,12 +5,21 @@ import {
   getProductsBySearch,
   getProductsByCategory,
   getProductById,
+  registerUser,
 } from "../api_service.mjs";
 import {
   HomeView,
   ProductListView,
   ProductDetailView,
 } from "./views/user_product_views.mjs";
+import {
+  showMessage
+} from "../msg_handler.mjs";
+import {
+  RegistrationView
+} from "../user_registration_views.mjs";
+
+
 
 //------------------------------homeView-----------------------------
 const homeView = new HomeView(); // Oppretter en instans av HomeView
@@ -92,4 +101,17 @@ const productDetailView = new ProductDetailView();
 productDetailView.addEventListener("backClick", () => {
   productDetailView.remove();
   document.body.appendChild(productListView);
+});
+
+//-----------------------------registrationView-----------------------------
+const registrationView = new RegistrationView();
+
+registrationView.addEventListener('registeruser', async function (evt) {
+    const result = await registerUser(evt.userForm);
+    if (result) {
+        registrationView.resetForm()
+        showMessage("Account created successfully!");
+    }else {
+    showMessage("Could not create account. Please try again.");
+}
 });
