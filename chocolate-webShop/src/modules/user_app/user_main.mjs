@@ -16,7 +16,7 @@ import {
 import { CartView } from "./views/user_cart_views.mjs";
 
 //----------------------------shoppingCart----------------------------
-const cart = [];
+const cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];// Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
 
 function addToCart(product) {
   // Legger produktet i handlekurven, eller øker antallet hvis det finnes fra før
@@ -27,6 +27,8 @@ function addToCart(product) {
   } else {
     cart.push({ ...product, quantity: 1 });
   }
+
+  localStorage.setItem("shoppingCart", JSON.stringify(cart)); // Lagrer den oppdaterte handlekurven i nettleseren
 }
 
 //------------------------------homeView-----------------------------
@@ -87,6 +89,7 @@ cartView.addEventListener("quantityChange", (event) => {
 
   if (product) {
     product.quantity = event.detail.quantity;
+    localStorage.setItem("shoppingCart", JSON.stringify(cart));
     cartView.refresh(cart);
   }
 });
@@ -97,6 +100,7 @@ cartView.addEventListener("deleteCartProduct", (event) => {
 
   if (index !== -1) {
     cart.splice(index, 1);
+    localStorage.setItem("shoppingCart", JSON.stringify(cart)); // Lagrer handlekurven etter at produktet er slettet
     cartView.refresh(cart);
   }
 });
@@ -104,6 +108,9 @@ cartView.addEventListener("deleteCartProduct", (event) => {
 // Tømmer hele handlekurven og oppdaterer visningen
 cartView.addEventListener("emptyCart", () => {
   cart.length = 0;
+  
+  localStorage.setItem("shoppingCart", JSON.stringify(cart));
+
   cartView.refresh(cart);
 });
 
