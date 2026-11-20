@@ -103,6 +103,10 @@ export class RegistrationView extends HTMLElement {
         });
 
     }
+    resetForm() {
+        this.shadow.querySelector("#theForm").reset();
+
+    }
 };
 //===============================================
 customElements.define("registration-view", RegistrationView);
