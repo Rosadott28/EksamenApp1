@@ -99,6 +99,11 @@ h3 {
   height: 20px;
 }
 
+#userMenuButton img {
+  width: 30px;
+  height: 30px;
+}
+
 #cartButton::after,
 #homeButton::after {
   content: "";
@@ -112,16 +117,54 @@ h3 {
   outline-offset: 3px;
 }
 
+/* ------------------------ Brukermeny ------------------------ */
+
 #userMenu {
-  position: absolute;
-  right: 56px;
-  top: 100%;
-  background-color: var(--ivory);
-  border: 1px solid var(--truffle);
-  border-radius: var(--radius);
-  padding: 8px;
-  z-index: 10;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 16px;
+    width: 300px;
+    max-width: calc(100vw - 32px);
+    padding: 20px;
+    background-color: var(--ivory);
+    border: 1px solid var(--truffle);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px #00000020;
+    z-index: 10;
+    text-align: center;
 }
+
+#userMenu[hidden] {
+    display: none;
+}
+
+#userMenu button {
+    display: block;
+    width: 100%;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+ /* samme stil som Create Account */ 
+
+#createUserButton {
+    background-color: var(--powder);
+    color: var(--espresso);
+    border: 2px solid var(--powder);
+}
+
+#loginButton {
+    background-color: var(--ivory);
+    color: var(--espresso);
+    border: 2px solid var(--truffle);
+}
+
+
+
 
 /* ------------------------ Søkefelt ------------------------ */
 .search-container {

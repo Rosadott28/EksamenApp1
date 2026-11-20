@@ -2,37 +2,40 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="./user.css" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sukkergris</title>
-  </head>
-  <body>
 
-    <header class="site-header">
-      <button id="homeButton" aria-label="Home" type="button">
-         <img src="./assets/home.svg" alt="" />
-      </button>
+<head>
+  <link rel="stylesheet" href="./user.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sukkergris</title>
+</head>
 
-      <button id="userMenuButton" type="button" aria-label="Account">
-        <img src="" alt="" />
-      </button>
-      <div id="userMenu" hidden>
-        <button id="createUserButton" type="button">Create User</button>
-        <button id="loginButton" type="button">Login</button>
-      </div>
+<body>
+
+  <header class="site-header">
+    <button id="homeButton" aria-label="Home" type="button">
+      <img src="./assets/home.svg" alt="" />
+    </button>
+
+    <button id="userMenuButton" type="button" aria-label="Account">
+      <img src="./assets/loginIcon.png" alt="" />
+    </button>
+    <div id="userMenu" hidden>
+      <button id="createUserButton" type="button">Create User</button>
+      <button id="loginButton" type="button">Login</button>
+    </div>
 
 
-      <h1 id="homeTitle" tabindex="0" role="button">Sukkergris</h1>
-      <button id="cartButton" type="button" aria-label="Shopping cart">
-        <img src="./assets/cart.svg" alt="" />
-      </button>
-    </header>
+    <h1 id="homeTitle" tabindex="0" role="button">Sukkergris</h1>
+    <button id="cartButton" type="button" aria-label="Shopping cart">
+      <img src="./assets/cart.svg" alt="" />
+    </button>
+  </header>
 
-    <script type="module" src="./modules/user_app/user_main.mjs">
+  <script type="module" src="./modules/user_app/user_main.mjs">
 
-    </script>
+  </script>
 
-  </body>
+</body>
+
 </html>
