@@ -132,3 +132,7 @@ registrationView.addEventListener('registeruser', async function (evt) {
     showMessage("Could not create account. Please try again.");
   }
 });
+
+  registrationView.addEventListener('cancelRegistration', function (evt) {
+          showHome();
+  });

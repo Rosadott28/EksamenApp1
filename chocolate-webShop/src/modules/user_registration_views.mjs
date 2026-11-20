@@ -89,9 +89,9 @@ export class RegistrationView extends HTMLElement {
                 <input type="submit" value="Create account">
             </form>
         `;
-       const theForm = this.shadow.querySelector("#theForm");
+        const theForm = this.shadow.querySelector("#theForm");
 
-       theForm.addEventListener("submit", (evt) => {
+        theForm.addEventListener("submit", (evt) => {
             evt.preventDefault();
 
             const formData = new FormData(theForm);
@@ -102,6 +102,12 @@ export class RegistrationView extends HTMLElement {
             // sender skjema data til user_main.mjs
         });
 
+        this.shadow.querySelector("#cancelRegistration").addEventListener("click", (evt) => {
+            theForm.reset();
+            this.dispatchEvent(new CustomEvent("cancelRegistration"));
+        });
+
+   
     }
     resetForm() {
         this.shadow.querySelector("#theForm").reset();
