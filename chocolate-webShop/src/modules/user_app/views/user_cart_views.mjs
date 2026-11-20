@@ -22,6 +22,9 @@ export class CartView extends HTMLElement {
 
     const cartTotal = this.createCartTotal(data);
     this.shadow.appendChild(cartTotal);
+
+    const emptyButton = this.createEmptyCartButton();
+    this.shadow.appendChild(emptyButton);
   }
 
   createProductTable(data) {
@@ -116,7 +119,7 @@ export class CartView extends HTMLElement {
     deleteButton.classList.add("delete-button");
 
     // Sender produkt-ID til hovedmodulen når brukeren vil slette et produkt
-    deleteButton.addEventListener("click", () => { 
+    deleteButton.addEventListener("click", () => {
       const deleteEvent = new CustomEvent("deleteCartProduct", {
         detail: product.id,
       });
@@ -125,6 +128,18 @@ export class CartView extends HTMLElement {
     });
 
     return deleteButton;
+  }
+
+  createEmptyCartButton() {
+    const emptyButton = document.createElement("button");
+    emptyButton.textContent = "Empty shopping cart";
+    emptyButton.classList.add("delete-button", "empty-cart-button");
+
+    emptyButton.addEventListener("click", () => {
+      this.dispatchEvent(new CustomEvent("emptyCart"));
+    });
+
+    return emptyButton;
   }
 
   createCartTotal(data) {

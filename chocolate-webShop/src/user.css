@@ -335,3 +335,12 @@ th, td {
     border: 2px solid #B42318;
     color: #B42318;
 }
+
+.empty-cart-button {
+    display: block;
+    margin: 16px 16px 16px auto;
+    background-color: transparent;
+    border: 1px solid var(--truffle);
+    color: var(--truffle);
+    box-shadow: none;
+}

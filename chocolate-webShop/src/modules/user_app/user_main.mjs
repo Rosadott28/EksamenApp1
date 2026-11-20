@@ -101,6 +101,12 @@ cartView.addEventListener("deleteCartProduct", (event) => {
   }
 });
 
+// Tømmer hele handlekurven og oppdaterer visningen
+cartView.addEventListener("emptyCart", () => {
+  cart.length = 0;
+  cartView.refresh(cart);
+});
+
 cartButton.addEventListener("click", () => {
   homeView.remove();
   productListView.remove();
@@ -120,7 +126,6 @@ productListView.addEventListener("backClick", () => {
 
 // Henter valgt produkt fra API og viser detaljvisningen
 productListView.addEventListener("productSelect", async (event) => {
-
   const product = await getProductById(event.productData.id);
 
   if (!product) {
