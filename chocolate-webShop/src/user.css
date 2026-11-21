@@ -474,3 +474,26 @@ h3 {
         margin-right: max(16px, calc((100% - 800px) / 2));
     }
 }
+
+/* ------------------------ Checkout ------------------------ */
+
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px;
+    max-width: 500px;
+}
+
+.checkout-form input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    background-color: var(--ivory);
+}
+
+h2 {
+    margin-left: 16px;
+}

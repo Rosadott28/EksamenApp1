@@ -93,6 +93,12 @@ homeTitle.addEventListener("keydown", (event) => {
 
 const cartButton = document.getElementById("cartButton");
 
+const userMenuButton = document.getElementById("userMenuButton");
+const userMenu = document.getElementById("userMenu");
+userMenuButton.addEventListener("click", () => {
+  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
+});
+
 //--------------------------------cartView--------------------------------
 const cartView = new CartView();
 
@@ -145,12 +151,6 @@ cartButton.addEventListener("click", () => {
 
   cartView.refresh(cart);
   document.body.appendChild(cartView);
-});
-
-const userMenuButton = document.getElementById("userMenuButton");
-const userMenu = document.getElementById("userMenu");
-userMenuButton.addEventListener("click", () => {
-  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
 });
 
 //-----------------------------createUser-----------------------------
