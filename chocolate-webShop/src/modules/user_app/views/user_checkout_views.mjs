@@ -4,7 +4,7 @@ export class CheckoutView extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
   }
   //-----------------------------
-  refresh() {
+  refresh(shippingMethods, cart) {
     this.shadow.replaceChildren();
 
     const styleLink = document.createElement("link");
@@ -13,6 +13,7 @@ export class CheckoutView extends HTMLElement {
     this.shadow.appendChild(styleLink);
 
     const heading = document.createElement("h2");
+    heading.classList.add("checkout-heading");
     heading.textContent = "Checkout";
 
     this.shadow.appendChild(heading);
@@ -20,8 +21,11 @@ export class CheckoutView extends HTMLElement {
     const customerForm = this.createCustomerForm();
     this.shadow.appendChild(customerForm);
 
-    const shippingSection = this.createShippingSection();
+    const shippingSection = this.createShippingSection(shippingMethods);
     this.shadow.appendChild(shippingSection);
+
+    const orderSummary = this.createOrderSummary(cart, shippingMethods);
+    this.shadow.appendChild(orderSummary);
   }
 
   createCustomerForm() {
@@ -115,7 +119,7 @@ export class CheckoutView extends HTMLElement {
     form.appendChild(cityLabel);
     form.appendChild(cityInput);
 
-    //---By---
+    //---Land---
     const countryLabel = document.createElement("label");
     countryLabel.textContent = "Country: ";
     countryLabel.htmlFor = "customerCountry";
@@ -132,13 +136,86 @@ export class CheckoutView extends HTMLElement {
     return form;
   }
 
-  createShippingSection() {
+  createShippingSection(shippingMethods) {
     const section = document.createElement("section");
+    section.classList.add("shipping-section");
 
     const heading = document.createElement("h3");
     heading.textContent = "Shipping method";
 
     section.appendChild(heading);
+
+    shippingMethods.forEach((method) => {
+      const label = document.createElement("label");
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "shippingMethod";
+      radio.value = method.id; //gjør at vi senere kan sende riktig frakt-ID til API-et
+
+      if (method.id === shippingMethods[0].id) {
+        //den første fraktmetoden er valgt automatisk.
+        radio.checked = true;
+      }
+
+      // Oppdaterer fraktprisen og totalsummen når kunden velger en annen fraktmetode
+      radio.addEventListener("change", () => {
+        const shippingText = this.shadow.querySelector(".shipping-price"); //querySelector til å finne HTML-elementer vi allerede har opprettet
+        const grandTotal = this.shadow.querySelector(".order-total");
+
+        const productTotal = Number(
+          this.shadow.querySelector(".products-total").dataset.total,
+        );
+        const shippingPrice = Number(method.price);
+
+        shippingText.textContent = "Shipping: " + shippingPrice + " kr";
+        grandTotal.textContent =
+          "Total: " + (productTotal + shippingPrice) + " kr";
+      });
+
+      label.appendChild(radio);
+      label.appendChild(
+        document.createTextNode(
+          " " + method.type + " - " + method.price + " kr",
+        ),
+      );
+
+      section.appendChild(label);
+    });
+
+    return section;
+  }
+
+  createOrderSummary(cart, shippingMethods) {
+    const section = document.createElement("section");
+    section.classList.add("order-summary");
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Order summary";
+    section.appendChild(heading);
+
+    const productTotal = cart.reduce((sum, product) => {
+      //reduce() beregner summen av alle produktene, inkl antall.
+      return sum + product.price * product.quantity;
+    }, 0);
+
+    const totalText = document.createElement("p");
+    totalText.classList.add("products-total");
+    totalText.dataset.total = productTotal;
+    totalText.textContent = "Products total: " + productTotal + " kr";
+    section.appendChild(totalText);
+
+    const shippingPrice = Number(shippingMethods[0]?.price ?? 0);
+
+    const shippingText = document.createElement("p");
+    shippingText.classList.add("shipping-price");
+    shippingText.textContent = "Shipping: " + shippingPrice + " kr";
+    section.appendChild(shippingText);
+
+    const grandTotal = document.createElement("p");
+    grandTotal.classList.add("order-total");
+    grandTotal.textContent = "Total: " + (productTotal + shippingPrice) + " kr";
+    section.appendChild(grandTotal);
 
     return section;
   }

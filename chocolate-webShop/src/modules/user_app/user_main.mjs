@@ -6,6 +6,7 @@ import {
   getProductsByCategory,
   getProductById,
   registerUser,
+  getShippingMethods,
 } from "../api_service.mjs";
 
 import {
@@ -13,14 +14,10 @@ import {
   ProductListView,
   ProductDetailView,
 } from "./views/user_product_views.mjs";
-import {
-  showMessage
-} from "../msg_handler.mjs";
-import {
-  RegistrationView
-} from "../user_registration_views.mjs";
 
+import { showMessage } from "../msg_handler.mjs";
 
+import { RegistrationView } from "../user_registration_views.mjs";
 
 import { CartView } from "./views/user_cart_views.mjs";
 
@@ -104,10 +101,12 @@ const cartView = new CartView();
 
 const checkoutView = new CheckoutView();
 
-// Åpner checkout-visningen når brukeren trykker på checkout-knappen
-cartView.addEventListener("checkoutClick", () => {
+// Åpner checkout-visningen og henter fraktmetoder
+cartView.addEventListener("checkoutClick", async () => {
+  const shippingMethods = await getShippingMethods();
+
   cartView.remove();
-  checkoutView.refresh();
+  checkoutView.refresh(shippingMethods, cart);
   document.body.appendChild(checkoutView);
 });
 
@@ -181,7 +180,6 @@ productListView.addEventListener("productSelect", async (event) => {
     return;
   }
 
-
   productDetailView.refresh(product);
   productListView.remove();
   document.body.appendChild(productDetailView);
@@ -202,16 +200,16 @@ productDetailView.addEventListener("backClick", () => {
 //-----------------------------registrationView-----------------------------
 const registrationView = new RegistrationView();
 
-registrationView.addEventListener('registeruser', async function (evt) {
+registrationView.addEventListener("registeruser", async function (evt) {
   const result = await registerUser(evt.userForm);
   if (result) {
-    registrationView.resetForm()
+    registrationView.resetForm();
     showMessage("Account created successfully!");
   } else {
     showMessage("Could not create account. Please try again.");
   }
 });
 
-registrationView.addEventListener('cancelRegistration', function (evt) {
+registrationView.addEventListener("cancelRegistration", function (evt) {
   showHome();
 });
