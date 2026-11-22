@@ -7,6 +7,7 @@ import {
   getProductById,
   registerUser,
   getShippingMethods,
+  addOrder,
 } from "../api_service.mjs";
 
 import {
@@ -102,11 +103,12 @@ const cartView = new CartView();
 const checkoutView = new CheckoutView();
 
 // Mottar kundeinformasjonen når kunden trykker Place order
-checkoutView.addEventListener("placeOrder", (event) => {
+checkoutView.addEventListener("placeOrder", async (event) => {
   const customerData = event.detail.customerData;
   const shippingId = event.detail.shippingId;
 
-  const order = { //Samler bestillingsinformasjonen
+  const order = {
+    //Samler bestillingsinformasjonen
     customer_name: customerData.customerName,
     email: customerData.customerEmail,
     phone: customerData.customerPhone,
@@ -118,8 +120,13 @@ checkoutView.addEventListener("placeOrder", (event) => {
     content: JSON.stringify(cart), //// Gjør produktene i handlekurven om til JSON-tekst for API-et
   };
 
-  console.log("Customer information:", customerData);
-  console.log("Shipping ID:", shippingId);
+  const result = await addOrder(order);
+
+  if (result) {
+    console.log("Order created:", result);
+  } else {
+    console.log("Could not create order.");
+  }
 });
 
 // Åpner checkout-visningen og henter fraktmetoder
