@@ -41,7 +41,7 @@ export class CheckoutView extends HTMLElement {
 
     //---Navn---
     const nameLabel = document.createElement("label");
-    nameLabel.textContent = "Full name: ";
+    nameLabel.textContent = "Full name: *";
     nameLabel.htmlFor = "customerName";
 
     const nameInput = document.createElement("input");
@@ -55,7 +55,7 @@ export class CheckoutView extends HTMLElement {
 
     //---E-post---
     const emailLabel = document.createElement("label");
-    emailLabel.textContent = "Email: ";
+    emailLabel.textContent = "Email: *";
     emailLabel.htmlFor = "customerEmail";
 
     const emailInput = document.createElement("input");
@@ -82,7 +82,7 @@ export class CheckoutView extends HTMLElement {
 
     //---Adresse---
     const streetLabel = document.createElement("label");
-    streetLabel.textContent = "Street: ";
+    streetLabel.textContent = "Street: *";
     streetLabel.htmlFor = "customerStreet";
 
     const streetInput = document.createElement("input");
@@ -96,7 +96,7 @@ export class CheckoutView extends HTMLElement {
 
     //---Postnummer---
     const zipLabel = document.createElement("label");
-    zipLabel.textContent = "Zip code: ";
+    zipLabel.textContent = "Zip code: *";
     zipLabel.htmlFor = "customerZip";
 
     const zipInput = document.createElement("input");
@@ -110,7 +110,7 @@ export class CheckoutView extends HTMLElement {
 
     //---By---
     const cityLabel = document.createElement("label");
-    cityLabel.textContent = "City: ";
+    cityLabel.textContent = "City: *";
     cityLabel.htmlFor = "customerCity";
 
     const cityInput = document.createElement("input");
@@ -124,7 +124,7 @@ export class CheckoutView extends HTMLElement {
 
     //---Land---
     const countryLabel = document.createElement("label");
-    countryLabel.textContent = "Country: ";
+    countryLabel.textContent = "Country: *";
     countryLabel.htmlFor = "customerCountry";
 
     const countryInput = document.createElement("input");
@@ -135,6 +135,11 @@ export class CheckoutView extends HTMLElement {
 
     form.appendChild(countryLabel);
     form.appendChild(countryInput);
+
+    //--- * information ---
+    const requiredText = document.createElement("p");
+    requiredText.textContent = "* Required fields";
+    form.appendChild(requiredText);
 
     return form;
   }
@@ -227,6 +232,15 @@ export class CheckoutView extends HTMLElement {
     const button = document.createElement("button");
     button.textContent = "Place order";
     button.classList.add("place-order-button");
+
+    // Sjekker at alle obligatoriske felt er riktig utfylt
+    button.addEventListener("click", () => {
+      const form = this.shadow.querySelector(".checkout-form");
+
+      if (!form.reportValidity()) {
+        return;
+      }
+    });
 
     return button;
   }
