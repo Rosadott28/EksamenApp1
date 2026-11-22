@@ -101,6 +101,27 @@ const cartView = new CartView();
 
 const checkoutView = new CheckoutView();
 
+// Mottar kundeinformasjonen når kunden trykker Place order
+checkoutView.addEventListener("placeOrder", (event) => {
+  const customerData = event.detail.customerData;
+  const shippingId = event.detail.shippingId;
+
+  const order = { //Samler bestillingsinformasjonen
+    customer_name: customerData.customerName,
+    email: customerData.customerEmail,
+    phone: customerData.customerPhone,
+    street: customerData.customerStreet,
+    zipcode: customerData.customerZip,
+    city: customerData.customerCity,
+    country: customerData.customerCountry,
+    shipping_id: shippingId,
+    content: JSON.stringify(cart), //// Gjør produktene i handlekurven om til JSON-tekst for API-et
+  };
+
+  console.log("Customer information:", customerData);
+  console.log("Shipping ID:", shippingId);
+});
+
 // Åpner checkout-visningen og henter fraktmetoder
 cartView.addEventListener("checkoutClick", async () => {
   const shippingMethods = await getShippingMethods();

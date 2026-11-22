@@ -240,6 +240,25 @@ export class CheckoutView extends HTMLElement {
       if (!form.reportValidity()) {
         return;
       }
+
+      // Henter kundeinformasjonen fra skjemaet
+      const formData = new FormData(form);
+      const customerData = Object.fromEntries(formData);
+
+      const selectedShipping = this.shadow.querySelector(
+        'input[name="shippingMethod"]:checked',
+      );
+
+      const shippingId = Number(selectedShipping.value);
+
+      this.dispatchEvent(
+        new CustomEvent("placeOrder", {
+          detail: {
+            customerData: customerData,
+            shippingId: shippingId,
+          },
+        }),
+      );
     });
 
     return button;
