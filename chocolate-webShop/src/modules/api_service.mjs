@@ -25,6 +25,42 @@ export async function getCategories() {
 }
 
 //--------------------------------------------------------
+export async function getShippingMethods() {
+    const url = `https://sukkergris.onrender.com/logistics/shippingtypes?key=${groupkey}`;
+
+    try {
+        const dataFromServer = await sendRequest(url);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return [];
+    }
+}
+
+//--------------------------------------------------------
+export async function addOrder(order) {
+    const url = `https://sukkergris.onrender.com/webshop/orders?key=${groupkey}`;
+
+    const cfg = {
+        method: "POST", //sender bestillingen til serveren
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(order)
+    };
+
+    try {
+        const dataFromServer = await sendRequest(url, cfg);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
+
+//--------------------------------------------------------
 export async function getAllProducts() {
 
     const url = `https://sukkergris.onrender.com/webshop/chocolates?key=${groupkey}`;
@@ -204,6 +240,7 @@ export async function deleteOrder(orderId) {
         return null;
     }
 }
+
 //---------------------------------------------------------
 export async function getProductsBySearch(searchWord) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?search=${encodeURIComponent(searchWord)}&key=${groupkey}`;
@@ -222,6 +259,7 @@ export async function getProductsBySearch(searchWord) {
     }
 }
 
+//---------------------------------------------------------
 export function getProductThumbUrl(product) { // Not async because it only builds a URL, without fetching data.
     let imageKey = groupkey;
     if (product.static === true) {
@@ -231,6 +269,7 @@ export function getProductThumbUrl(product) { // Not async because it only build
     return imageUrl;
 }
 
+//---------------------------------------------------------
 export function getProductImageUrl(product) { // Not async because it only builds a URL, without fetching data.
     let imageKey = groupkey;
     if (product.static === true) {
@@ -240,6 +279,7 @@ export function getProductImageUrl(product) { // Not async because it only build
     return imageUrl;
 }
 
+//---------------------------------------------------------
 export async function adminLogin(username, password) {
     const adminLoginUrl = `https://sukkergris.onrender.com/users/adminlogin?key=${groupkey}`;
     const cfg = {
