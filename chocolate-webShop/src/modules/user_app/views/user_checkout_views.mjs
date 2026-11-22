@@ -26,6 +26,9 @@ export class CheckoutView extends HTMLElement {
 
     const orderSummary = this.createOrderSummary(cart, shippingMethods);
     this.shadow.appendChild(orderSummary);
+
+    const placeOrderButton = this.createPlaceOrderButton();
+    this.shadow.appendChild(placeOrderButton);
   }
 
   createCustomerForm() {
@@ -218,6 +221,14 @@ export class CheckoutView extends HTMLElement {
     section.appendChild(grandTotal);
 
     return section;
+  }
+
+  createPlaceOrderButton() {
+    const button = document.createElement("button");
+    button.textContent = "Place order";
+    button.classList.add("place-order-button");
+
+    return button;
   }
 }
 
