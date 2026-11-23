@@ -24,6 +24,8 @@ import { CartView } from "./views/user_cart_views.mjs";
 
 import { CheckoutView } from "./views/user_checkout_views.mjs";
 
+import { OrderConfirmationView } from "./views/user_order_confirmation_views.mjs";
+
 //----------------------------shoppingCart----------------------------
 const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
 
@@ -73,6 +75,7 @@ function showHome() {
   cartView.remove();
   checkoutView.remove();
   registrationView.remove();
+  orderConfirmationView.remove();
   document.body.appendChild(homeView);
 }
 
@@ -99,55 +102,6 @@ userMenuButton.addEventListener("click", () => {
 
 //--------------------------------cartView--------------------------------
 const cartView = new CartView();
-
-const checkoutView = new CheckoutView();
-let isOrdering = false;
-
-// Mottar kundeinformasjonen når kunden trykker Place order
-checkoutView.addEventListener("placeOrder", async (event) => {
-  if (isOrdering) {
-    // Hindrer flere bestillinger mens én behandles
-    return;
-  }
-
-  isOrdering = true;
-
-  const customerData = event.detail.customerData;
-  const shippingId = event.detail.shippingId;
-
-  const order = {
-    //Samler bestillingsinformasjonen
-    customer_name: customerData.customerName,
-    email: customerData.customerEmail,
-    phone: customerData.customerPhone,
-    street: customerData.customerStreet,
-    zipcode: customerData.customerZip,
-    city: customerData.customerCity,
-    country: customerData.customerCountry,
-    shipping_id: shippingId,
-    content: JSON.stringify(cart), //// Gjør produktene i handlekurven om til JSON-tekst for API-et
-  };
-
-  try {
-    const result = await addOrder(order);
-
-    if (result) {
-      console.log("Order created:", result);
-      cart.length = 0; // Tømmer handlekurven etter vellykket bestilling
-      localStorage.setItem("shoppingCart", JSON.stringify(cart));
-      cartView.refresh(cart);
-      alert("Order placed successfully!");
-    } else {
-      isOrdering = false;
-      alert("Could not place your order. Please try again.");
-      console.log("Could not create order.");
-    }
-  } catch (error) {
-    isOrdering = false;
-    alert("Could not place your order. Please try again.");
-    console.error("Order error:", error);
-  }
-});
 
 // Åpner checkout-visningen og henter fraktmetoder
 cartView.addEventListener("checkoutClick", async () => {
@@ -195,10 +149,70 @@ cartButton.addEventListener("click", () => {
   productDetailView.remove();
   checkoutView.remove();
   registrationView.remove();
+  orderConfirmationView.remove();
 
   cartView.refresh(cart);
   document.body.appendChild(cartView);
 });
+
+//-----------------------------checkoutView-----------------------------
+const checkoutView = new CheckoutView();
+
+let isOrdering = false;
+
+// Mottar kundeinformasjonen når kunden trykker Place order
+checkoutView.addEventListener("placeOrder", async (event) => {
+  if (isOrdering) {
+    // Hindrer flere bestillinger mens én behandles
+    return;
+  }
+
+  isOrdering = true;
+
+  const customerData = event.detail.customerData;
+  const shippingId = event.detail.shippingId;
+
+  const order = {
+    //Samler bestillingsinformasjonen
+    customer_name: customerData.customerName,
+    email: customerData.customerEmail,
+    phone: customerData.customerPhone,
+    street: customerData.customerStreet,
+    zipcode: customerData.customerZip,
+    city: customerData.customerCity,
+    country: customerData.customerCountry,
+    shipping_id: shippingId,
+    content: JSON.stringify(cart), //// Gjør produktene i handlekurven om til JSON-tekst for API-et
+  };
+
+  try {
+    const result = await addOrder(order);
+
+    if (result) {
+      console.log("Order created:", result);
+      cart.length = 0; // Tømmer handlekurven etter vellykket bestilling
+      localStorage.setItem("shoppingCart", JSON.stringify(cart));
+      cartView.refresh(cart);
+      alert("Order placed successfully!");
+      orderConfirmationView.refresh(result.record);
+      checkoutView.remove();
+      document.body.appendChild(orderConfirmationView);
+    } else {
+      isOrdering = false;
+      alert("Could not place your order. Please try again.");
+      console.log("Could not create order.");
+    }
+  } catch (error) {
+    isOrdering = false;
+    alert("Could not place your order. Please try again.");
+    console.error("Order error:", error);
+  }
+});
+
+//-----------------------------orderConfirmationView-----------------------------
+const orderConfirmationView = new OrderConfirmationView();
+
+
 
 //-----------------------------createUser-----------------------------
 const createUserButton = document.getElementById("createUserButton");
