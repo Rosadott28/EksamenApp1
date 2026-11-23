@@ -101,9 +101,17 @@ userMenuButton.addEventListener("click", () => {
 const cartView = new CartView();
 
 const checkoutView = new CheckoutView();
+let isOrdering = false;
 
 // Mottar kundeinformasjonen når kunden trykker Place order
 checkoutView.addEventListener("placeOrder", async (event) => {
+  if (isOrdering) {
+    // Hindrer flere bestillinger mens én behandles
+    return;
+  }
+
+  isOrdering = true;
+
   const customerData = event.detail.customerData;
   const shippingId = event.detail.shippingId;
 
@@ -120,12 +128,24 @@ checkoutView.addEventListener("placeOrder", async (event) => {
     content: JSON.stringify(cart), //// Gjør produktene i handlekurven om til JSON-tekst for API-et
   };
 
-  const result = await addOrder(order);
+  try {
+    const result = await addOrder(order);
 
-  if (result) {
-    console.log("Order created:", result);
-  } else {
-    console.log("Could not create order.");
+    if (result) {
+      console.log("Order created:", result);
+      cart.length = 0; // Tømmer handlekurven etter vellykket bestilling
+      localStorage.setItem("shoppingCart", JSON.stringify(cart));
+      cartView.refresh(cart);
+      alert("Order placed successfully!");
+    } else {
+      isOrdering = false;
+      alert("Could not place your order. Please try again.");
+      console.log("Could not create order.");
+    }
+  } catch (error) {
+    isOrdering = false;
+    alert("Could not place your order. Please try again.");
+    console.error("Order error:", error);
   }
 });
 
