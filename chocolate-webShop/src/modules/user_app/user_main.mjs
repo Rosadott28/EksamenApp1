@@ -6,6 +6,8 @@ import {
   getProductsByCategory,
   getProductById,
   registerUser,
+  getShippingMethods,
+  addOrder,
 } from "../api_service.mjs";
 
 import {
@@ -13,14 +15,10 @@ import {
   ProductListView,
   ProductDetailView,
 } from "./views/user_product_views.mjs";
-import {
-  showMessage
-} from "../msg_handler.mjs";
-import {
-  RegistrationView
-} from "../user_registration_views.mjs";
 
+import { showMessage } from "../msg_handler.mjs";
 
+import { RegistrationView } from "../user_registration_views.mjs";
 
 import { CartView } from "./views/user_cart_views.mjs";
 
@@ -93,15 +91,70 @@ homeTitle.addEventListener("keydown", (event) => {
 
 const cartButton = document.getElementById("cartButton");
 
+const userMenuButton = document.getElementById("userMenuButton");
+const userMenu = document.getElementById("userMenu");
+userMenuButton.addEventListener("click", () => {
+  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
+});
+
 //--------------------------------cartView--------------------------------
 const cartView = new CartView();
 
 const checkoutView = new CheckoutView();
+let isOrdering = false;
 
-// Åpner checkout-visningen når brukeren trykker på checkout-knappen
-cartView.addEventListener("checkoutClick", () => {
+// Mottar kundeinformasjonen når kunden trykker Place order
+checkoutView.addEventListener("placeOrder", async (event) => {
+  if (isOrdering) {
+    // Hindrer flere bestillinger mens én behandles
+    return;
+  }
+
+  isOrdering = true;
+
+  const customerData = event.detail.customerData;
+  const shippingId = event.detail.shippingId;
+
+  const order = {
+    //Samler bestillingsinformasjonen
+    customer_name: customerData.customerName,
+    email: customerData.customerEmail,
+    phone: customerData.customerPhone,
+    street: customerData.customerStreet,
+    zipcode: customerData.customerZip,
+    city: customerData.customerCity,
+    country: customerData.customerCountry,
+    shipping_id: shippingId,
+    content: JSON.stringify(cart), //// Gjør produktene i handlekurven om til JSON-tekst for API-et
+  };
+
+  try {
+    const result = await addOrder(order);
+
+    if (result) {
+      console.log("Order created:", result);
+      cart.length = 0; // Tømmer handlekurven etter vellykket bestilling
+      localStorage.setItem("shoppingCart", JSON.stringify(cart));
+      cartView.refresh(cart);
+      alert("Order placed successfully!");
+    } else {
+      isOrdering = false;
+      alert("Could not place your order. Please try again.");
+      console.log("Could not create order.");
+    }
+  } catch (error) {
+    isOrdering = false;
+    alert("Could not place your order. Please try again.");
+    console.error("Order error:", error);
+  }
+});
+
+// Åpner checkout-visningen og henter fraktmetoder
+cartView.addEventListener("checkoutClick", async () => {
+  const shippingMethods = await getShippingMethods();
+
   cartView.remove();
-  checkoutView.refresh();
+  checkoutView.refresh(shippingMethods, cart);
   document.body.appendChild(checkoutView);
 });
 
@@ -147,12 +200,6 @@ cartButton.addEventListener("click", () => {
   document.body.appendChild(cartView);
 });
 
-const userMenuButton = document.getElementById("userMenuButton");
-const userMenu = document.getElementById("userMenu");
-userMenuButton.addEventListener("click", () => {
-  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
-});
-
 //-----------------------------createUser-----------------------------
 const createUserButton = document.getElementById("createUserButton");
 createUserButton.addEventListener("click", () => {
@@ -181,7 +228,6 @@ productListView.addEventListener("productSelect", async (event) => {
     return;
   }
 
-
   productDetailView.refresh(product);
   productListView.remove();
   document.body.appendChild(productDetailView);
@@ -202,16 +248,16 @@ productDetailView.addEventListener("backClick", () => {
 //-----------------------------registrationView-----------------------------
 const registrationView = new RegistrationView();
 
-registrationView.addEventListener('registeruser', async function (evt) {
+registrationView.addEventListener("registeruser", async function (evt) {
   const result = await registerUser(evt.userForm);
   if (result) {
-    registrationView.resetForm()
+    registrationView.resetForm();
     showMessage("Account created successfully!");
   } else {
     showMessage("Could not create account. Please try again.");
   }
 });
 
-registrationView.addEventListener('cancelRegistration', function (evt) {
+registrationView.addEventListener("cancelRegistration", function (evt) {
   showHome();
 });

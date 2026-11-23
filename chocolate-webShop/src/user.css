@@ -356,7 +356,17 @@ h3 {
   }
 }
 
-/* ------------------------ Create user ------------------------ */
+.buy-button {
+    background-color: var(--powder);
+    color: var(--espresso);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* ------------------------ Lag bruker ------------------------ */
 
 .notification-message {
     position: fixed;
@@ -369,15 +379,6 @@ h3 {
     border-radius: 8px;
 }
 
-.buy-button {
-    background-color: var(--powder);
-    color: var(--espresso);
-    border: 1px solid var(--truffle);
-    border-radius: var(--radius);
-    padding: 10px 16px;
-    font-size: 16px;
-    cursor: pointer;
-}
 
 /* ------------------------ Handlekurv ------------------------ */
 
@@ -472,5 +473,88 @@ h3 {
     .empty-cart-button,
     .checkout-button {
         margin-right: max(16px, calc((100% - 800px) / 2));
+    }
+}
+
+/* ------------------------ Checkout ------------------------ */
+
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkout-form input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    background-color: var(--ivory);
+}
+
+.checkout-heading {
+    margin-left: 16px;
+}
+
+.shipping-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.shipping-section label {
+    display: block;
+    cursor: pointer;
+}
+
+.checkout-form,
+.shipping-section,
+.order-summary {
+    background-color: var(--ivory);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin: 16px;
+}
+
+.checkout-form h3,
+.shipping-section h3,
+.order-summary h3 {
+    margin-top: 0;
+}
+
+.shipping-section label:last-child,
+.order-summary p:last-child {
+    margin-bottom: 0;
+}
+
+/* Begrenser bredden på checkout på PC */
+@media (min-width: 768px) {
+    .checkout-heading,
+    .checkout-form,
+    .shipping-section,
+    .order-summary {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.place-order-button {
+    display: block;
+    margin: 16px 16px 16px auto;
+    padding: 10px 16px;
+    background-color: var(--powder);
+    color: var(--espresso);
+    border: 1px solid var(--truffle);
+    border-radius: var(--radius);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .place-order-button {
+        margin-right: max(16px, calc((100% - 600px) / 2));
     }
 }
