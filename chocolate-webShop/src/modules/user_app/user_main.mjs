@@ -105,7 +105,7 @@ const cartView = new CartView();
 
 // Åpner checkout-visningen og henter fraktmetoder
 cartView.addEventListener("checkoutClick", async () => {
-  const shippingMethods = await getShippingMethods();
+  shippingMethods = await getShippingMethods();
 
   cartView.remove();
   checkoutView.refresh(shippingMethods, cart);
@@ -160,6 +160,8 @@ const checkoutView = new CheckoutView();
 
 let isOrdering = false;
 
+let shippingMethods = [];
+
 // Mottar kundeinformasjonen når kunden trykker Place order
 checkoutView.addEventListener("placeOrder", async (event) => {
   if (isOrdering) {
@@ -194,7 +196,7 @@ checkoutView.addEventListener("placeOrder", async (event) => {
       localStorage.setItem("shoppingCart", JSON.stringify(cart));
       cartView.refresh(cart);
       alert("Order placed successfully!");
-      orderConfirmationView.refresh(result.record);
+      orderConfirmationView.refresh(result.record, shippingMethods);
       checkoutView.remove();
       document.body.appendChild(orderConfirmationView);
     } else {

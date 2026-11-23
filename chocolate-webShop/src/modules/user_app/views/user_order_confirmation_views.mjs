@@ -4,20 +4,36 @@ export class OrderConfirmationView extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
   }
   //-----------------------------
-  refresh(order) {
+  refresh(order, shippingMethods) {
     this.shadow.replaceChildren();
 
+    const styleLink = document.createElement("link");
+    styleLink.rel = "stylesheet";
+    styleLink.href = "./user.css";
+    this.shadow.appendChild(styleLink);
+
+    const container = document.createElement("section");
+    container.classList.add("confirmation-container");
+
     const heading = this.createHeading(order);
-    this.shadow.appendChild(heading);
+    container.appendChild(heading);
 
     const orderNumber = this.createOrderNumber(order);
-    this.shadow.appendChild(orderNumber);
+    container.appendChild(orderNumber);
 
     const customerInfo = this.createCustomerInfo(order);
-    this.shadow.appendChild(customerInfo);
+    container.appendChild(customerInfo);
 
     const orderProducts = this.createOrderProducts(order);
-    this.shadow.appendChild(orderProducts);
+    container.appendChild(orderProducts);
+
+    const shippingInfo = this.createShippingInfo(order, shippingMethods);
+    container.appendChild(shippingInfo);
+
+    const orderTotal = this.createOrderTotal(order, shippingMethods);
+    container.appendChild(orderTotal);
+
+    this.shadow.appendChild(container);
   }
 
   createHeading(order) {
@@ -82,7 +98,62 @@ export class OrderConfirmationView extends HTMLElement {
     return section;
   }
 
-  
+  createShippingInfo(order, shippingMethods) {
+    const section = document.createElement("section");
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Shipping information";
+    section.appendChild(heading);
+
+    const method = shippingMethods.find(
+      // Finner fraktmetoden som har samme ID som bestillingen
+      (item) => Number(item.id) === Number(order.shipping_id),
+    );
+
+    const shippingText = document.createElement("p");
+    shippingText.textContent =
+      "Shipping method: " + (method?.type ?? "Unknown");
+    section.appendChild(shippingText);
+
+    const estimatedDate = new Date(order.date);
+    estimatedDate.setDate(estimatedDate.getDate() + 3);
+
+    const shippingDate = document.createElement("p");
+    shippingDate.textContent =
+      "Estimated shipping date: " + estimatedDate.toLocaleDateString("en-GB");
+
+    section.appendChild(shippingDate);
+
+    return section;
+  }
+
+  createOrderTotal(order, shippingMethods) {
+    const section = document.createElement("section");
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Order total";
+    section.appendChild(heading);
+
+    const products = JSON.parse(order.content);
+
+    const productTotal = products.reduce(
+      (sum, product) => sum + product.price * product.quantity,
+      0,
+    );
+
+    const method = shippingMethods.find(
+      (item) => Number(item.id) === Number(order.shipping_id),
+    );
+
+    const shippingPrice = Number(method?.price ?? 0);
+    const total = productTotal + shippingPrice;
+
+    const totalText = document.createElement("p");
+    totalText.textContent = "Total: " + total + " kr";
+    section.appendChild(totalText);
+
+    return section;
+  }
 }
 
 customElements.define("order-confirmation-view", OrderConfirmationView);

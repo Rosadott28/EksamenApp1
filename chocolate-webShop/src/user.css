@@ -558,3 +558,20 @@ h3 {
         margin-right: max(16px, calc((100% - 600px) / 2));
     }
 }
+
+/* ------------------------ orderConfirmation ------------------------ */
+.confirmation-container {
+  background-color: var(--ivory);
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 16px;
+}
+
+@media (min-width: 768px) {
+  .confirmation-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
