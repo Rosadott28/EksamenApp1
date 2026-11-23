@@ -195,7 +195,6 @@ checkoutView.addEventListener("placeOrder", async (event) => {
       cart.length = 0; // Tømmer handlekurven etter vellykket bestilling
       localStorage.setItem("shoppingCart", JSON.stringify(cart));
       cartView.refresh(cart);
-      alert("Order placed successfully!");
       orderConfirmationView.refresh(result.record, shippingMethods);
       checkoutView.remove();
       document.body.appendChild(orderConfirmationView);

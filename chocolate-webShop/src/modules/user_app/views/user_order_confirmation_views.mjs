@@ -44,7 +44,7 @@ export class OrderConfirmationView extends HTMLElement {
 
   createOrderNumber(order) {
     const orderNumber = document.createElement("p");
-    orderNumber.textContent = "Order number: " + order.orderNumber; //order.orderNumber henter ordrenummeret fra API-responsen
+    orderNumber.textContent = "Order number: " + (order.ordernumber ?? order.orderNumber ?? "Not available"); //order.orderNumber henter ordrenummeret fra API-responsen
 
     return orderNumber;
   }
