@@ -403,6 +403,7 @@ loginView.addEventListener("loginuser", async function (evt) {
 
     loginView.resetForm();
     showMessage("Login successful!");
+    showHome();
   } else {
     showMessage("Could not log in. Please try again.");
   }
@@ -413,3 +414,4 @@ loginView.addEventListener("cancelLogin", function (evt) {
 
 });
 
+//testMedBilde@Bilde.com - bilde
