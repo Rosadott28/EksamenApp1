@@ -415,3 +415,4 @@ loginView.addEventListener("cancelLogin", function (evt) {
 });
 
 //testMedBilde@Bilde.com - bilde
+//testbruker@gmail.com - 12345678
