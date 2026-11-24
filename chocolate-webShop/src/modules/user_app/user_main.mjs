@@ -137,6 +137,11 @@ const cartView = new CartView();
 
 // Åpner checkout
 cartView.addEventListener("checkoutClick", async () => {
+  if (cart.length === 0) {
+    showMessage("Your shopping cart is empty.");
+    return;
+  }
+
   shippingMethods = await getShippingMethods();
 
   checkoutView.refresh(shippingMethods, cart);
@@ -230,7 +235,7 @@ checkoutView.addEventListener("placeOrder", async (event) => {
     city: customerData.customerCity,
     country: customerData.customerCountry,
     shipping_id: shippingId,
-    content: JSON.stringify(cart), //// Gjør produktene i handlekurven om til JSON-tekst for API-et
+    content: JSON.stringify(cart), // Gjør produktene i handlekurven om til JSON-tekst for API-et
   };
 
   try {
