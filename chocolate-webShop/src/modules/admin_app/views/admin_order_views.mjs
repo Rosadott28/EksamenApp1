@@ -97,7 +97,7 @@ export class OrderView extends HTMLElement {
 
             orderIdCell.textContent = order.id;
             orderCustomerCell.textContent = order.customer_name;
-            orderDateCell.textContent = order.date;
+            orderDateCell.textContent = new Date(order.date).toLocaleDateString("nb-NO"); //lesbar tid, kun dato fordi api ikke tar med tid
 
             deleteButton.textContent = "Delete";
 
