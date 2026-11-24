@@ -7,6 +7,14 @@ export class CommentsView extends HTMLElement {
   refresh(comments) {
     this.shadow.replaceChildren();
 
+    const styleLink = document.createElement("link");
+    styleLink.rel = "stylesheet";
+    styleLink.href = "./user.css";
+    this.shadow.appendChild(styleLink);
+
+    const backButton = this.createBackButton();
+    this.shadow.appendChild(backButton);
+
     const heading = this.createHeading();
     this.shadow.appendChild(heading);
 
@@ -25,6 +33,18 @@ export class CommentsView extends HTMLElement {
     heading.textContent = "Product reviews";
 
     return heading;
+  }
+
+  createBackButton() {
+    const button = document.createElement("button");
+    button.textContent = "← Back";
+    button.classList.add("back-button");
+
+    button.addEventListener("click", () => {
+      this.dispatchEvent(new CustomEvent("backClick"));
+    });
+
+    return button;
   }
 
   createEmptyMessage() {

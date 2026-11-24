@@ -27,6 +27,8 @@ import { CheckoutView } from "./views/user_checkout_views.mjs";
 
 import { OrderConfirmationView } from "./views/user_order_confirmation_views.mjs";
 
+import { CommentsView } from "./views/user_comments_views.mjs";
+
 //----------------------------shoppingCart----------------------------
 const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
 
@@ -77,6 +79,7 @@ function showHome() {
   checkoutView.remove();
   registrationView.remove();
   orderConfirmationView.remove();
+  commentsView.remove();
   document.body.appendChild(homeView);
 }
 
@@ -151,6 +154,7 @@ cartButton.addEventListener("click", () => {
   checkoutView.remove();
   registrationView.remove();
   orderConfirmationView.remove();
+  commentsView.remove();
 
   cartView.refresh(cart);
   document.body.appendChild(cartView);
@@ -214,8 +218,6 @@ checkoutView.addEventListener("placeOrder", async (event) => {
 //-----------------------------orderConfirmationView-----------------------------
 const orderConfirmationView = new OrderConfirmationView();
 
-
-
 //-----------------------------createUser-----------------------------
 const createUserButton = document.getElementById("createUserButton");
 createUserButton.addEventListener("click", () => {
@@ -259,6 +261,23 @@ productDetailView.addEventListener("buyProduct", (event) => {
 productDetailView.addEventListener("backClick", () => {
   productDetailView.remove();
   document.body.appendChild(productListView);
+});
+
+const commentsView = new CommentsView();
+
+productDetailView.addEventListener("showComments", async (event) => {
+  const productId = event.detail;
+  const comments = await getProductComments(productId);
+
+  commentsView.refresh(comments);
+
+  productDetailView.remove();
+  document.body.appendChild(commentsView);
+});
+
+commentsView.addEventListener("backClick", () => {
+  commentsView.remove();
+  document.body.appendChild(productDetailView);
 });
 
 //-----------------------------registrationView-----------------------------
