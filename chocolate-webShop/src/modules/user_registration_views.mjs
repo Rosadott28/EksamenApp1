@@ -10,7 +10,8 @@ export class RegistrationView extends HTMLElement {
         <style>
         :host {
             display: block;
-            max-width: 800px;
+            max-width: 1200px;
+            width: calc(100% - 32px);
             margin: 24px auto;
             padding: 32px;
             background-color: var(--ivory);
