@@ -8,6 +8,7 @@ import {
   registerUser,
   getShippingMethods,
   addOrder,
+  getProductComments,
 } from "../api_service.mjs";
 
 import {
