@@ -209,6 +209,12 @@ checkoutView.addEventListener("placeOrder", async (event) => {
     return;
   }
 
+  // Hindrer tomme bestillinger
+  if (cart.length === 0) {
+    showMessage("Your shopping cart is empty.");
+    return;
+  }
+
   isOrdering = true;
 
   const customerData = event.detail.customerData;
@@ -241,6 +247,7 @@ checkoutView.addEventListener("placeOrder", async (event) => {
 
       checkoutView.remove();
       orderConfirmationView.style.visibility = "visible";
+      isOrdering = false;
     } else {
       isOrdering = false;
       alert("Could not place your order. Please try again.");
