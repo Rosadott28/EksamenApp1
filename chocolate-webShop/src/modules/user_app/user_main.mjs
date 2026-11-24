@@ -9,6 +9,8 @@ import {
   getShippingMethods,
   addOrder,
   getProductComments,
+  userLogin,
+  getUserThumbUrl,
 } from "../api_service.mjs";
 
 import {
@@ -28,6 +30,8 @@ import { CheckoutView } from "./views/user_checkout_views.mjs";
 import { OrderConfirmationView } from "./views/user_order_confirmation_views.mjs";
 
 import { CommentsView } from "./views/user_comments_views.mjs";
+
+import { LoginView } from "./views/user_login_views.mjs";
 
 //----------------------------shoppingCart----------------------------
 const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
@@ -107,6 +111,7 @@ async function showHome() {
   registrationView.remove();
   orderConfirmationView.remove();
   commentsView.remove();
+  loginView.remove();
 
   homeView.style.visibility = "visible";
 }
@@ -128,6 +133,23 @@ const cartButton = document.getElementById("cartButton");
 
 const userMenuButton = document.getElementById("userMenuButton");
 const userMenu = document.getElementById("userMenu");
+
+function showUserThumb() {
+  const thumb = sessionStorage.getItem("userThumb");
+
+  if (!thumb) return; //hvis det ikke finnes en fil opplastet
+
+  const img = document.createElement("img");
+  img.src = getUserThumbUrl(thumb);
+  img.alt = "Profile picture"; //viktig universell utforming
+  img.style.borderRadius = "50%"; // ny kode fordi tidligere css er for knapp
+  img.style.objectFit = "cover";
+
+  userMenuButton.replaceChildren(img);
+}
+
+showUserThumb();
+
 userMenuButton.addEventListener("click", () => {
   userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
 });
@@ -196,6 +218,7 @@ cartButton.addEventListener("click", async () => {
   registrationView.remove();
   orderConfirmationView.remove();
   commentsView.remove();
+  loginView.remove();
 
   cartView.style.visibility = "visible";
 });
@@ -276,7 +299,23 @@ createUserButton.addEventListener("click", () => {
   productDetailView.remove();
   cartView.remove();
   checkoutView.remove();
+  loginView.remove();
   document.body.appendChild(registrationView);
+  userMenu.hidden = true;
+});
+
+//-----------------------------loginButton-----------------------------
+const loginButton = document.getElementById("loginButton");
+
+loginButton.addEventListener("click", () => {
+  homeView.remove();
+  productListView.remove();
+  productDetailView.remove();
+  cartView.remove();
+  checkoutView.remove();
+  registrationView.remove();
+
+  document.body.appendChild(loginView);
   userMenu.hidden = true;
 });
 //-----------------------------productListView-----------------------------
@@ -349,3 +388,28 @@ registrationView.addEventListener("registeruser", async function (evt) {
 registrationView.addEventListener("cancelRegistration", function (evt) {
   showHome();
 });
+
+//-----------------------------loginView-----------------------------
+const loginView = new LoginView();
+
+loginView.addEventListener("loginuser", async function (evt) {
+  const result = await userLogin(evt.username, evt.password);
+
+  if (result?.logindata?.token) { // ?. betyr omtrent «fortsett bare hvis verdien finnes». optional chaining
+
+    sessionStorage.setItem("userToken", result.logindata.token);
+    sessionStorage.setItem("userThumb", result.logindata.thumb);
+    showUserThumb();
+
+    loginView.resetForm();
+    showMessage("Login successful!");
+  } else {
+    showMessage("Could not log in. Please try again.");
+  }
+});
+
+loginView.addEventListener("cancelLogin", function (evt) {
+  showHome();
+
+});
+

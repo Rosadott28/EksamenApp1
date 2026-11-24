@@ -108,8 +108,8 @@ export class RegistrationView extends HTMLElement {
             this.dispatchEvent(new CustomEvent("cancelRegistration"));
         });
 
-   
     }
+    
     resetForm() {
         this.shadow.querySelector("#theForm").reset();
 

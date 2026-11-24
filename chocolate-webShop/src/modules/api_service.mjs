@@ -308,6 +308,28 @@ export async function adminLogin(username, password) {
         return loginData;
     } catch (error) {
         errorHandler(error);
-        return [];
+        return null;
     }
 }
+
+//---------------------------------------------------------
+export async function userLogin(username, password) {
+    const userLoginUrl = `https://sukkergris.onrender.com/users/login?key=${groupkey}`;
+    const cfg = {
+        method: "POST",
+        headers: {
+            "Authorization": createBasicAuthString(username, password)
+        }
+    }
+    try {
+        const loginData = await sendRequest(userLoginUrl, cfg);
+        return loginData;
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
+
+export function getUserThumbUrl(filename) {
+  return `https://sukkergris.onrender.com/images/${groupkey}/users/${filename}`;
+} // bruker bildenavnet lagret i sessionstorage
