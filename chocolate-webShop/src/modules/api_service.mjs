@@ -120,6 +120,21 @@ export async function getProductsByCategory(catId) {
 }
 
 //--------------------------------------------------------
+export async function getProductComments(productId) {
+    const url = `https://sukkergris.onrender.com/webshop/comments?key=${groupkey}&product_id=${productId}`;
+
+    try {
+
+        const dataFromServer = await sendRequest(url);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return [];
+    }
+}
+
+//--------------------------------------------------------
 export async function getProductById(id) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?id=${id}&key=${groupkey}`;
 
