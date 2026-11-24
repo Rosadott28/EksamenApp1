@@ -12,24 +12,29 @@ export class CommentsView extends HTMLElement {
     styleLink.href = "./user.css";
     this.shadow.appendChild(styleLink);
 
+    const container = document.createElement("div");
+    container.classList.add("comments-container");
+    this.shadow.appendChild(container);
+
     const backButton = this.createBackButton();
-    this.shadow.appendChild(backButton);
+    container.appendChild(backButton);
 
     const heading = this.createHeading();
-    this.shadow.appendChild(heading);
+    container.appendChild(heading);
 
     if (comments.length === 0) {
       const message = this.createEmptyMessage();
-      this.shadow.appendChild(message);
+      container.appendChild(message);
       return;
     }
 
     const commentsList = this.createCommentsList(comments);
-    this.shadow.appendChild(commentsList);
+    container.appendChild(commentsList);
   }
 
   createHeading() {
     const heading = document.createElement("h2");
+    heading.classList.add("view-heading");
     heading.textContent = "Product reviews";
 
     return heading;
@@ -59,6 +64,7 @@ export class CommentsView extends HTMLElement {
 
     comments.forEach((comment) => {
       const commentCard = document.createElement("div");
+      commentCard.classList.add("comment-card");
 
       const rating = document.createElement("p");
 

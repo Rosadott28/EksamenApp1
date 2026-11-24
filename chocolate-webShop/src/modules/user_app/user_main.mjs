@@ -267,7 +267,11 @@ const commentsView = new CommentsView();
 
 productDetailView.addEventListener("showComments", async (event) => {
   const productId = event.detail;
-  const comments = await getProductComments(productId);
+  //const comments = await getProductComments(productId);
+  const comments = [
+  { rating: 4, comment_text: "Very tasty chocolate!" },
+  { rating: 5, comment_text: "Excellent quality!" },
+];
 
   commentsView.refresh(comments);
 

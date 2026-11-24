@@ -117,6 +117,20 @@ h3 {
   outline-offset: 3px;
 }
 
+@media (min-width: 768px) {
+  #homeButton {
+    left: max(16px, calc((100% - 1200px) / 2));
+  }
+
+  #cartButton {
+    right: max(16px, calc((100% - 1200px) / 2));
+  }
+
+  #userMenuButton {
+    right: max(56px, calc((100% - 1200px) / 2 + 40px));
+  }
+}
+
 /* ------------------------ Brukermeny ------------------------ */
 
 #userMenu {
@@ -136,6 +150,12 @@ h3 {
 
 #userMenu[hidden] {
     display: none;
+}
+
+@media (min-width: 768px) {
+  #userMenu {
+    right: max(56px, calc((100% - 1200px) / 2 + 40px));
+  }
 }
 
 #userMenu button {
@@ -225,6 +245,15 @@ h3 {
   }
 }
 
+@media (min-width: 768px) {
+  .category-container,
+  .search-container {
+    max-width: 1232px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 /* ------------------------ Produktkort ------------------------ */
 
 .product-card {
@@ -257,6 +286,14 @@ h3 {
   margin: 0;
 }
 
+@media (min-width: 768px) {
+  .product-card {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 /* ------------------------ Tilbakeknapp ------------------------ */
 
 .back-button {
@@ -270,12 +307,27 @@ h3 {
   cursor: pointer;
 }
 
+@media (min-width: 768px) {
+  .back-button:not(.comments-button) {
+    margin-left: max(16px, calc((100% - 1200px) / 2));
+  }
+}
+
 /* ------------------------ Visningsoverskrifter ------------------------ */
 
 .view-heading {
   color: var(--truffle);
   font-size: 22px;
   margin: 12px 16px;
+}
+
+@media (min-width: 768px) {
+  .category-heading {
+    max-width: 1232px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+  }
 }
 
 /* ------------------------ Produktliste header ------------------------ */
@@ -293,6 +345,14 @@ h3 {
 
 .list-header .view-heading {
   margin: 0;
+}
+
+@media (min-width: 768px) {
+  .list-header {
+    max-width: 1200px;
+    margin: 12px auto;
+    width: calc(100% - 32px);
+  }
 }
 
 /* ------------------------ Produktdetaljer ------------------------ */
@@ -345,12 +405,12 @@ h3 {
   margin: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   /* PC: Bilde og produktinformasjon side om side */
   .detail-card {
     flex-direction: row;
     align-items: flex-start;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 24px auto;
     width: calc(100% - 32px);
   }
@@ -466,18 +526,18 @@ h3 {
 
 /* Begrenser bredden på handlekurven på PC */
 @media (min-width: 768px) {
-    .cart-product-container,
-    .cart-total,
-    .cart-heading {
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+  .cart-product-container,
+  .cart-total,
+  .cart-heading {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-    .empty-cart-button,
-    .checkout-button {
-        margin-right: max(16px, calc((100% - 800px) / 2));
-    }
+  .empty-cart-button,
+  .checkout-button {
+    margin-right: max(16px, calc((100% - 1200px) / 2));
+  }
 }
 
 /* ------------------------ Checkout ------------------------ */
@@ -539,7 +599,7 @@ h3 {
     .checkout-form,
     .shipping-section,
     .order-summary {
-        max-width: 600px;
+        max-width: 1200px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -559,7 +619,7 @@ h3 {
 
 @media (min-width: 768px) {
     .place-order-button {
-        margin-right: max(16px, calc((100% - 600px) / 2));
+        margin-right: max(16px, calc((100% - 1200px) / 2));
     }
 }
 
@@ -574,8 +634,34 @@ h3 {
 
 @media (min-width: 768px) {
   .confirmation-container {
-    max-width: 600px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+/* ------------------------ Produktanmeldelser ------------------------ */
+
+.comment-card {
+  background-color: var(--ivory);
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 16px 0;
+}
+
+@media (min-width: 768px) {
+  .comments-container {
+    max-width: 1200px;
+    width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .comments-container > .back-button:not(.comments-button),
+  .comments-container > .view-heading {
+    margin-left: 0;
   }
 }

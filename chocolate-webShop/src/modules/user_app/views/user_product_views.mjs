@@ -26,7 +26,7 @@ export class HomeView extends HTMLElement {
     this.shadow.appendChild(searchField);
 
     const heading = document.createElement("h2");
-    heading.classList.add("view-heading");
+    heading.classList.add("view-heading", "category-heading");
     heading.textContent = "Categories";
     this.shadow.appendChild(heading);
 
@@ -396,7 +396,7 @@ export class ProductDetailView extends HTMLElement {
   createCommentsButton(data) {
     const button = document.createElement("button");
     button.textContent = "Show comments";
-    button.classList.add("back-button");
+    button.classList.add("back-button", "comments-button");
 
     button.addEventListener("click", () => {
       this.dispatchEvent(
