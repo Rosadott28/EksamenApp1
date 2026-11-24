@@ -274,6 +274,9 @@ export class ProductDetailView extends HTMLElement {
     const buyButton = this.createBuyButton(data);
     productInfo.appendChild(buyButton);
 
+    const commentsButton = this.createCommentsButton(data);
+    productInfo.appendChild(commentsButton);
+
     this.shadow.appendChild(productCard);
   }
 
@@ -381,13 +384,29 @@ export class ProductDetailView extends HTMLElement {
       "★".repeat(fullStars) +
       (halfStar ? "⯪" : "") +
       "☆".repeat(emptyStars) + //fyller opp resten til totalt fem stjerner
+      " " +
+      Number(data.rating).toFixed(1) +
       " (" +
-      data.rating +
-      "/5, " +
       data.numberOfRatings +
-      " reviews)";
+      ")";
 
     return rating;
+  }
+
+  createCommentsButton(data) {
+    const button = document.createElement("button");
+    button.textContent = "Show comments";
+    button.classList.add("back-button");
+
+    button.addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("showComments", {
+          detail: data.id,
+        }),
+      );
+    });
+
+    return button;
   }
 
   createStockInfo(data) {

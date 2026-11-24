@@ -184,7 +184,7 @@ h3 {
 }
 
 .search-button {
-  padding: 10px 16px;
+  padding: 6px 12px;
   background-color: var(--powder);
   color: var(--espresso);
   border: 1px solid var(--truffle);
@@ -361,10 +361,11 @@ h3 {
     color: var(--espresso);
     border: 1px solid var(--truffle);
     border-radius: var(--radius);
-    padding: 10px 16px;
+    padding: 6px 12px;
     font-size: 16px;
     cursor: pointer;
 }
+
 
 /* ------------------------ Lag bruker ------------------------ */
 
@@ -414,12 +415,15 @@ h3 {
     border: 1px solid var(--truffle);
     color: var(--truffle);
     box-shadow: none;
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: var(--radius);
 }
 
 .checkout-button {
     display: block;
     margin: 8px 16px 8px auto;
-    padding: 10px 16px;
+    padding: 6px 12px;
     background-color: var(--powder);
     color: var(--espresso);
     border: 1px solid var(--truffle);
@@ -544,7 +548,7 @@ h3 {
 .place-order-button {
     display: block;
     margin: 16px 16px 16px auto;
-    padding: 10px 16px;
+    padding: 6px 12px;
     background-color: var(--powder);
     color: var(--espresso);
     border: 1px solid var(--truffle);
