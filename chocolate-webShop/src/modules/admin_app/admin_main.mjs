@@ -99,8 +99,9 @@ btnLogin.addEventListener('click', async function (evt) {
         sessionStorage.setItem("adminToken", loginData.logindata.token);
         adminNav.hidden = false;
         adminLoginForm.hidden = true;
-        // navigateTo("catview");
         btnProducts.click(); // Navigate to products view after successful login
+    } else {
+        showMessage("Could not log in. Please try again.")  
     }
 });
 
@@ -117,7 +118,6 @@ btnProducts.addEventListener('click', async function (evt) {
 btnOrders.addEventListener('click', async function (evt) {
    
     const orders = await getAllOrders();
-    console.log(orders);
 
     orderView.refresh(orders); 
 

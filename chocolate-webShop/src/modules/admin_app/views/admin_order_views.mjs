@@ -95,7 +95,6 @@ export class OrderView extends HTMLElement {
 
             deleteButton.classList.add("delete-button");
 
-            // TODO: Verify property names against real API order data
             orderIdCell.textContent = order.id;
             orderCustomerCell.textContent = order.customer_name;
             orderDateCell.textContent = order.date;
