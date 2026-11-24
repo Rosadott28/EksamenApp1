@@ -39,6 +39,7 @@ constructor() {
                 max-width: 500px;
                 margin: 100px auto;
                 padding: 16px;
+                box-sizing: border-box;
             }
 
             #loginBox {
@@ -63,14 +64,15 @@ constructor() {
                 font-weight: bold;
                 text-align: center;
                 margin-bottom: 20px;
+                margin-top: 0;
                 color: var(--espresso);
             }
 
             #loginBox label {
                 font-size: 16px;
                 color: var(--espresso);
-            }
-        }`;
+                font-weight: bold;
+            }`;
 
         loginform.id = "loginForm";
         loginBox.id = "loginBox";
@@ -86,6 +88,9 @@ constructor() {
         passwordLabel.htmlFor = "password"
         loginButton.type = "submit";
         cancelButton.type = "button"
+
+        usernameInput.placeholder = "Enter Username";
+        passwordInput.placeholder = "Enter Password";
 
         loginform.appendChild(loginBox);
         loginBox.appendChild(loginHeading);
