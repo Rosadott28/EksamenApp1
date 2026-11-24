@@ -115,18 +115,11 @@ btnProducts.addEventListener('click', async function (evt) {
 });
 
 btnOrders.addEventListener('click', async function (evt) {
-    // TODO: TEST DATA - Remove when real orders from API are available
-    const testOrders = [
-    {
-        id: 101,
-        customer_name: "Test Kunde",
-        date: "2026-11-20"
-    }
-];
+   
     const orders = await getAllOrders();
     console.log(orders);
-   // TODO: TEST DATA - Replace with orderView.refresh(orders)
-    orderView.refresh(testOrders); 
+
+    orderView.refresh(orders); 
 
     navigateTo("orderview");
     setActiveTab(btnOrders);
