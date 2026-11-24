@@ -45,6 +45,24 @@ function addToCart(product) {
   localStorage.setItem("shoppingCart", JSON.stringify(cart)); // Lagrer den oppdaterte handlekurven i nettleseren
 }
 
+//----------------------------prepareView--------------------------------
+// Klargjør visning før navigasjon
+async function prepareView(view) {
+  view.style.visibility = "hidden";
+  document.body.appendChild(view);
+
+  const styleLink = view.shadow.querySelector('link[rel="stylesheet"]');
+
+  await new Promise((resolve) => {
+    if (styleLink.sheet) {
+      resolve();
+    } else {
+      styleLink.addEventListener("load", resolve, { once: true });
+      styleLink.addEventListener("error", resolve, { once: true });
+    }
+  });
+}
+
 //------------------------------homeView-----------------------------
 const homeView = new HomeView(); // Oppretter en instans av HomeView
 
@@ -57,22 +75,31 @@ homeView.addEventListener("categorySelect", async (event) => {
   const products = await getProductsByCategory(event.categoryData.id);
 
   productListView.refresh(products, event.categoryData.catName);
+
+  await prepareView(productListView);
+
   homeView.remove();
-  document.body.appendChild(productListView);
+  productListView.style.visibility = "visible";
 });
 
 homeView.addEventListener("productSearch", async (event) => {
-  const products = await getProductsBySearch(event.searchWord); //forespør API
+  const products = await getProductsBySearch(event.searchWord);
   productListView.refresh(products, "Search results");
+
+  await prepareView(productListView);
+
   homeView.remove();
-  document.body.appendChild(productListView);
+  productListView.style.visibility = "visible";
 });
 
 //-----------------------------header-----------------------------
 
 const homeButton = document.getElementById("homeButton");
 
-function showHome() {
+async function showHome() {
+  await prepareView(homeView);
+
+  // Fjerner andre visninger
   productListView.remove();
   productDetailView.remove();
   cartView.remove();
@@ -80,7 +107,8 @@ function showHome() {
   registrationView.remove();
   orderConfirmationView.remove();
   commentsView.remove();
-  document.body.appendChild(homeView);
+
+  homeView.style.visibility = "visible";
 }
 
 homeButton.addEventListener("click", showHome);
@@ -107,13 +135,16 @@ userMenuButton.addEventListener("click", () => {
 //--------------------------------cartView--------------------------------
 const cartView = new CartView();
 
-// Åpner checkout-visningen og henter fraktmetoder
+// Åpner checkout
 cartView.addEventListener("checkoutClick", async () => {
   shippingMethods = await getShippingMethods();
 
-  cartView.remove();
   checkoutView.refresh(shippingMethods, cart);
-  document.body.appendChild(checkoutView);
+
+  await prepareView(checkoutView);
+
+  cartView.remove();
+  checkoutView.style.visibility = "visible";
 });
 
 // Oppdaterer antallet i handlekurven og beregner prisene på nytt
@@ -147,7 +178,12 @@ cartView.addEventListener("emptyCart", () => {
   cartView.refresh(cart);
 });
 
-cartButton.addEventListener("click", () => {
+// Åpner handlekurven
+cartButton.addEventListener("click", async () => {
+  cartView.refresh(cart);
+
+  await prepareView(cartView);
+
   homeView.remove();
   productListView.remove();
   productDetailView.remove();
@@ -156,8 +192,7 @@ cartButton.addEventListener("click", () => {
   orderConfirmationView.remove();
   commentsView.remove();
 
-  cartView.refresh(cart);
-  document.body.appendChild(cartView);
+  cartView.style.visibility = "visible";
 });
 
 //-----------------------------checkoutView-----------------------------
@@ -201,8 +236,11 @@ checkoutView.addEventListener("placeOrder", async (event) => {
       localStorage.setItem("shoppingCart", JSON.stringify(cart));
       cartView.refresh(cart);
       orderConfirmationView.refresh(result.record, shippingMethods);
+
+      await prepareView(orderConfirmationView);
+
       checkoutView.remove();
-      document.body.appendChild(orderConfirmationView);
+      orderConfirmationView.style.visibility = "visible";
     } else {
       isOrdering = false;
       alert("Could not place your order. Please try again.");
@@ -229,16 +267,12 @@ createUserButton.addEventListener("click", () => {
   document.body.appendChild(registrationView);
   userMenu.hidden = true;
 });
-
 //-----------------------------productListView-----------------------------
 const productListView = new ProductListView();
 
-productListView.addEventListener("backClick", () => {
-  productListView.remove();
-  document.body.appendChild(homeView);
-});
+productListView.addEventListener("backClick", showHome);
 
-// Henter valgt produkt fra API og viser detaljvisningen
+// Henter valgt produkt
 productListView.addEventListener("productSelect", async (event) => {
   const product = await getProductById(event.productData.id);
 
@@ -247,8 +281,11 @@ productListView.addEventListener("productSelect", async (event) => {
   }
 
   productDetailView.refresh(product);
+
+  await prepareView(productDetailView);
+
   productListView.remove();
-  document.body.appendChild(productDetailView);
+  productDetailView.style.visibility = "visible";
 });
 
 //-----------------------------productDetailView-----------------------------
@@ -258,9 +295,11 @@ productDetailView.addEventListener("buyProduct", (event) => {
   addToCart(event.detail);
 });
 
-productDetailView.addEventListener("backClick", () => {
+productDetailView.addEventListener("backClick", async () => {
+  await prepareView(productListView);
+
   productDetailView.remove();
-  document.body.appendChild(productListView);
+  productListView.style.visibility = "visible";
 });
 
 const commentsView = new CommentsView();
@@ -269,9 +308,9 @@ productDetailView.addEventListener("showComments", async (event) => {
   const productId = event.detail;
   //const comments = await getProductComments(productId);
   const comments = [
-  { rating: 4, comment_text: "Very tasty chocolate!" },
-  { rating: 5, comment_text: "Excellent quality!" },
-];
+    { rating: 4, comment_text: "Very tasty chocolate!" },
+    { rating: 5, comment_text: "Excellent quality!" },
+  ];
 
   commentsView.refresh(comments);
 
@@ -279,9 +318,11 @@ productDetailView.addEventListener("showComments", async (event) => {
   document.body.appendChild(commentsView);
 });
 
-commentsView.addEventListener("backClick", () => {
+commentsView.addEventListener("backClick", async () => {
+  await prepareView(productDetailView);
+
   commentsView.remove();
-  document.body.appendChild(productDetailView);
+  productDetailView.style.visibility = "visible";
 });
 
 //-----------------------------registrationView-----------------------------

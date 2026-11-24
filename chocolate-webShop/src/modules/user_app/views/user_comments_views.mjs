@@ -6,10 +6,14 @@ export class CommentsView extends HTMLElement {
   //-----------------------------
   refresh(comments) {
     this.shadow.replaceChildren();
+    this.style.visibility = "hidden";
 
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
     styleLink.href = "./user.css";
+    styleLink.onload = () => {
+      this.style.visibility = "visible";
+    };
     this.shadow.appendChild(styleLink);
 
     const container = document.createElement("div");
