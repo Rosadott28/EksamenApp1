@@ -12,6 +12,7 @@ import {
   userLogin,
   getUserThumbUrl,
   getUsers,
+  updateUser,
 } from "../api_service.mjs";
 
 import {
@@ -139,6 +140,7 @@ const userMenuButton = document.getElementById("userMenuButton");
 const userMenu = document.getElementById("userMenu");
 const loggedIn = document.getElementById("loggedIn");
 const loggedOut = document.getElementById("loggedOut");
+const defaultUserIcon = userMenuButton.querySelector("img");
 
 function showUserThumb() {
   const thumb = sessionStorage.getItem("userThumb");
@@ -157,14 +159,12 @@ function showUserThumb() {
 showUserThumb();
 
 userMenuButton.addEventListener("click", () => {
-  if (sessionStorage.getItem("userToken")){
+  if (sessionStorage.getItem("userToken")) {
     loggedOut.hidden = true;
     loggedIn.hidden = false;
-    userMenu.classList.add("logged-in");
   } else {
     loggedOut.hidden = false;
     loggedIn.hidden = true;
-    userMenu.classList.remove("logged-in");
   }
   userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
 });
@@ -331,9 +331,9 @@ editUserButton.addEventListener("click", async () => {
     (item) => item.username === sessionStorage.getItem("userUsername") // finner brukeren med samme brukernavn som lagrets ved innlogging.
   );
   if (!user) {
-  showMessage("Could not load user information.");
-  return;
-}
+    showMessage("Could not load user information.");
+    return;
+  }
   userSettingsView.prepareEdit(user);
 
   homeView.remove();
@@ -350,6 +350,28 @@ editUserButton.addEventListener("click", async () => {
   userMenu.hidden = true;
 });
 
+userSettingsView.addEventListener("updateuser", async function (evt) {
+  const result = await updateUser(evt.userForm);
+  if (result) {
+    showMessage("User updated successfully!");
+  } else {
+    showMessage("Could not update user. Please try again.");
+  }
+});
+
+//-----------------------------logoutButton-----------------------------
+const logoutButton = document.getElementById("logoutButton");
+logoutButton.addEventListener("click", async () => {
+  sessionStorage.removeItem("userToken");
+  sessionStorage.removeItem("userThumb");
+  sessionStorage.removeItem("userUsername");
+  userMenuButton.replaceChildren(defaultUserIcon);
+  userMenu.hidden = true;
+  loggedIn.hidden = true;
+  loggedOut.hidden = false;
+  showHome();
+
+});
 //-----------------------------loginButton-----------------------------
 const loginButton = document.getElementById("loginButton");
 

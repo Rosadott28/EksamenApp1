@@ -192,6 +192,24 @@ constructor() {
         theForm.appendChild(document.createElement("br"));
 
         theForm.appendChild(submitButton);
+
+        theForm.addEventListener("submit", (evt) => {
+            evt.preventDefault();
+
+            const formData = new FormData(theForm);
+           
+            if (!formData.get("password")) {
+                formData.delete("password");
+            } 
+            if (profilePicture.files.length === 0) {
+                formData.delete("img_file");
+            }        
+
+            const updateUser = new CustomEvent("updateuser");
+            updateUser.userForm = formData;
+            this.dispatchEvent(updateUser);
+        });
+
     }
 
      prepareEdit(user) {

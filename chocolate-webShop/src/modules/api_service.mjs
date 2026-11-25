@@ -240,6 +240,27 @@ export async function updateProduct(product) {
     }
 }
 //---------------------------------------------------------
+export async function updateUser(user) {
+    const url = `https://sukkergris.onrender.com/users?key=${groupkey}`;
+
+    const cfg = {
+        method: "PUT",
+        body: user,  
+        headers: {
+            "Authorization": sessionStorage.getItem("userToken")
+        }
+    }
+    try {
+
+        const data = await sendRequest(url, cfg);
+        return data;
+
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
+//---------------------------------------------------------
 export async function deleteProduct(productId) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?key=${groupkey}&id=${productId}`;
 
