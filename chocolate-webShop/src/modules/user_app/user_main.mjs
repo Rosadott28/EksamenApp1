@@ -359,7 +359,6 @@ userSettingsView.addEventListener("updateuser", async function (evt) {
     return;
   }
   const result = await updateUser(evt.userForm);
-  console.log("Updated user:", result);
   if (result) {
     sessionStorage.setItem("userUsername", evt.userForm.get("username")); //oppdaterer nye navn
     if (result.record?.thumb) {
