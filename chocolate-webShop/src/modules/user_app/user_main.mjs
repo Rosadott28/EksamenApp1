@@ -21,7 +21,7 @@ import {
 
 import { showMessage } from "../msg_handler.mjs";
 
-import { RegistrationView } from "../user_registration_views.mjs";
+import { RegistrationView } from "./views/user_registration_views.mjs";
 
 import { CartView } from "./views/user_cart_views.mjs";
 
@@ -405,7 +405,7 @@ loginView.addEventListener("loginuser", async function (evt) {
     showMessage("Login successful!");
     showHome();
   } else {
-    showMessage("Could not log in. Please try again.");
+    showMessage("Incorrect email or password. Please try again.");
   }
 });
 
