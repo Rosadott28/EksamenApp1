@@ -376,3 +376,23 @@ export async function userLogin(username, password) {
 export function getUserThumbUrl(filename) {
   return `https://sukkergris.onrender.com/images/${groupkey}/users/${filename}`;
 } // bruker bildenavnet lagret i sessionstorage
+
+//---------------------------------------------------------
+export async function deleteUser() {
+    const url = `https://sukkergris.onrender.com/users?key=${groupkey}`;
+
+    const cfg = {
+        method: "DELETE",
+        headers: {
+            "Authorization": sessionStorage.getItem("userToken")
+        }
+    }
+    try {
+        const data = await sendRequest(url, cfg);
+        return data;
+        
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}

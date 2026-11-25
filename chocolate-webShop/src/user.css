@@ -194,9 +194,13 @@ h3 {
     font-weight: normal;
 }
 
-#loggedIn #editUserButton:hover,
-#loggedIn #deleteUserButton:hover {
+#loggedIn #editUserButton:hover {
      color: var(--cocoa);
+    text-decoration: underline;
+}
+
+#loggedIn #deleteUserButton:hover {
+    color: #B42318;
     text-decoration: underline;
 }
 

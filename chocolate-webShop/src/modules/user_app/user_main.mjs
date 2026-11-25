@@ -13,6 +13,7 @@ import {
   getUserThumbUrl,
   getUsers,
   updateUser,
+  deleteUser,
 } from "../api_service.mjs";
 
 import {
@@ -351,8 +352,20 @@ editUserButton.addEventListener("click", async () => {
 });
 
 userSettingsView.addEventListener("updateuser", async function (evt) {
+  const image = evt.userForm.get("img_file");
+
+  if (image && image.size > 1024 * 1024) {
+    showMessage("Profile picture must be smaller than 1 MB.");
+    return;
+  }
   const result = await updateUser(evt.userForm);
+  console.log("Updated user:", result);
   if (result) {
+    sessionStorage.setItem("userUsername", evt.userForm.get("username")); //oppdaterer nye navn
+    if (result.record?.thumb) {
+      sessionStorage.setItem("userThumb", result.record.thumb);
+      showUserThumb();
+    }
     showMessage("User updated successfully!");
   } else {
     showMessage("Could not update user. Please try again.");
@@ -370,7 +383,23 @@ logoutButton.addEventListener("click", async () => {
   loggedIn.hidden = true;
   loggedOut.hidden = false;
   showHome();
+});
 
+const deleteUserButton = document.getElementById("deleteUserButton");
+deleteUserButton.addEventListener("click", async function (evt) {
+  const confirm = window.confirm(
+    "Are you sure you want to delete your account? This cannot be undone."
+  );
+  if (!confirm) {
+    return;
+  }
+  const result = await deleteUser();
+  if (result) {
+    showMessage("User deleted successfully!");
+    logoutButton.click();
+  } else {
+    showMessage("Could not delete user. Please try again.");
+  }
 });
 //-----------------------------loginButton-----------------------------
 const loginButton = document.getElementById("loginButton");
