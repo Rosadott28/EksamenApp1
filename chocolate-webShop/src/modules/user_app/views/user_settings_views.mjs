@@ -192,9 +192,18 @@ constructor() {
         theForm.appendChild(document.createElement("br"));
 
         theForm.appendChild(submitButton);
+    }
 
+     prepareEdit(user) {
 
+        this.shadow.querySelector("#fullname").value = user.full_name;
+        this.shadow.querySelector("#username").value = user.username;
+        this.shadow.querySelector("#street").value = user.street;
+        this.shadow.querySelector("#city").value = user.city;
+        this.shadow.querySelector("#zipcode").value = user.zipcode;
+        this.shadow.querySelector("#country").value = user.country;
 
+        this.shadow.querySelector('input[type="submit"]').value = "Save changes";
     }
 };
 customElements.define("user-settings-view", UserSettingsView);

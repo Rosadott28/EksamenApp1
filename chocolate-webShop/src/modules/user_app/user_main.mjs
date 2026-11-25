@@ -11,6 +11,7 @@ import {
   getProductComments,
   userLogin,
   getUserThumbUrl,
+  getUsers,
 } from "../api_service.mjs";
 
 import {
@@ -320,9 +321,21 @@ createUserButton.addEventListener("click", () => {
   userMenu.hidden = true;
 });
 
-//-----------------------------editUser-----------------------------
+//-----------------------------UserSettingsView-----------------------------
+const userSettingsView = new UserSettingsView();
 const editUserButton = document.getElementById("editUserButton");
-editUserButton.addEventListener("click", () => {
+
+editUserButton.addEventListener("click", async () => {
+  const users = await getUsers();
+  const user = users.find(
+    (item) => item.username === sessionStorage.getItem("userUsername") // finner brukeren med samme brukernavn som lagrets ved innlogging.
+  );
+  if (!user) {
+  showMessage("Could not load user information.");
+  return;
+}
+  userSettingsView.prepareEdit(user);
+
   homeView.remove();
   productListView.remove();
   productDetailView.remove();
@@ -331,7 +344,7 @@ editUserButton.addEventListener("click", () => {
   registrationView.remove();
   loginView.remove();
   commentsView.remove();
-  orderConfirmationView.remove();;
+  orderConfirmationView.remove();
 
   document.body.appendChild(userSettingsView);
   userMenu.hidden = true;
@@ -433,6 +446,7 @@ loginView.addEventListener("loginuser", async function (evt) {
 
     sessionStorage.setItem("userToken", result.logindata.token);
     sessionStorage.setItem("userThumb", result.logindata.thumb);
+    sessionStorage.setItem("userUsername", result.logindata.username);
     showUserThumb();
 
     loginView.resetForm();
@@ -447,8 +461,7 @@ loginView.addEventListener("cancelLogin", function (evt) {
   showHome();
 
 });
-//-----------------------------UserSettingsView-----------------------------
-const userSettingsView = new UserSettingsView();
+
 
 
 
