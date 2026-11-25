@@ -35,25 +35,11 @@ const btnUsers = document.getElementById("btnUsers");
 const btnReviews = document.getElementById("btnReviews");
 
 
-//show categories at startup
-// const categories = await getCategories();
-// catView.refresh(categories);
-
 //------------------------------------------------
 function navigateTo(viewName) {
     viewContainer.replaceChildren();
     viewContainer.appendChild(viewMap[viewName]);
 }
-
-//------------------------------------------------
-// btnHome.addEventListener('click', function (evt) {
-//     navigateTo("catview");
-// });
-
-//------------------------------------------------
-// btnAddProd.addEventListener('click', function (evt) {
-//     navigateTo("prodform");
-// });
 
 //------------------------------------------------
 catView.addEventListener('categoryselect', async function (evt) {

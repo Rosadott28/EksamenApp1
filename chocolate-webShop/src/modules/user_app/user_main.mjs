@@ -33,6 +33,8 @@ import { CommentsView } from "./views/user_comments_views.mjs";
 
 import { LoginView } from "./views/user_login_views.mjs";
 
+import { UserSettingsView } from "./views/user_settings_views.mjs";
+
 //----------------------------shoppingCart----------------------------
 const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
 
@@ -112,6 +114,7 @@ async function showHome() {
   orderConfirmationView.remove();
   commentsView.remove();
   loginView.remove();
+  userSettingsView.remove();
 
   homeView.style.visibility = "visible";
 }
@@ -151,7 +154,13 @@ function showUserThumb() {
 showUserThumb();
 
 userMenuButton.addEventListener("click", () => {
-  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
+  if (sessionStorage.getItem("userToken")){
+    userMenu.hidden = true;
+    document.body.appendChild(userSettingsView);
+  } else {
+    userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
+  }
+  
 });
 
 //--------------------------------cartView--------------------------------
@@ -219,6 +228,7 @@ cartButton.addEventListener("click", async () => {
   orderConfirmationView.remove();
   commentsView.remove();
   loginView.remove();
+  userSettingsView.remove();
 
   cartView.style.visibility = "visible";
 });
@@ -301,6 +311,7 @@ createUserButton.addEventListener("click", () => {
   checkoutView.remove();
   loginView.remove();
   document.body.appendChild(registrationView);
+  userSettingsView.remove();
   userMenu.hidden = true;
 });
 
@@ -314,6 +325,7 @@ loginButton.addEventListener("click", () => {
   cartView.remove();
   checkoutView.remove();
   registrationView.remove();
+  userSettingsView.remove();
 
   document.body.appendChild(loginView);
   userMenu.hidden = true;
@@ -413,6 +425,12 @@ loginView.addEventListener("cancelLogin", function (evt) {
   showHome();
 
 });
+//-----------------------------UserSettingsView-----------------------------
+const userSettingsView = new UserSettingsView();
+
+
+
+
 
 //testMedBilde@Bilde.com - bilde
 //testbruker@gmail.com - 12345678
