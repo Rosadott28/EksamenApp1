@@ -161,7 +161,7 @@ h3 {
 #userMenu button {
     display: block;
     width: 100%;
-    border-radius: 999px;
+    border-radius: var(--radius);
     padding: 10px 20px;
     font-size: 16px;
     font-weight: 600;
@@ -171,7 +171,8 @@ h3 {
 
  /* samme stil som Create Account */ 
 
-#createUserButton {
+#createUserButton,
+#logoutButton {
     background-color: var(--powder);
     color: var(--espresso);
     border: 2px solid var(--powder);
@@ -183,7 +184,21 @@ h3 {
     border: 2px solid var(--truffle);
 }
 
+#loggedIn #editUserButton,
+#loggedIn #deleteUserButton {
+    background-color: transparent;
+    color: var(--espresso);
+    border: none;
+    text-align: left;
+    padding: 10px 8px;
+    font-weight: normal;
+}
 
+#loggedIn #editUserButton:hover,
+#loggedIn #deleteUserButton:hover {
+     color: var(--cocoa);
+    text-decoration: underline;
+}
 
 
 /* ------------------------ Søkefelt ------------------------ */

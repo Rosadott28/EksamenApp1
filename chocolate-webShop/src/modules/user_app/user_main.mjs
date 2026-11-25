@@ -136,6 +136,8 @@ const cartButton = document.getElementById("cartButton");
 
 const userMenuButton = document.getElementById("userMenuButton");
 const userMenu = document.getElementById("userMenu");
+const loggedIn = document.getElementById("loggedIn");
+const loggedOut = document.getElementById("loggedOut");
 
 function showUserThumb() {
   const thumb = sessionStorage.getItem("userThumb");
@@ -155,12 +157,15 @@ showUserThumb();
 
 userMenuButton.addEventListener("click", () => {
   if (sessionStorage.getItem("userToken")){
-    userMenu.hidden = true;
-    document.body.appendChild(userSettingsView);
+    loggedOut.hidden = true;
+    loggedIn.hidden = false;
+    userMenu.classList.add("logged-in");
   } else {
-    userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
+    loggedOut.hidden = false;
+    loggedIn.hidden = true;
+    userMenu.classList.remove("logged-in");
   }
-  
+  userMenu.hidden = !userMenu.hidden; //gjør det motsatte av hva den er på, derfor åpnes og lukkes menyen når du trykker
 });
 
 //--------------------------------cartView--------------------------------
@@ -312,6 +317,23 @@ createUserButton.addEventListener("click", () => {
   loginView.remove();
   document.body.appendChild(registrationView);
   userSettingsView.remove();
+  userMenu.hidden = true;
+});
+
+//-----------------------------editUser-----------------------------
+const editUserButton = document.getElementById("editUserButton");
+editUserButton.addEventListener("click", () => {
+  homeView.remove();
+  productListView.remove();
+  productDetailView.remove();
+  cartView.remove();
+  checkoutView.remove();
+  registrationView.remove();
+  loginView.remove();
+  commentsView.remove();
+  orderConfirmationView.remove();;
+
+  document.body.appendChild(userSettingsView);
   userMenu.hidden = true;
 });
 
