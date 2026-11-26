@@ -252,6 +252,7 @@ export class ProductDetailView extends HTMLElement {
       return;
     }
 
+    this.currentProductId = data.id; //vet hvilket produkt som er lastet inn i produktdetaljvisningen
     this.shadow.replaceChildren();
 
     const styleLink = document.createElement("link");

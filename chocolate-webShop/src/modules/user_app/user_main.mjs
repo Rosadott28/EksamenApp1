@@ -466,11 +466,18 @@ productDetailView.addEventListener("submitReview", async (event) => {
       return;
     }
 
-    productDetailView.resetReviewForm();
+    if (productDetailView.currentProductId === event.detail.product_id) {
+      //kontrollerer at vi har riktig produkt-ID
+      productDetailView.resetReviewForm();
+    }
 
     const updatedProduct = await getProductById(event.detail.product_id);
 
-    if (updatedProduct) { //oppdaterer kun rating dersom API returnerer produktinfo
+    if (
+      updatedProduct &&
+      productDetailView.currentProductId === event.detail.product_id
+    ) {
+      // Sikrer oppdatering av riktig produkt
       productDetailView.updateProductRating(updatedProduct);
     }
 
