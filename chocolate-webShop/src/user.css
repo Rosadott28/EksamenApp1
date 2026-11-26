@@ -458,6 +458,18 @@ h3 {
     cursor: pointer;
 }
 
+/* ------------------------ Medlemsmerke ------------------------ */
+
+.member-label {
+  display: inline-block;
+  background-color: var(--powder);
+  color: var(--espresso);
+  border-radius: var(--radius);
+  padding: 4px 8px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
+}
 
 /* ------------------------ Lag bruker ------------------------ */
 

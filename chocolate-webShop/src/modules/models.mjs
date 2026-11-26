@@ -25,6 +25,7 @@ export class ProductModel {
             discount: Number(dataObj.discount),
             stock: Number(dataObj.stock),
             expectedShipped: dataObj.expected_shipped,
+            reservedMembers: dataObj.reserved_members,
             rating: dataObj.rating == null ? null : Number(dataObj.rating), // Konverterer rating til et tall hvis det finnes, ellers null
             numberOfRatings: Number(dataObj.number_of_ratings),
 
@@ -58,6 +59,7 @@ export class ProductArrayModel {
             description: dataObj.descr,
             price: Number(dataObj.price),
             stock: Number(dataObj.stock),
+            reservedMembers: dataObj.reserved_members,
             thumb: dataObj.thumb,
             static: dataObj.static
 

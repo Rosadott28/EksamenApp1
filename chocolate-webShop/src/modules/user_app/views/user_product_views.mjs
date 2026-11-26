@@ -1,5 +1,12 @@
 import { getProductThumbUrl, getProductImageUrl } from "../../api_service.mjs";
 
+function createMemberLabel() {
+  const label = document.createElement("span");
+  label.classList.add("member-label");
+  label.textContent = "Members only";
+
+  return label;
+}
 //----------------------------- HOME VIEW -----------------------------
 
 export class HomeView extends HTMLElement {
@@ -202,6 +209,10 @@ export class ProductListView extends HTMLElement {
     price.textContent = product.price + " kr";
     productInfo.appendChild(price);
 
+    if (product.reservedMembers) {
+      productInfo.appendChild(createMemberLabel());
+    }
+
     return productInfo;
   }
 
@@ -332,6 +343,10 @@ export class ProductDetailView extends HTMLElement {
     heading.classList.add("view-heading");
     heading.textContent = data.name;
     productInfo.appendChild(heading);
+
+    if (data.reservedMembers) {
+      productInfo.appendChild(createMemberLabel());
+    }
 
     const shortDescription = document.createElement("h3");
     shortDescription.textContent = data.shortDescr;
