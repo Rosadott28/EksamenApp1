@@ -440,25 +440,37 @@ productListView.addEventListener("productSelect", async (event) => {
 //-----------------------------productDetailView-----------------------------
 const productDetailView = new ProductDetailView();
 
+let isSubmittingReview = false;
+
 productDetailView.addEventListener("buyProduct", (event) => {
   addToCart(event.detail);
 });
 
 productDetailView.addEventListener("submitReview", async (event) => {
+  if (isSubmittingReview) {
+    return;
+  }
+
   if (!sessionStorage.getItem("userToken")) {
     showMessage("Please log in to submit a review.");
     return;
   }
 
-  const result = await addProductComment(event.detail);
+  isSubmittingReview = true; // Hindrer dobbel innsending
 
-  if (!result) {
-    showMessage("Could not submit your review.");
-    return;
+  try {
+    const result = await addProductComment(event.detail);
+
+    if (!result) {
+      showMessage("Could not submit your review.");
+      return;
+    }
+
+    productDetailView.resetReviewForm();
+    showMessage("Review submitted successfully!");
+  } finally {
+    isSubmittingReview = false;
   }
-
-  productDetailView.resetReviewForm();
-  showMessage("Review submitted successfully!");
 });
 
 productDetailView.addEventListener("backClick", async () => {
