@@ -192,10 +192,20 @@ export async function addProductComment(comment) {
 //--------------------------------------------------------
 export async function getProductById(id) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?id=${id}&key=${groupkey}`;
+    const token = sessionStorage.getItem("userToken");
+
+    const cfg = {
+        method: "GET",
+        headers: {}
+    };
+
+    if (token) {
+        cfg.headers.Authorization = token;
+    }
 
     try {
 
-        const dataFromServer = await sendRequest(url);
+        const dataFromServer = await sendRequest(url, cfg);
 
         //convert from server API-data to app model-data
         const model = new ProductModel(dataFromServer[0]);
