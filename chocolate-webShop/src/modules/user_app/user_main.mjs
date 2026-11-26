@@ -14,6 +14,7 @@ import {
   getUsers,
   updateUser,
   deleteUser,
+  addProductComment,
 } from "../api_service.mjs";
 
 import {
@@ -329,7 +330,7 @@ const editUserButton = document.getElementById("editUserButton");
 editUserButton.addEventListener("click", async () => {
   const users = await getUsers();
   const user = users.find(
-    (item) => item.username === sessionStorage.getItem("userUsername") // finner brukeren med samme brukernavn som lagrets ved innlogging.
+    (item) => item.username === sessionStorage.getItem("userUsername"), // finner brukeren med samme brukernavn som lagrets ved innlogging.
   );
   if (!user) {
     showMessage("Could not load user information.");
@@ -387,7 +388,7 @@ logoutButton.addEventListener("click", async () => {
 const deleteUserButton = document.getElementById("deleteUserButton");
 deleteUserButton.addEventListener("click", async function (evt) {
   const confirm = window.confirm(
-    "Are you sure you want to delete your account? This cannot be undone."
+    "Are you sure you want to delete your account? This cannot be undone.",
   );
   if (!confirm) {
     return;
@@ -443,6 +444,22 @@ productDetailView.addEventListener("buyProduct", (event) => {
   addToCart(event.detail);
 });
 
+productDetailView.addEventListener("submitReview", async (event) => {
+  if (!sessionStorage.getItem("userToken")) {
+    showMessage("Please log in to submit a review.");
+    return;
+  }
+
+  const result = await addProductComment(event.detail);
+
+  if (!result) {
+    showMessage("Could not submit your review.");
+    return;
+  }
+
+  showMessage("Review submitted successfully!");
+});
+
 productDetailView.addEventListener("backClick", async () => {
   await prepareView(productListView);
 
@@ -492,7 +509,8 @@ const loginView = new LoginView();
 loginView.addEventListener("loginuser", async function (evt) {
   const result = await userLogin(evt.username, evt.password);
 
-  if (result?.logindata?.token) { // ?. betyr omtrent «fortsett bare hvis verdien finnes». optional chaining
+  if (result?.logindata?.token) {
+    // ?. betyr omtrent «fortsett bare hvis verdien finnes». optional chaining
 
     sessionStorage.setItem("userToken", result.logindata.token);
     sessionStorage.setItem("userThumb", result.logindata.thumb);
@@ -509,13 +527,7 @@ loginView.addEventListener("loginuser", async function (evt) {
 
 loginView.addEventListener("cancelLogin", function (evt) {
   showHome();
-
 });
-
-
-
-
-
 
 //testMedBilde@Bilde.com - bilde
 //testbruker@gmail.com - 12345678
