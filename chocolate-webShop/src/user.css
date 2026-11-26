@@ -660,6 +660,9 @@ h3 {
 }
 
 /* ------------------------ Produktanmeldelser ------------------------ */
+.comments-container {
+  margin: 16px;
+}
 
 .comment-card {
   background-color: var(--ivory);
@@ -678,9 +681,41 @@ h3 {
   }
 }
 
-@media (min-width: 768px) {
-  .comments-container > .back-button:not(.comments-button),
-  .comments-container > .view-heading {
-    margin-left: 0;
-  }
+.comments-container > .back-button:not(.comments-button),
+.comments-container > .view-heading {
+  margin-left: 0;
+  
+}
+
+/* ------------------------ Anmeldelsesskjema ------------------------ */
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.review-form select,
+.review-form textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--espresso);
+  background-color: var(--ivory);
+  border: 1px solid var(--truffle);
+  border-radius: var(--radius);
+}
+
+.review-form textarea {
+  resize: vertical;
+}
+
+.review-form .buy-button {
+  align-self: flex-start;
+}
+
+.product-rating {
+  font-weight: bold;
 }
