@@ -126,10 +126,20 @@ export async function getUsers() {
 //--------------------------------------------------------
 export async function getProductsByCategory(catId) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?catID=${catId}&key=${groupkey}`;
+    const token = sessionStorage.getItem("userToken");
+
+    const cfg = {
+        method: "GET",
+        headers: {}
+    };
+
+    if (token) {
+        cfg.headers.Authorization = token;
+    }
 
     try {
 
-        const dataFromServer = await sendRequest(url);
+        const dataFromServer = await sendRequest(url, cfg);
 
         // convert from server-data to app model-data
         const model = new ProductArrayModel(dataFromServer);
