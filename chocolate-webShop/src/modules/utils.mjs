@@ -33,4 +33,17 @@ export function createBasicAuthString(username, password) {
 
 
 //-----------------------------------------------------------
-// more utility-functions here if needed...
+export function getUserAuthConfig() {
+    const token = sessionStorage.getItem("userToken");
+
+    const cfg = {
+        method: "GET",
+        headers: {}
+    };
+
+    if (token) {
+        cfg.headers.Authorization = token;
+    }
+
+    return cfg;
+}

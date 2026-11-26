@@ -1,7 +1,7 @@
 
 import { errorHandler } from "./error_handler.mjs";
 import { CategoryArrayModel, ProductArrayModel, ProductModel } from "./models.mjs";
-import { sendRequest, createBasicAuthString } from "./utils.mjs";
+import { sendRequest, createBasicAuthString, getUserAuthConfig } from "./utils.mjs";
 
 const groupkey = "NHKOZC85"; // Ebba og Benedicte sin groupkey
 
@@ -126,16 +126,7 @@ export async function getUsers() {
 //--------------------------------------------------------
 export async function getProductsByCategory(catId) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?catID=${catId}&key=${groupkey}`;
-    const token = sessionStorage.getItem("userToken");
-
-    const cfg = {
-        method: "GET",
-        headers: {}
-    };
-
-    if (token) {
-        cfg.headers.Authorization = token;
-    }
+    const cfg = getUserAuthConfig();
 
     try {
 
@@ -192,16 +183,7 @@ export async function addProductComment(comment) {
 //--------------------------------------------------------
 export async function getProductById(id) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?id=${id}&key=${groupkey}`;
-    const token = sessionStorage.getItem("userToken");
-
-    const cfg = {
-        method: "GET",
-        headers: {}
-    };
-
-    if (token) {
-        cfg.headers.Authorization = token;
-    }
+    const cfg = getUserAuthConfig();
 
     try {
 
@@ -345,16 +327,7 @@ export async function deleteOrder(orderId) {
 //---------------------------------------------------------
 export async function getProductsBySearch(searchWord) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?search=${encodeURIComponent(searchWord)}&key=${groupkey}`;
-    const token = sessionStorage.getItem("userToken");
-
-    const cfg = {
-        method: "GET",
-        headers: {}
-    };
-
-    if (token) {
-        cfg.headers.Authorization = token;
-    }
+    const cfg = getUserAuthConfig();
 
     try {
 
