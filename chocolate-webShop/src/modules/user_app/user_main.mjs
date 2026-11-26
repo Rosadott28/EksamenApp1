@@ -457,6 +457,7 @@ productDetailView.addEventListener("submitReview", async (event) => {
     return;
   }
 
+  productDetailView.resetReviewForm();
   showMessage("Review submitted successfully!");
 });
 

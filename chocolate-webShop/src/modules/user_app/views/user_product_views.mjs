@@ -467,6 +467,14 @@ export class ProductDetailView extends HTMLElement {
     return select;
   }
 
+  resetReviewForm() {
+    const form = this.shadow.querySelector(".review-form");
+
+    if (form) {
+      form.reset();
+    }
+  }
+
   createCommentInput() {
     const commentInput = document.createElement("textarea");
     commentInput.name = "comment_text";
