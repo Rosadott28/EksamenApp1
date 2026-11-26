@@ -157,6 +157,29 @@ export async function getProductComments(productId) {
 }
 
 //--------------------------------------------------------
+export async function addProductComment(comment) {
+    const url = `https://sukkergris.onrender.com/webshop/comments?key=${groupkey}`;
+
+    const cfg = {
+        method: "POST", //POST oppretter en anmeldelse
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": sessionStorage.getItem("userToken")
+        },
+        body: JSON.stringify(comment)
+    };
+
+    try {
+        const dataFromServer = await sendRequest(url, cfg);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
+
+//--------------------------------------------------------
 export async function getProductById(id) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?id=${id}&key=${groupkey}`;
 
