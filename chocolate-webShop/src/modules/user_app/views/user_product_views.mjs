@@ -375,11 +375,14 @@ export class ProductDetailView extends HTMLElement {
   }
 
   createProductRating(data) {
+    const rating = document.createElement("p");
+    rating.classList.add("product-rating");
+
     if (data.rating === null) {
-      return null;
+      rating.textContent = "☆☆☆☆☆ (No ratings yet)";
+      return rating;
     }
 
-    const rating = document.createElement("p");
     const fullStars = Math.floor(data.rating);
     const halfStar = data.rating - fullStars >= 0.5; //Blir true hvis minst 0,5 stjerner igjen
 
@@ -396,6 +399,15 @@ export class ProductDetailView extends HTMLElement {
       ")";
 
     return rating;
+  }
+
+  updateProductRating(data) {
+    const oldRating = this.shadow.querySelector(".product-rating");
+    const newRating = this.createProductRating(data);
+
+    if (oldRating && newRating) {
+      oldRating.replaceWith(newRating);
+    }
   }
 
   createCommentsButton(data) {

@@ -467,6 +467,13 @@ productDetailView.addEventListener("submitReview", async (event) => {
     }
 
     productDetailView.resetReviewForm();
+
+    const updatedProduct = await getProductById(event.detail.product_id);
+
+    if (updatedProduct) { //oppdaterer kun rating dersom API returnerer produktinfo
+      productDetailView.updateProductRating(updatedProduct);
+    }
+
     showMessage("Review submitted successfully!");
   } finally {
     isSubmittingReview = false;
