@@ -155,6 +155,7 @@ export class ProductListView extends HTMLElement {
       //undersøker om det er null produkter.
       const message = document.createElement("p");
       message.textContent = "Your search did not match any products";
+      message.classList.add("no-results");
       this.shadow.appendChild(message);
       return;
     }
