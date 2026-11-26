@@ -277,6 +277,11 @@ export class ProductDetailView extends HTMLElement {
     const commentsButton = this.createCommentsButton(data);
     productInfo.appendChild(commentsButton);
 
+    if (sessionStorage.getItem("userToken")) {
+      //vises bare for innloggede brukere
+      productInfo.appendChild(this.createReviewForm(data));
+    }
+
     this.shadow.appendChild(productCard);
   }
 
@@ -405,6 +410,79 @@ export class ProductDetailView extends HTMLElement {
         }),
       );
     });
+
+    return button;
+  }
+
+  createReviewForm(data) {
+    const form = document.createElement("form");
+    form.classList.add("review-form");
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Write a review";
+    form.appendChild(heading);
+
+    form.appendChild(this.createRatingSelect());
+    form.appendChild(this.createCommentInput());
+    form.appendChild(this.createReviewButton());
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault(); //hindrer nettleseren i å laste inn siden på ny
+      this.handleReviewSubmit(form, data);
+    });
+
+    return form;
+  }
+
+  handleReviewSubmit(form, data) {
+    const formData = new FormData(form);
+
+    const comment = {
+      product_id: data.id,
+      comment_text: formData.get("comment_text").trim(),
+      rating: Number(formData.get("rating")),
+    };
+
+    const reviewEvent = new CustomEvent("submitReview", {
+      detail: comment,
+    });
+
+    this.dispatchEvent(reviewEvent);
+  }
+
+  createRatingSelect() {
+    const select = document.createElement("select");
+    select.name = "rating";
+
+    const ratings = [1, 2, 3, 4, 5];
+
+    ratings.forEach((rating) => {
+      const option = document.createElement("option");
+      option.value = rating;
+      option.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
+
+      select.appendChild(option);
+    });
+
+    return select;
+  }
+
+  createCommentInput() {
+    const commentInput = document.createElement("textarea");
+    commentInput.name = "comment_text";
+    commentInput.placeholder = "Write your review here...";
+    commentInput.rows = 4;
+    commentInput.required = true; //hindrer innsending uten kommentar
+    commentInput.setAttribute("aria-label", "Write a review");
+
+    return commentInput;
+  }
+
+  createReviewButton() {
+    const button = document.createElement("button");
+    button.type = "submit";
+    button.textContent = "Submit review";
+    button.classList.add("buy-button");
 
     return button;
   }
