@@ -124,6 +124,28 @@ export async function getUsers() {
 }
 
 //--------------------------------------------------------
+export async function getMessages() {
+
+    const url = `https://sukkergris.onrender.com/msgboard/messages?key=${groupkey}&all=true`; //henter alle,, uten hadde hentet bare egne
+    const cfg = {
+        method: "GET",
+        headers: {
+            "Authorization": sessionStorage.getItem("userToken")
+        }
+    }
+    try {
+
+        const dataFromServer = await sendRequest(url, cfg);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return [];
+    }
+    
+}
+
+//--------------------------------------------------------
 export async function getProductsByCategory(catId) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?catID=${catId}&key=${groupkey}`;
     const cfg = getUserAuthConfig();

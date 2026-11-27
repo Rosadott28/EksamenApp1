@@ -15,6 +15,7 @@ import {
   updateUser,
   deleteUser,
   addProductComment,
+  getMessages,
 } from "../api_service.mjs";
 
 import {
@@ -380,9 +381,17 @@ userSettingsView.addEventListener("updateuser", async function (evt) {
 
 //-----------------------------UserForumView-----------------------------
 const userForumView = new UserForumView();
+userForumView.classList.add("container");
 const forumButton = document.getElementById("forumButton");
 
 forumButton.addEventListener("click", async () => {
+
+   if (!sessionStorage.getItem("userToken")) {
+    showMessage("Please log in to view the forum")
+    return;
+  }
+  const messages = await getMessages();
+  userForumView.refresh(messages);
 
   homeView.remove();
   productListView.remove();

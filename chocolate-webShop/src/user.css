@@ -758,3 +758,8 @@ h3 {
 .product-rating {
   font-weight: bold;
 }
+/* ------------------------ Forum ------------------------ */
+user-forum-view {
+    display: block;
+    margin-top: 24px;
+}
