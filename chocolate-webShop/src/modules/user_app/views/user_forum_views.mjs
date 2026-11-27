@@ -16,7 +16,7 @@ export class UserForumView extends HTMLElement {
 
         const messageContainer = document.createElement("div");
         this.messageContainer = messageContainer;
-        this.shadow.appendChild(messageContainer);
+    
 
         const forumStyle = document.createElement("style")
         const theForm = document.createElement("form");
@@ -130,6 +130,7 @@ export class UserForumView extends HTMLElement {
         theForm.appendChild(messageInput);
         theForm.appendChild(publishButton);
         this.shadow.appendChild(theForm);
+        this.shadow.appendChild(messageContainer);
         this.shadow.appendChild(forumStyle);
 
         newPostButton.addEventListener("click",(evt) => { 
