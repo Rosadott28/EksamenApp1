@@ -58,7 +58,7 @@ export class UserForumView extends HTMLElement {
 
         .message-card h3 {
             color: var(--cocoa);
-            font-size: 18px;
+            font-size: 24px;
             margin: 0 0 8px;
             display: flex;
             flex-wrap: wrap;
@@ -115,10 +115,6 @@ export class UserForumView extends HTMLElement {
 
         })
 
-
-
-
-
         theForm.addEventListener("submit", (evt) => {
             evt.preventDefault();
 
@@ -130,7 +126,7 @@ export class UserForumView extends HTMLElement {
         });
     }
 
-        refresh(messages, myMessages) {
+        refresh(messages, myMessages, users) {
             this.messageContainer.replaceChildren(); //slik at nettsiden kun viser mld en gang
             if (messages.length === 0) {
             const noMessages = document.createElement("p");
@@ -145,19 +141,25 @@ export class UserForumView extends HTMLElement {
             const line = document.createElement("hr");
             const messageText = document.createElement("p");
             const deleteButton = document.createElement("button");
+            const messageAuthor = document.createElement("small");
             
             deleteButton.classList.add("delete-button");
             messageCard.classList.add("message-card");
-
+            
             messageHeading.textContent = message.heading;
             messageText.textContent = message.message;
-            const isOwnMessage = myMessages.some((myMessage) => myMessage.id === message.id);
             deleteButton.textContent = "Delete";
+
+            const author = users.find((user) => user.id === message.user_id);
+            messageAuthor.textContent = author.username ;
+        
             
-            
+            messageCard.appendChild(messageAuthor);
             messageCard.appendChild(messageHeading);
             messageCard.appendChild(line);
             messageCard.appendChild(messageText);
+
+            const isOwnMessage = myMessages.some((myMessage) => myMessage.id === message.id);
             if (isOwnMessage) {
                 messageCard.appendChild(deleteButton);
                 deleteButton.addEventListener("click", (evt) => {

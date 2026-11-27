@@ -395,8 +395,10 @@ forumButton.addEventListener("click", async () => {
     return;
   }
   const messages = await getMessages();
+  console.log("Forum messages:", messages);
   const myMessages = await getMyMessages();
-  userForumView.refresh(messages, myMessages);
+  const users = await getUsers();
+  userForumView.refresh(messages, myMessages, users);
 
   homeView.remove();
   productListView.remove();
@@ -426,7 +428,8 @@ forumButton.addEventListener("click", async () => {
       showMessage("Your message has been published");
       const messages = await getMessages();
       const myMessages = await getMyMessages();
-      userForumView.refresh(messages, myMessages);
+      const users = await getUsers();
+      userForumView.refresh(messages, myMessages, users);
       userForumView.resetForm();
     } else {
       showMessage("Your message could not be published");
@@ -446,7 +449,8 @@ forumButton.addEventListener("click", async () => {
     showMessage("Message deleted successfully!");
     const messages = await getMessages();
     const myMessages = await getMyMessages();
-    userForumView.refresh(messages, myMessages);
+    const users = await getUsers();
+    userForumView.refresh(messages, myMessages, users);
   } else {
     showMessage("Could not delete message.");
   }
