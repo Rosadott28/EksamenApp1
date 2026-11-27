@@ -105,6 +105,21 @@ export class UserForumView extends HTMLElement {
             color: #B42318;
             text-decoration: underline;
         }
+        .author-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px; 
+            flex-wrap: wrap; 
+        }
+        .star-button {
+            background: none;
+            border: none;
+            padding: 2px;
+            cursor: pointer;
+            color: var(--espresso);
+            font-size: 24px;
+        }
 
         `;
 
@@ -160,11 +175,13 @@ export class UserForumView extends HTMLElement {
 
             messages.forEach((message) => {
             const messageCard = document.createElement("div");
+            const authorRow = document.createElement("div");
             const messageHeading = document.createElement("h3");
             const line = document.createElement("hr");
             const messageText = document.createElement("p");
             const deleteButton = document.createElement("button");
             const messageAuthor = document.createElement("small");
+            const messageRating = document.createElement("small");
             const replyForm = document.createElement("form");
             const replyInput = document.createElement("input"); 
             const threadMessages = messages.filter((item) => item.thread === message.thread);
@@ -176,22 +193,36 @@ export class UserForumView extends HTMLElement {
             
             deleteButton.classList.add("delete-button");
             messageCard.classList.add("message-card");
+            authorRow.classList.add("author-row");
             
             messageHeading.textContent = message.heading;
             messageText.textContent = message.message;
             deleteButton.textContent = "Delete";
 
             const author = users.find((user) => user.id === message.user_id);
-            messageAuthor.textContent = author.username ;
+            messageAuthor.textContent = author.username;
+            messageRating.textContent = author.beenz + "/5";
+            if(author.beenz === null){
+                messageRating.textContent = "Not rated yet"
+            }
 
             replyInput.type = "text";
             replyInput.placeholder = "Reply...";
             replyInput.required = true;  
+
+            const isOwnMessage = myMessages.some((myMessage) => myMessage.id === message.id);
             
-            messageCard.appendChild(messageAuthor);
+            authorRow.appendChild(messageAuthor);
+            authorRow.appendChild(messageRating);
+            messageCard.appendChild(authorRow);
             messageCard.appendChild(messageHeading);
             messageCard.appendChild(line);
             messageCard.appendChild(messageText);
+
+            if(!isOwnMessage){
+                messageCard.appendChild(this.createUserRating());
+            }
+
 
             threadMessages.reverse().forEach((reply) => {
                 if (reply.id !== message.id) {
@@ -223,7 +254,7 @@ export class UserForumView extends HTMLElement {
             replyForm.appendChild(replyInput);
             messageCard.appendChild(replyForm);
 
-            const isOwnMessage = myMessages.some((myMessage) => myMessage.id === message.id);
+           
             if (isOwnMessage) {
                 messageCard.appendChild(deleteButton);
                 deleteButton.addEventListener("click", (evt) => {
@@ -255,6 +286,40 @@ export class UserForumView extends HTMLElement {
                 
         });
     }
+
+        createUserRating() {
+            const ratingContainer = document.createElement("div");
+
+            const ratings = [1, 2, 3, 4, 5];
+
+            ratings.forEach((rating) => {
+            const starButton = document.createElement("button");
+            starButton.classList.add("star-button");
+            starButton.type = "button";
+            starButton.value = rating;
+            starButton.textContent = "☆"; //lager 5 klikkbare knapper
+            ratingContainer.appendChild(starButton);
+
+                ratingContainer.addEventListener("click", (evt) => {
+                    if (!evt.target.classList.contains("star-button")) {
+                        return;
+                    }
+
+                    const selectedRating = Number(evt.target.value);
+
+                    ratingContainer.querySelectorAll(".star-button").forEach((button) => {
+                        if (Number(button.value) <= selectedRating) {
+                            button.textContent = "★";
+                        } else {
+                            button.textContent = "☆";
+                        }
+                    });
+                });
+            });
+
+            return ratingContainer;
+        }
+    
     resetForm() {
         this.shadow.querySelector("form").reset();
         this.shadow.querySelector("form").hidden = true;
