@@ -167,8 +167,12 @@ export async function getMyMessages() {
 }
 
 //--------------------------------------------------------
-export async function addMessage(message) {
-    const url = `https://sukkergris.onrender.com/msgboard/messages?key=${groupkey}`;
+export async function addMessage(message, thread) {
+    let url = `https://sukkergris.onrender.com/msgboard/messages?key=${groupkey}`;
+    
+    if (thread) {
+    url = url + "&thread=" + thread;
+    }
 
     const cfg = {
         method: "POST", 

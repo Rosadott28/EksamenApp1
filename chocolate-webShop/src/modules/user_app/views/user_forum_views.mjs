@@ -83,6 +83,13 @@ export class UserForumView extends HTMLElement {
             display: block;
             margin-left: auto;
         }
+        .message-card .reply-text {
+            background-color: var(--pearl);
+            border-left: 3px solid var(--truffle);
+            padding: 10px;
+            margin: 8px 0 8px 20px;
+            border-radius: 4px;
+        }
 
         `;
 
@@ -142,6 +149,14 @@ export class UserForumView extends HTMLElement {
             const messageText = document.createElement("p");
             const deleteButton = document.createElement("button");
             const messageAuthor = document.createElement("small");
+            const replyForm = document.createElement("form");
+            const replyInput = document.createElement("input"); 
+            const threadMessages = messages.filter((item) => item.thread === message.thread);
+            const firstMessage = threadMessages[threadMessages.length - 1];
+
+             if (message.id !== firstMessage.id) {
+                return;
+            }
             
             deleteButton.classList.add("delete-button");
             messageCard.classList.add("message-card");
@@ -152,12 +167,28 @@ export class UserForumView extends HTMLElement {
 
             const author = users.find((user) => user.id === message.user_id);
             messageAuthor.textContent = author.username ;
-        
+
+            replyInput.type = "text";
+            replyInput.placeholder = "Reply...";
+            replyInput.required = true;  
             
             messageCard.appendChild(messageAuthor);
             messageCard.appendChild(messageHeading);
             messageCard.appendChild(line);
             messageCard.appendChild(messageText);
+
+            threadMessages.reverse().forEach((reply) => {
+                if (reply.id !== message.id) {
+                    const replyText = document.createElement("p");
+                    replyText.classList.add("reply-text");
+                    const replyAuthor = users.find((user) => user.id === reply.user_id);
+                    replyText.textContent = replyAuthor.username + " replied: " + reply.message;
+                    messageCard.appendChild(replyText);
+                }
+            });
+            
+            replyForm.appendChild(replyInput);
+            messageCard.appendChild(replyForm);
 
             const isOwnMessage = myMessages.some((myMessage) => myMessage.id === message.id);
             if (isOwnMessage) {
@@ -166,9 +197,27 @@ export class UserForumView extends HTMLElement {
                     const deleteMessage = new CustomEvent("deletemessage", {
                         detail: message
                     });
-                    this.dispatchEvent(deleteMessage);
+                    
+                        this.dispatchEvent(deleteMessage);
                 });
             }
+            replyForm.addEventListener("submit", (evt) => {
+                        evt.preventDefault();
+
+                        const replyMessage = new CustomEvent("replymessage", {
+                            detail: {
+                                heading: message.heading,
+                                message_text: replyInput.value.trim(),
+                                thread: message.thread
+                            }
+                        });
+
+                    if (replyInput.value.trim() === "") { //slik at man ikke kan sende tom mld
+                            return;
+                        }
+
+                        this.dispatchEvent(replyMessage);
+                    });                    
             this.messageContainer.appendChild(messageCard);
                 
         });

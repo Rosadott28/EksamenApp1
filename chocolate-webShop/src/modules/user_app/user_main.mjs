@@ -436,6 +436,27 @@ forumButton.addEventListener("click", async () => {
     }
   });
 
+  userForumView.addEventListener("replymessage", async function (evt) {
+
+    const reply = {
+        heading: evt.detail.heading,
+        message_text: evt.detail.message_text
+    };
+
+    const result = await addMessage(reply, evt.detail.thread);
+
+    if (result) {
+        showMessage("Reply published!");
+
+        const messages = await getMessages();
+        const myMessages = await getMyMessages();
+        const users = await getUsers();
+
+        userForumView.refresh(messages, myMessages, users);
+    } else {
+        showMessage("Could not publish reply.");
+    }
+});
   
   userForumView.addEventListener("deletemessage", async function (evt) {
   const confirm = window.confirm(
