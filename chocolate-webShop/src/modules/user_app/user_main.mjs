@@ -19,6 +19,7 @@ import {
   addMessage,
   deleteMessage,
   getMyMessages,
+  rateUser,
 } from "../api_service.mjs";
 
 import {
@@ -476,8 +477,23 @@ forumButton.addEventListener("click", async () => {
     showMessage("Could not delete message.");
   }
 });
+//-----------------------------rateuser-----------------------------
+userForumView.addEventListener("rateuser", async function (evt) {
 
+   const result = await rateUser(evt.detail);
 
+    if (result) {
+        showMessage("User rated successfully!");
+
+        const messages = await getMessages();
+        const myMessages = await getMyMessages();
+        const users = await getUsers();
+
+        userForumView.refresh(messages, myMessages, users);
+    } else {
+        showMessage("Could not rate user.");
+    }
+});
 //-----------------------------logoutButton-----------------------------
 const logoutButton = document.getElementById("logoutButton");
 logoutButton.addEventListener("click", async () => {

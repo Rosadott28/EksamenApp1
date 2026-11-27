@@ -220,7 +220,7 @@ export class UserForumView extends HTMLElement {
             messageCard.appendChild(messageText);
 
             if(!isOwnMessage){
-                messageCard.appendChild(this.createUserRating());
+                messageCard.appendChild(this.createUserRating(author));
             }
 
 
@@ -287,7 +287,7 @@ export class UserForumView extends HTMLElement {
         });
     }
 
-        createUserRating() {
+        createUserRating(author) {
             const ratingContainer = document.createElement("div");
 
             const ratings = [1, 2, 3, 4, 5];
@@ -299,13 +299,22 @@ export class UserForumView extends HTMLElement {
             starButton.value = rating;
             starButton.textContent = "☆"; //lager 5 klikkbare knapper
             ratingContainer.appendChild(starButton);
+            });
 
                 ratingContainer.addEventListener("click", (evt) => {
                     if (!evt.target.classList.contains("star-button")) {
                         return;
                     }
-
+            
                     const selectedRating = Number(evt.target.value);
+
+                     const rateUser = new CustomEvent("rateuser", {
+                            detail: {
+                                userid: author.id,
+                                beenz: selectedRating,
+                            }
+                        });
+                        this.dispatchEvent(rateUser);
 
                     ratingContainer.querySelectorAll(".star-button").forEach((button) => {
                         if (Number(button.value) <= selectedRating) {
@@ -315,8 +324,7 @@ export class UserForumView extends HTMLElement {
                         }
                     });
                 });
-            });
-
+            
             return ratingContainer;
         }
     

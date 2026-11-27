@@ -250,6 +250,28 @@ export async function addProductComment(comment) {
 }
 
 //--------------------------------------------------------
+export async function rateUser(userRating) {
+    const url = `https://sukkergris.onrender.com/users/beenz?key=${groupkey}`;
+
+    const cfg = {
+        method: "PUT", 
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": sessionStorage.getItem("userToken")
+        },
+        body: JSON.stringify(userRating)
+    };
+
+    try {
+        const dataFromServer = await sendRequest(url, cfg);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
+//--------------------------------------------------------
 export async function getProductById(id) {
     const url = `https://sukkergris.onrender.com/webshop/chocolates?id=${id}&key=${groupkey}`;
     const cfg = getUserAuthConfig();
