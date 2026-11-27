@@ -90,6 +90,21 @@ export class UserForumView extends HTMLElement {
             margin: 8px 0 8px 20px;
             border-radius: 4px;
         }
+            .reply-delete-button {
+            background-color: transparent;
+            color: var(--espresso);
+            border: none;
+            text-align: left;
+            padding: 10px 8px;
+            font-weight: normal;
+            display: block;
+            margin-left: auto;
+        }
+
+        .reply-delete-button:hover {
+            color: #B42318;
+            text-decoration: underline;
+        }
 
         `;
 
@@ -183,6 +198,23 @@ export class UserForumView extends HTMLElement {
                     replyText.classList.add("reply-text");
                     const replyAuthor = users.find((user) => user.id === reply.user_id);
                     replyText.textContent = replyAuthor.username + " replied: " + reply.message;
+
+                    const isOwnReply = myMessages.some((myMessage) => myMessage.id === reply.id);
+                    if (isOwnReply) {
+                        const replyDeleteButton = document.createElement("button");
+
+                        replyDeleteButton.classList.add("reply-delete-button");
+                        replyDeleteButton.textContent = "Delete";
+
+                        replyText.appendChild(replyDeleteButton);
+
+                        replyDeleteButton.addEventListener("click", () => {
+                            const deleteReply = new CustomEvent("deletemessage", {
+                                detail: reply
+                            });
+                            this.dispatchEvent(deleteReply);
+                        });
+                    }
                     messageCard.appendChild(replyText);
                 }
             });
