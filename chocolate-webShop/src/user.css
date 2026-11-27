@@ -61,7 +61,8 @@ h3 {
 
 #cartButton,
 #homeButton,
-#userMenuButton {
+#userMenuButton,
+#forumButton {
   background-color: var(--pearl);
   border: 1px solid var(--pearl);
   border-radius: var(--radius);
@@ -85,6 +86,10 @@ h3 {
   left: 16px;
 }
 
+#forumButton {
+  left: 56px;
+}
+
 #userMenuButton {
   right: 56px;
 }
@@ -103,6 +108,11 @@ h3 {
   width: 30px;
   height: 30px;
 }
+#forumButton img {
+  width: 30px;
+  height: 30px;
+}
+
 
 #cartButton::after,
 #homeButton::after {
@@ -129,6 +139,10 @@ h3 {
   #userMenuButton {
     right: max(56px, calc((100% - 1200px) / 2 + 40px));
   }
+
+  #forumButton {
+    left: max(56px, calc((100% - 1200px) / 2 + 40px));
+}
 }
 
 /* ------------------------ Brukermeny ------------------------ */

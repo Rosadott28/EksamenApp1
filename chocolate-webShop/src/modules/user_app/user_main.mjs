@@ -39,6 +39,8 @@ import { LoginView } from "./views/user_login_views.mjs";
 
 import { UserSettingsView } from "./views/user_settings_views.mjs";
 
+import { UserForumView } from "./views/user_forum_views.mjs";
+
 //----------------------------shoppingCart----------------------------
 const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Henter lagret handlekurv, eller oppretter en tom hvis ingen er lagret
 
@@ -119,6 +121,7 @@ async function showHome() {
   commentsView.remove();
   loginView.remove();
   userSettingsView.remove();
+  userForumView.remove();
 
   homeView.style.visibility = "visible";
 }
@@ -237,6 +240,7 @@ cartButton.addEventListener("click", async () => {
   commentsView.remove();
   loginView.remove();
   userSettingsView.remove();
+  userForumView.remove();
 
   cartView.style.visibility = "visible";
 });
@@ -320,6 +324,7 @@ createUserButton.addEventListener("click", () => {
   loginView.remove();
   document.body.appendChild(registrationView);
   userSettingsView.remove();
+  userForumView.remove();
   userMenu.hidden = true;
 });
 
@@ -347,6 +352,7 @@ editUserButton.addEventListener("click", async () => {
   loginView.remove();
   commentsView.remove();
   orderConfirmationView.remove();
+  userForumView.remove();
 
   document.body.appendChild(userSettingsView);
   userMenu.hidden = true;
@@ -370,6 +376,26 @@ userSettingsView.addEventListener("updateuser", async function (evt) {
   } else {
     showMessage("Could not update user. Please try again.");
   }
+});
+
+//-----------------------------UserForumView-----------------------------
+const userForumView = new UserForumView();
+const forumButton = document.getElementById("forumButton");
+
+forumButton.addEventListener("click", async () => {
+
+  homeView.remove();
+  productListView.remove();
+  productDetailView.remove();
+  cartView.remove();
+  checkoutView.remove();
+  registrationView.remove();
+  loginView.remove();
+  commentsView.remove();
+  orderConfirmationView.remove();
+  userSettingsView.remove()
+
+  document.body.appendChild(userForumView);
 });
 
 //-----------------------------logoutButton-----------------------------
@@ -412,6 +438,7 @@ loginButton.addEventListener("click", () => {
   checkoutView.remove();
   registrationView.remove();
   userSettingsView.remove();
+  userForumView.remove();
 
   document.body.appendChild(loginView);
   userMenu.hidden = true;
@@ -557,4 +584,4 @@ loginView.addEventListener("cancelLogin", function (evt) {
 });
 
 //testMedBilde@Bilde.com - bilde
-//testbruker@gmail.com - 12345678
+//testbruker1@gmail.com - 12345678
