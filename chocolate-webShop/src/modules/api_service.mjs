@@ -144,6 +144,27 @@ export async function getMessages() {
     }
     
 }
+//--------------------------------------------------------
+export async function getMyMessages() {
+
+    const url = `https://sukkergris.onrender.com/msgboard/messages?key=${groupkey}`; //henter kun mine
+    const cfg = {
+        method: "GET",
+        headers: {
+            "Authorization": sessionStorage.getItem("userToken")
+        }
+    }
+    try {
+
+        const dataFromServer = await sendRequest(url, cfg);
+        return dataFromServer;
+
+    } catch (error) {
+        errorHandler(error);
+        return [];
+    }
+    
+}
 
 //--------------------------------------------------------
 export async function addMessage(message) {
@@ -356,6 +377,26 @@ export async function deleteOrder(orderId) {
         method: "DELETE",
         headers: {
             "Authorization": sessionStorage.getItem("adminToken")
+        }
+    }
+    try {
+        const data = await sendRequest(url, cfg);
+        return data;
+        
+    } catch (error) {
+        errorHandler(error);
+        return null;
+    }
+}
+
+//---------------------------------------------------------
+export async function deleteMessage(messageId) {
+    const url = `https://sukkergris.onrender.com/msgboard/messages?key=${groupkey}&message_id=${messageId}`;
+
+    const cfg = {
+        method: "DELETE",
+        headers: {
+            "Authorization": sessionStorage.getItem("userToken")
         }
     }
     try {

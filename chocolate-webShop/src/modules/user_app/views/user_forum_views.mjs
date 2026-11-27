@@ -48,6 +48,42 @@ export class UserForumView extends HTMLElement {
             min-height: 120px;
             resize: vertical;
         }
+        .message-card {
+            background-color: var(--ivory);
+            border: 1px solid var(--truffle);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .message-card h3 {
+            color: var(--cocoa);
+            font-size: 18px;
+            margin: 0 0 8px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .message-card p {
+            color: var(--espresso);
+            margin: 0;
+            flex: 1;
+        }
+        .delete-button {
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 12px;
+            margin-right: 8px;
+            background-color: var(--ivory);
+            border: 2px solid #B42318;
+            color: #B42318 ;
+            display: block;
+            margin-left: auto;
+        }
+
         `;
 
         theForm.hidden = true;
@@ -94,14 +130,50 @@ export class UserForumView extends HTMLElement {
         });
     }
 
-    refresh(messages) {
-        this.messageContainer.replaceChildren(); //slik at nettsiden kun viser mld en gang
-        if (messages.length === 0) {
-        const noMessages = document.createElement("p");
-        noMessages.textContent = "No messages yet. Be the first to post!"
-        this.messageContainer.appendChild(noMessages);
-        return;
-        }
+        refresh(messages, myMessages) {
+            this.messageContainer.replaceChildren(); //slik at nettsiden kun viser mld en gang
+            if (messages.length === 0) {
+            const noMessages = document.createElement("p");
+            noMessages.textContent = "No messages yet. Be the first to post!"
+            this.messageContainer.appendChild(noMessages);
+            return;
+            }
+
+            messages.forEach((message) => {
+            const messageCard = document.createElement("div");
+            const messageHeading = document.createElement("h3");
+            const line = document.createElement("hr");
+            const messageText = document.createElement("p");
+            const deleteButton = document.createElement("button");
+            
+            deleteButton.classList.add("delete-button");
+            messageCard.classList.add("message-card");
+
+            messageHeading.textContent = message.heading;
+            messageText.textContent = message.message;
+            const isOwnMessage = myMessages.some((myMessage) => myMessage.id === message.id);
+            deleteButton.textContent = "Delete";
+            
+            
+            messageCard.appendChild(messageHeading);
+            messageCard.appendChild(line);
+            messageCard.appendChild(messageText);
+            if (isOwnMessage) {
+                messageCard.appendChild(deleteButton);
+                deleteButton.addEventListener("click", (evt) => {
+                    const deleteMessage = new CustomEvent("deletemessage", {
+                        detail: message
+                    });
+                    this.dispatchEvent(deleteMessage);
+                });
+            }
+            this.messageContainer.appendChild(messageCard);
+                
+        });
+    }
+    resetForm() {
+        this.shadow.querySelector("form").reset();
+        this.shadow.querySelector("form").hidden = true;
     }
 }
 customElements.define("user-forum-view", UserForumView);

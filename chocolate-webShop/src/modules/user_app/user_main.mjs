@@ -17,6 +17,8 @@ import {
   addProductComment,
   getMessages,
   addMessage,
+  deleteMessage,
+  getMyMessages,
 } from "../api_service.mjs";
 
 import {
@@ -382,6 +384,7 @@ userSettingsView.addEventListener("updateuser", async function (evt) {
 
 //-----------------------------UserForumView-----------------------------
 const userForumView = new UserForumView();
+
 userForumView.classList.add("container");
 const forumButton = document.getElementById("forumButton");
 
@@ -392,7 +395,8 @@ forumButton.addEventListener("click", async () => {
     return;
   }
   const messages = await getMessages();
-  userForumView.refresh(messages);
+  const myMessages = await getMyMessages();
+  userForumView.refresh(messages, myMessages);
 
   homeView.remove();
   productListView.remove();
@@ -409,6 +413,7 @@ forumButton.addEventListener("click", async () => {
 });
 
   userForumView.addEventListener("publishmessage", async function (evt) {
+
     const heading = evt.messageForm.get("heading");
     const messageText = evt.messageForm.get("message_text");
     const message = {
@@ -420,13 +425,33 @@ forumButton.addEventListener("click", async () => {
     if (result) {
       showMessage("Your message has been published");
       const messages = await getMessages();
-      console.log("Forum messages: ", result)
-      userForumView.refresh(messages);
+      const myMessages = await getMyMessages();
+      userForumView.refresh(messages, myMessages);
+      userForumView.resetForm();
     } else {
       showMessage("Your message could not be published");
     }
-
   });
+
+  
+  userForumView.addEventListener("deletemessage", async function (evt) {
+  const confirm = window.confirm(
+    "Are you sure you want to delete this message?",
+  );
+  if (!confirm) {
+    return;
+  }
+  const result = await deleteMessage(evt.detail.id);
+  if (result) {
+    showMessage("Message deleted successfully!");
+    const messages = await getMessages();
+    const myMessages = await getMyMessages();
+    userForumView.refresh(messages, myMessages);
+  } else {
+    showMessage("Could not delete message.");
+  }
+});
+
 
 //-----------------------------logoutButton-----------------------------
 const logoutButton = document.getElementById("logoutButton");
