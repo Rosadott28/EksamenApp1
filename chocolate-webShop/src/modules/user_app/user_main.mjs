@@ -16,6 +16,7 @@ import {
   deleteUser,
   addProductComment,
   getMessages,
+  addMessage,
 } from "../api_service.mjs";
 
 import {
@@ -386,7 +387,7 @@ const forumButton = document.getElementById("forumButton");
 
 forumButton.addEventListener("click", async () => {
 
-   if (!sessionStorage.getItem("userToken")) {
+  if (!sessionStorage.getItem("userToken")) {
     showMessage("Please log in to view the forum")
     return;
   }
@@ -406,6 +407,26 @@ forumButton.addEventListener("click", async () => {
 
   document.body.appendChild(userForumView);
 });
+
+  userForumView.addEventListener("publishmessage", async function (evt) {
+    const heading = evt.messageForm.get("heading");
+    const messageText = evt.messageForm.get("message_text");
+    const message = {
+      heading: heading,
+      message_text: messageText
+    }
+    const result = await addMessage(message);
+
+    if (result) {
+      showMessage("Your message has been published");
+      const messages = await getMessages();
+      console.log("Forum messages: ", result)
+      userForumView.refresh(messages);
+    } else {
+      showMessage("Your message could not be published");
+    }
+
+  });
 
 //-----------------------------logoutButton-----------------------------
 const logoutButton = document.getElementById("logoutButton");

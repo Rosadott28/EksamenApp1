@@ -9,21 +9,46 @@ export class UserForumView extends HTMLElement {
         heading.textContent = "Sukkergris Forum";
         this.shadow.appendChild(heading);
 
-        const button = document.createElement("button");
-        button.textContent = "New Post";
-        button.type = "button";
-        this.shadow.appendChild(button);
+        const newPostButton = document.createElement("button");
+        newPostButton.textContent = "New Post";
+        newPostButton.type = "button";
+        this.shadow.appendChild(newPostButton);
 
         const messageContainer = document.createElement("div");
         this.messageContainer = messageContainer;
         this.shadow.appendChild(messageContainer);
 
+        const forumStyle = document.createElement("style")
         const theForm = document.createElement("form");
         const headingLabel = document.createElement("label");
         const headingInput = document.createElement("input");
         const messageLabel = document.createElement("label");
         const messageInput = document.createElement("textarea");
         const publishButton = document.createElement("button");
+
+        forumStyle.textContent = `
+            
+            form[hidden] {
+            display: none;
+        }
+
+        form input,
+        form textarea {
+            width: 100%;
+            padding: 8px;
+            font: inherit;
+            box-sizing: border-box;
+            background-color: var(--ivory);
+            color: var(--espresso);
+            border: 1px solid var(--truffle);
+            border-radius: var(--radius);
+        }
+
+        form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        `;
 
         theForm.hidden = true;
         headingInput.name = "heading";
@@ -47,6 +72,26 @@ export class UserForumView extends HTMLElement {
         theForm.appendChild(messageInput);
         theForm.appendChild(publishButton);
         this.shadow.appendChild(theForm);
+        this.shadow.appendChild(forumStyle);
+
+        newPostButton.addEventListener("click",(evt) => { 
+            theForm.hidden = !theForm.hidden;
+
+        })
+
+
+
+
+
+        theForm.addEventListener("submit", (evt) => {
+            evt.preventDefault();
+
+            const formData = new FormData(theForm);    
+
+            const publishMessage = new CustomEvent("publishmessage");
+            publishMessage.messageForm = formData;
+            this.dispatchEvent(publishMessage);
+        });
     }
 
     refresh(messages) {
