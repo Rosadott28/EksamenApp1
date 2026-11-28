@@ -21,5 +21,3 @@ export function errorHandler(error) {
 }
 
 //-----------------------------------------------------------
-
-// add more functions below for handling errors if needed
