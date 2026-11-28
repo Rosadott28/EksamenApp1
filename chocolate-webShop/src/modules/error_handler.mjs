@@ -1,12 +1,23 @@
-
 //-----------------------------------------------------------
+let errorTimer = null;
+let activeError = null;
 export function errorHandler(error) {
+  clearTimeout(errorTimer);
+  if (activeError) {
+    activeError.remove();
+  }
+  const errorMessage = document.createElement("p");
+  errorMessage.classList.add("notification-message");
+  errorMessage.textContent = "Something went wrong. Please try again.";
+  errorMessage.setAttribute("role", "alert");
+  document.body.appendChild(errorMessage);
+  activeError = errorMessage;
 
-    // handle errors here, e.g. show a dialog with an easy-to-understand explanation
-    // based on the error type/code.
-
-    console.log("Something went wrong: " + error);
-
+  errorTimer = setTimeout(() => {
+    errorMessage.remove();
+    activeError = null;
+  }, 4000);
+  console.error(error);
 }
 
 //-----------------------------------------------------------

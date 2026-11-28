@@ -59,7 +59,7 @@ export class ProductView extends HTMLElement {
         const priceNameHeader = document.createElement("th");
         const actionNameHeader = document.createElement("th");
 
-        addProductButton.textContent = "Add product";
+        addProductButton.textContent = "Add product";3
         productNameHeader.textContent = "Product name";
         priceNameHeader.textContent = "Price";
         actionNameHeader.textContent = "Action";
